@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>YOUR STASH | GDRIPX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&amp;display=swap" rel="stylesheet" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./images/favicon.png" />
+    <link rel="apple-touch-icon" href="./images/favicon.png" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a0a0a",
+                        "primary-inverse": "#F5F0E8", 
+                        "background-light": "#F5F0E8", 
+                        "background-dark": "#0a0a0a", 
+                        "chrome": "#a1a1aa", 
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"], 
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { background-color: #F5F0E8; overflow-x: hidden; }
+        /* Smooth Fade In */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-enter { animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        /* Receipt Pattern */
+        .receipt-edge {
+            background-image: linear-gradient(135deg, #0a0a0a 5px, transparent 0), linear-gradient(-135deg, #0a0a0a 5px, transparent 0);
+            background-size: 20px 20px;
+            background-repeat: repeat-x;
+            background-position: bottom;
+            height: 10px;
+        }
+    </style>
+</head>
+
+<body class="font-display text-primary antialiased min-h-screen flex flex-col">
+    <!-- 🟢 CINEMATIC PRELOADER 🟢 -->
+    <div id="preloader" class="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center text-white transition-opacity duration-700 ease-out">
+        <div class="relative flex flex-col items-center gap-6">
+            <h1 class="font-serif font-black text-4xl md:text-6xl tracking-tighter animate-pulse">
+                GDRIPX<span class="text-xs align-top opacity-50 font-display">®</span>
+            </h1>
+            <div class="w-[200px] md:w-[300px]">
+                <div class="flex justify-between items-end mb-2 font-display text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                    <span id="loader-text">Loading Stash...</span>
+                    <span id="loader-counter" class="text-white font-bold">0%</span>
+                </div>
+                <div class="w-full h-[2px] bg-white/10 rounded-full overflow-hidden">
+                    <div id="loader-bar" class="h-full bg-white w-0 transition-all duration-100 ease-linear shadow-[0_0_10px_white]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Minimal Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4">
+        <div class="bg-white/80 backdrop-blur-md border border-white/20 shadow-sm rounded-full px-6 py-3 flex items-center justify-between w-full max-w-[1200px]">
+            <a href="code.html" class="flex items-center gap-2 group">
+                <span class="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-1">arrow_back</span>
+                <span class="text-xs font-bold tracking-widest uppercase">Keep Shopping</span>
+            </a>
+            <a href="code.html" class="font-serif font-black text-xl tracking-tight">GDRIPX</a>
+            <div class="w-24"></div> <!-- Spacer for balance -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-32 pb-24 px-4 md:px-8 max-w-[1200px] mx-auto w-full">
+        
+        <!-- Header -->
+        <header class="mb-12 md:mb-20 text-center md:text-left animate-enter">
+            <h1 class="font-serif text-5xl md:text-8xl leading-[0.9]">
+                YOUR <span class="italic text-primary/40">STASH</span>
+            </h1>
+            <p class="mt-4 text-primary/60 text-sm font-bold tracking-[0.2em] uppercase">
+                Secure Checkout • Global Shipping
+            </p>
+        </header>
+
+        <!-- Cart Logic Wrapper -->
+        <div id="cart-content" class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 hidden">
+            
+            <!-- LEFT: Cart Items List -->
+            <div class="lg:col-span-7 space-y-8" id="cart-items-wrapper">
+                <!-- Items will be injected here by JS -->
+            </div>
+
+            <!-- RIGHT: Receipt Summary -->
+            <div class="lg:col-span-5 relative">
+                <div class="sticky top-32">
+                    <div class="bg-white p-8 shadow-2xl relative animate-enter" style="animation-delay: 0.2s;">
+                        
+                        <!-- Tape Decoration -->
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-8 bg-[#e5e5e5]/80 backdrop-blur-sm rotate-2 shadow-sm border border-white/50 z-20"></div>
+
+                        <h3 class="font-serif text-3xl mb-8 border-b-2 border-black pb-4 border-dashed">Order Summary</h3>
+                        
+                        <div class="space-y-4 text-sm font-medium tracking-wide">
+                            <div class="flex justify-between">
+                                <span class="text-primary/60">Subtotal</span>
+                                <span id="subtotal-display">$0.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-primary/60">Shipping (Global Express)</span>
+                                <span>$25.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-primary/60">Tax (Est.)</span>
+                                <span id="tax-display">$0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="my-8 border-t-2 border-black border-dashed"></div>
+
+                        <div class="flex justify-between items-end mb-8">
+                            <span class="font-bold uppercase tracking-widest text-lg">Total Due</span>
+                            <span class="font-serif text-4xl font-bold" id="total-display">$0.00</span>
+                        </div>
+
+                        <button id="checkout-btn" class="w-full bg-black text-white py-5 font-bold uppercase tracking-[0.25em] hover:bg-[#222] transition-colors relative overflow-hidden group">
+                            <span class="relative z-10 btn-text">Secure Checkout</span>
+                            <div class="absolute inset-0 bg-green-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 z-0"></div>
+                        </button>
+
+                        <div class="mt-6 flex justify-center gap-4 opacity-40">
+                            <span class="material-symbols-outlined">lock</span>
+                            <span class="material-symbols-outlined">credit_card</span>
+                            <span class="material-symbols-outlined">verified_user</span>
+                        </div>
+
+                        <!-- Receipt Bottom Edge -->
+                        <div class="absolute -bottom-[10px] left-0 right-0 h-[10px] bg-white" style="clip-path: polygon(0% 0%, 0% 100%, 2% 100%, 2% 0%, 4% 0%, 4% 100%, 6% 100%, 6% 0%, 8% 0%, 8% 100%, 10% 100%, 10% 0%, 12% 0%, 12% 100%, 14% 100%, 14% 0%, 16% 0%, 16% 100%, 18% 100%, 18% 0%, 20% 0%, 20% 100%, 22% 100%, 22% 0%, 24% 0%, 24% 100%, 26% 100%, 26% 0%, 28% 0%, 28% 100%, 30% 100%, 30% 0%, 32% 0%, 32% 100%, 34% 100%, 34% 0%, 36% 0%, 36% 100%, 38% 100%, 38% 0%, 40% 0%, 40% 100%, 42% 100%, 42% 0%, 44% 0%, 44% 100%, 46% 100%, 46% 0%, 48% 0%, 48% 100%, 50% 100%, 50% 0%, 52% 0%, 52% 100%, 54% 100%, 54% 0%, 56% 0%, 56% 100%, 58% 100%, 58% 0%, 60% 0%, 60% 100%, 62% 100%, 62% 0%, 64% 0%, 64% 100%, 66% 100%, 66% 0%, 68% 0%, 68% 100%, 70% 100%, 70% 0%, 72% 0%, 72% 100%, 74% 100%, 74% 0%, 76% 0%, 76% 100%, 78% 100%, 78% 0%, 80% 0%, 80% 100%, 82% 100%, 82% 0%, 84% 0%, 84% 100%, 86% 100%, 86% 0%, 88% 0%, 88% 100%, 90% 100%, 90% 0%, 92% 0%, 92% 100%, 94% 100%, 94% 0%, 96% 0%, 96% 100%, 98% 100%, 98% 0%, 100% 0%, 100% 100%);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EMPTY STATE (Shown if cart is empty) -->
+        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-20 animate-enter">
+            <div class="w-24 h-24 bg-primary/5 rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-4xl opacity-30">shopping_bag</span>
+            </div>
+            <h2 class="font-serif text-4xl mb-4">Your Stash is Empty</h2>
+            <p class="text-primary/60 mb-8 font-medium">The vault is open. Don't miss the drop.</p>
+            <a href="code.html#drops" class="px-8 py-4 bg-primary text-white font-bold uppercase tracking-widest rounded-full hover:scale-105 transition-transform">
+                Return to Shop
+            </a>
+        </div>
+
+        <!-- 🟢 FLOAT CONCIERGE WIDGET 🟢 -->
+        <!-- Added 'pointer-events-none' to the wrapper so clicks pass through to the Checkout Button -->
+        <div class="fixed bottom-6 right-6 z-[9000] flex flex-col items-end gap-4 font-display pointer-events-none">
+            
+            <!-- Chat Window (Added pointer-events-auto so you can actually type inside) -->
+            <div id="concierge-window" class="w-[300px] md:w-[360px] bg-[#050505]/90 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom-right scale-0 opacity-0 translate-y-10 pointer-events-auto">
+                <div class="bg-white/5 p-5 border-b border-white/5 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                                <img src="./images/logo.png" alt="G" class="w-5 h-5 object-contain">
+                            </div>
+                            <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-black rounded-full animate-pulse"></div>
+                        </div>
+                        <div>
+                            <h4 class="text-white text-sm font-bold tracking-widest uppercase">GDRIPX Support</h4>
+                            <p class="text-[10px] text-white/50">Typically replies instantly</p>
+                        </div>
+                    </div>
+                    <button id="close-chat" class="text-white/40 hover:text-white transition-colors"><span class="material-symbols-outlined text-lg">close</span></button>
+                </div>
+                <div class="p-5 h-[250px] overflow-y-auto space-y-4" id="chat-body">
+                    <div class="text-center"><span class="text-[9px] text-white/30 uppercase tracking-widest">Today</span></div>
+                    <div class="flex gap-3 animate-fade-up">
+                        <div class="w-6 h-6 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white">G</div>
+                        <div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs text-white/90 leading-relaxed border border-white/5">
+                            <p>Need help with your order? Send us a message.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 bg-black/50 border-t border-white/10">
+                    <form id="whatsapp-form" class="relative">
+                        <input type="text" id="whatsapp-input" placeholder="Type your message..." class="w-full bg-white/5 border border-white/10 rounded-full pl-5 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all placeholder:text-white/20">
+                        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
+                            <span class="material-symbols-outlined text-[16px] -ml-0.5 mt-0.5">send</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Toggle Button (Added pointer-events-auto so it is clickable) -->
+            <button id="concierge-btn" class="group relative flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300 z-50 hover:translate-y-[-4px] active:scale-95 pointer-events-auto">
+                <div class="absolute inset-[-3px] rounded-full bg-[conic-gradient(from_0deg,transparent_60%,#22c55e_100%)] animate-[spin_2s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-[2px]"></div>
+                <div class="absolute inset-0 bg-[#0a0a0a] rounded-full shadow-[inset_0_4px_10px_rgba(255,255,255,0.15),0_15px_30px_-5px_rgba(0,0,0,0.8)] border border-white/10 overflow-hidden flex items-center justify-center backdrop-blur-md">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-gradient-to-b from-white/20 to-transparent rounded-full blur-[1px]"></div>
+                    <span class="material-symbols-outlined text-2xl text-white transition-all duration-300 rotate-0 scale-100 absolute drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" id="chat-icon-open">chat_bubble</span>
+                    <span class="material-symbols-outlined text-2xl text-white transition-all duration-300 rotate-90 scale-0 absolute opacity-0" id="chat-icon-close">close</span>
+                </div>
+                <div class="absolute -top-1 -right-1 w-6 h-6 bg-red-600 rounded-full flex items-center justify-center border-[3px] border-[#0a0a0a] shadow-lg animate-[bounce_2s_infinite]" id="notification-badge">
+                    <span class="text-[10px] font-bold text-white font-display relative z-10">1</span>
+                    <span class="absolute inset-0 rounded-full bg-red-600 animate-ping opacity-75"></span>
+                </div>
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        // --- ADVANCED CART LOGIC (WITH AGGREGATION) ---
+        const cartContent = document.getElementById('cart-content');
+        const emptyState = document.getElementById('empty-state');
+        const itemsWrapper = document.getElementById('cart-items-wrapper');
+        const subtotalDisplay = document.getElementById('subtotal-display');
+        const taxDisplay = document.getElementById('tax-display');
+        const totalDisplay = document.getElementById('total-display');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        // 1. Retrieve Raw Cart Data
+        let rawCart = JSON.parse(localStorage.getItem('gdripx_cart')) || [];
+        
+        // This will hold our "Grouped" items for display and checkout
+        let groupedCart = [];
+
+        function renderCart() {
+            itemsWrapper.innerHTML = '';
+
+            if (rawCart.length === 0) {
+                cartContent.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                emptyState.style.display = 'flex';
+                return;
+            } else {
+                cartContent.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+            }
+
+            // --- SMART AGGREGATION LOGIC ---
+            // Consolidate identical items (Same Name + Same Size)
+            const groups = {};
+            
+            rawCart.forEach(item => {
+                // Key determines what makes items "identical"
+                // Using Name + Size. Price is usually tied to size, but we verify later.
+                const key = `${item.name}-${item.size}`;
+                
+                if (!groups[key]) {
+                    groups[key] = { 
+                        ...item, 
+                        qty: 0,
+                        rawPrice: parseFloat(item.price.replace('$', '')) // Prepare price for math
+                    };
+                }
+                groups[key].qty += 1;
+            });
+
+            // Convert Object back to Array for display
+            groupedCart = Object.values(groups);
+
+            let subtotal = 0;
+
+            // --- RENDER GROUPED ITEMS ---
+            groupedCart.forEach((item, index) => {
+                // Calculate item total cost
+                const lineTotal = item.rawPrice * item.qty;
+                subtotal += lineTotal;
+
+                // Handle Image Display
+                // If it's a hoodie from the new modal, 'item.image' is the front view png.
+                // If it's a basic item, it might be a url. Both work fine.
+                
+                const itemRow = document.createElement('div');
+                itemRow.className = 'flex gap-6 items-center p-4 bg-white border border-primary/5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group animate-enter';
+                itemRow.style.animationDelay = `${index * 0.1}s`;
+
+                itemRow.innerHTML = `
+                    <div class="w-24 h-32 bg-[#f0f0f0] rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center relative">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain p-2 mix-blend-multiply">
+                        <div class="absolute top-1 right-1 bg-black text-white text-[9px] font-bold w-5 h-5 rounded-full flex items-center justify-center">x${item.qty}</div>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-display font-bold text-lg uppercase tracking-tight leading-none mb-1">${item.name}</h3>
+                                <p class="text-[10px] text-primary/40 font-bold tracking-widest uppercase">
+                                    Size: <span class="text-primary">${item.size}</span>
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-serif font-bold text-xl italic block">${item.price}</span>
+                                ${item.qty > 1 ? `<span class="text-[10px] text-primary/40 font-bold block">Total: $${lineTotal.toFixed(2)}</span>` : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mt-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-primary/50">In Stock</span>
+                            </div>
+                            <!-- Remove Button: Passes Name and Size to remove specific item group -->
+                            <button onclick="removeItem('${item.name}', '${item.size}')" class="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-700 flex items-center gap-1 bg-red-50 px-3 py-1.5 rounded-full hover:bg-red-100 transition-colors">
+                                <span class="material-symbols-outlined text-sm">remove</span> Decrease
+                            </button>
+                        </div>
+                    </div>
+                `;
+                itemsWrapper.appendChild(itemRow);
+            });
+
+            // Update Totals
+            const shipping = 25.00;
+            const tax = subtotal * 0.08; // 8% Tax
+            const total = subtotal + shipping + tax;
+
+            subtotalDisplay.innerText = `$${subtotal.toFixed(2)}`;
+            taxDisplay.innerText = `$${tax.toFixed(2)}`;
+            totalDisplay.innerText = `$${total.toFixed(2)}`;
+        }
+
+        // 2. Smart Remove Function
+        // Removes ONE instance of the item from the Raw Cart
+        window.removeItem = (name, size) => {
+            // Find index of first item in raw array matching this specific variation
+            const index = rawCart.findIndex(item => item.name === name && item.size === size);
+            
+            if (index > -1) {
+                // Remove just one instance
+                rawCart.splice(index, 1);
+                // Save and Re-render
+                localStorage.setItem('gdripx_cart', JSON.stringify(rawCart));
+                renderCart();
+            }
+        }
+
+        // 3. Checkout Logic (WhatsApp Integration)
+        checkoutBtn.addEventListener('click', () => {
+            if (rawCart.length === 0) return;
+
+            const btnText = checkoutBtn.querySelector('.btn-text');
+            const originalText = btnText.innerText;
+
+            // ⚠️ ENTER YOUR WHATSAPP NUMBER HERE
+            const whatsappNumber = "2347071090642"; 
+
+            // Loading State
+            btnText.innerHTML = `<span class="material-symbols-outlined animate-spin align-middle mr-2">progress_activity</span> Generating Order...`;
+            
+            setTimeout(() => {
+                checkoutBtn.style.backgroundColor = '#16a34a'; 
+                btnText.innerHTML = `<span class="material-symbols-outlined align-middle mr-2">chat</span> Redirecting...`;
+                
+                // --- GENERATE SMART RECEIPT ---
+                // We use 'groupedCart' here so the merchant sees "3x Hoodie" instead of "1x Hoodie, 1x Hoodie..."
+                let message = `*NEW ORDER - GDRIPX* 🛍️\n\n`;
+                message += `*Order Items:*\n`;
+                
+                let subtotal = 0;
+                
+                groupedCart.forEach((item, index) => {
+                    const lineTotal = item.rawPrice * item.qty;
+                    subtotal += lineTotal;
+                    message += `-------------------------\n`;
+                    message += `📦 *${item.name}*\n`;
+                    message += `   Size: ${item.size}\n`;
+                    message += `   Qty: ${item.qty}\n`;
+                    message += `   Price: ${item.price} (Sub: $${lineTotal})\n`;
+                });
+                
+                // Calculate Totals
+                const shipping = 25.00;
+                const tax = subtotal * 0.08;
+                const total = subtotal + shipping + tax;
+                
+                message += `=========================\n`;
+                message += `*TOTAL SUMMARY:*\n`;
+                message += `Subtotal: $${subtotal.toFixed(2)}\n`;
+                message += `Shipping: $${shipping.toFixed(2)}\n`;
+                message += `Tax (8%): $${tax.toFixed(2)}\n`;
+                message += `*FINAL DUE: $${total.toFixed(2)}*\n\n`;
+                message += `I am ready to pay. Please confirm!`;
+
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappUrl = `https://wa.me/${+whatsappNumber}?text=${encodedMessage}`;
+                
+                // Clear Cart
+                localStorage.removeItem('gdripx_cart');
+                
+                setTimeout(() => {
+                    window.location.href = whatsappUrl;
+                }, 800);
+
+            }, 1500);
+        });
+
+        // Initialize Page
+        renderCart();
+
+        // --- PRELOADER ---
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            const counter = document.getElementById('loader-counter');
+            const bar = document.getElementById('loader-bar');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10) + 1; 
+                if (progress > 100) progress = 100;
+                counter.innerText = `${progress}%`;
+                bar.style.width = `${progress}%`;
+                if (progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        preloader.style.opacity = '0';
+                        preloader.style.pointerEvents = 'none'; 
+                    }, 500);
+                }
+            }, 30);
+        });
+
+        // --- CONCIERGE LOGIC ---
+        const conciergeBtn = document.getElementById('concierge-btn');
+        const conciergeWindow = document.getElementById('concierge-window');
+        const closeChatBtn = document.getElementById('close-chat');
+        const iconOpen = document.getElementById('chat-icon-open');
+        const iconClose = document.getElementById('chat-icon-close');
+        
+        function toggleChat() {
+            const isClosed = conciergeWindow.classList.contains('scale-0');
+            if (isClosed) {
+                conciergeWindow.classList.remove('scale-0', 'opacity-0', 'translate-y-10');
+                conciergeWindow.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+                iconOpen.classList.add('rotate-90', 'scale-0', 'opacity-0');
+                iconClose.classList.remove('rotate-90', 'scale-0', 'opacity-0');
+                iconClose.classList.add('rotate-0', 'scale-100', 'opacity-100');
+            } else {
+                conciergeWindow.classList.add('scale-0', 'opacity-0', 'translate-y-10');
+                conciergeWindow.classList.remove('scale-100', 'opacity-100', 'translate-y-0');
+                iconOpen.classList.remove('rotate-90', 'scale-0', 'opacity-0');
+                iconClose.classList.add('rotate-90', 'scale-0', 'opacity-0');
+                iconClose.classList.remove('rotate-0', 'scale-100', 'opacity-100');
+            }
+        }
+        conciergeBtn.addEventListener('click', toggleChat);
+        closeChatBtn.addEventListener('click', toggleChat);
+    </script>
+</body>
+</html>

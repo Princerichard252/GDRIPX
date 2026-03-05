@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>GDRIPX</title>
+    <link rel="preload" as="image" href="https://lh3.googleusercontent.com/aida-public/AB6AXuCaoxraeU3qrqqwZ-A3ADtI-aS42QneYxutlaCrQDduLYmPvJerb3TfRHKqmpEi0Msi65vaPVklyxRX2972HvEcve9wK8UTy3STttiwC8KNlfax8NVTZL9ubFVbtezU78sr1_176UU-NIJ4g_usYnEwOW_pv1r2DZcrpy6EqMcUDYNrBhCPGWrwNsHnKpBBJ82lsZt0chyxM98i40-oXQ_RaR1wFeQDX3haRN10eD71cDr9KISDMGx_f6-tgNqGc8S6TUFag70MVfg">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&amp;display=swap" rel="stylesheet" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./images/favicon.png" />
+    <link rel="apple-touch-icon" href="./images/favicon.png" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a0a0a",
+                        "primary-inverse": "#F5F0E8", 
+                        "background-light": "#F5F0E8", 
+                        "background-dark": "#0a0a0a", 
+                        "chrome": "#a1a1aa", 
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif":["Playfair Display", "serif"], 
+                    },
+                    keyframes: {
+                        /* Added missing keyframes for seamless marquee scroll */
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(calc(-100% - 1rem))' }
+                        }
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+    /* --- CORE SETTINGS --- */
+    body { margin: 0; padding: 0; overflow-x: hidden; background-color: #F5F0E8; }
+    
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* --- TYPOGRAPHY --- */
+    .font-mix { font-family: 'Inter', sans-serif; }
+    .font-luxury { font-family: 'Playfair Display', serif; }
+    
+    .text-chrome {
+        background: linear-gradient(to right, #71717a, #fafafa, #71717a);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* --- NAVIGATION ANIMATIONS --- */
+    .nav-link { position: relative; padding-bottom: 2px; }
+    .nav-link::after {
+        content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 1px;
+        background: linear-gradient(to right, #71717a, #000, #71717a);
+        transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    #navbar { animation: navSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    #navbar.scrolled #nav-pill {
+        background: rgba(255, 255, 255, 0.9);
+        border-color: rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        padding-top: 0.5rem; padding-bottom: 0.5rem;
+    }
+
+    @keyframes navSlideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- MOBILE MENU X ANIMATION --- */
+    #mobile-menu-btn.open .hamburger-line:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+    #mobile-menu-btn.open .hamburger-line:nth-child(2) { transform: translateY(-3.25px) rotate(-45deg); }
+
+    /* --- HERO 3D STAGE & FIXES --- */
+    .perspective-stage { perspective: 2500px; transform-style: preserve-3d; }
+    #hero-track { clip-path: inset(0); }
+    #hero-text-group { will-change: transform, opacity, filter; }
+    #hero-card { transform-origin: center center; will-change: transform; }
+
+    .hero-card-container {
+        transform-style: preserve-3d;
+        box-shadow: 0 50px 100px -20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);    
+    }
+
+    .hero-scan-line {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+        transform: translateY(-100%);
+        animation: scanline 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        pointer-events: none; z-index: 50;
+    }
+
+    /* --- REFINED DECK SHUFFLE (CLEAN & SNAP) --- */
+    @keyframes smoothShuffle {
+        0%, 100% {
+            transform: translateX(0) scale(1);
+            z-index: 30;
+        }
+        33% {
+            /* Slide Right & Back */
+            transform: translateX(60px) scale(0.85) rotate(5deg);
+            z-index: 10;
+        }
+        66% {
+            /* Slide Left & Back (Preparation) */
+            transform: translateX(-60px) scale(0.9) rotate(-5deg);
+            z-index: 20;
+        }
+    }
+
+    .deck-card {
+        position: absolute;
+        inset: 0;
+        border-radius: 1.5rem; /* Smaller rounded corners */
+        overflow: hidden;
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.2);
+        background: #000;
+        transform-origin: bottom center;
+    }
+
+    /* Staggered Animation for 3 Unique Cards */
+    .deck-1 { animation: smoothShuffle 6s ease-in-out infinite; z-index: 30; }
+    .deck-2 { animation: smoothShuffle 6s ease-in-out infinite; animation-delay: -2s; z-index: 20; transform: scale(0.9) rotate(-5deg); }
+    .deck-3 { animation: smoothShuffle 6s ease-in-out infinite; animation-delay: -4s; z-index: 10; transform: scale(0.85) rotate(5deg); }
+
+    /* --- 5-CARD PHYSICS STACK --- */
+    .deck-container {
+        perspective: 1000px;
+        transform-style: preserve-3d;
+    }
+/* --- THE DEALER SHUFFLE ENGINE --- */
+    .deck-container {
+        perspective: 1200px;
+        position: relative;
+        /* Keep cards centered on top of each other */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .deck-card-physics {
+        position: absolute;
+        width: 100%;
+        aspect-ratio: 3/4;
+        border-radius: 2rem;
+        background: #000;
+        border: 4px solid #fff;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        overflow: hidden;
+        /* THE SHUFFLE: 10 seconds total */
+        animation: dealerShuffle 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        transform-origin: center center;
+    }
+
+    @keyframes dealerShuffle {
+        0%, 15% { transform: translateZ(0px) rotate(0deg); z-index: 5; }
+        25% { transform: translateZ(100px) translateX(100%) rotate(20deg); z-index: 10; } /* Slide OUT */
+        40% { transform: translateZ(-100px) translateX(0%) rotate(0deg); z-index: 1; }  /* Snap to BACK */
+        100% { transform: translateZ(0px) rotate(0deg); z-index: 5; }                   /* Stay at front */
+    }
+
+    /* Stagger the delay so cards move one by one */
+    .deck-1 { animation-delay: 0s; }
+    .deck-2 { animation-delay: -2s; }
+    .deck-3 { animation-delay: -4s; }
+    .deck-4 { animation-delay: -6s; }
+    .deck-5 { animation-delay: -8s; }
+
+    /* Shuffle Animation */
+    @keyframes fanShuffle {
+        0% { transform: rotateY(0deg) translateZ(0); }
+        33% { transform: rotateY(-15deg) translateZ(50px); }
+        66% { transform: rotateY(15deg) translateZ(50px); }
+        100% { transform: rotateY(0deg) translateZ(0); }
+    }
+    .animate-stack { animation: fanShuffle 8s ease-in-out infinite; }
+    
+ /* Add inside your <style> tag */
+    @keyframes mobile3D {
+        0% { transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(0.95); }
+        50% { transform: perspective(1000px) rotateX(-5deg) rotateY(5deg) scale(1); }
+        100% { transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(0.95); }
+    }
+    .animate-mobile-3d { animation: mobile3D 8s ease-in-out infinite; }
+
+    @keyframes scanVertical {
+        0% { top: -10%; opacity: 0; }
+        50% { opacity: 1; }
+        100% { top: 110%; opacity: 0; }
+    }
+    .mobile-scan-line {
+        position: absolute; left: 0; width: 100%; height: 20px;
+        background: linear-gradient(to bottom, transparent, #22c55e, transparent);
+        opacity: 0.5;
+        animation: scanVertical 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        z-index: 50;
+    }
+
+    @keyframes scanline {
+        0% { transform: translateY(-120%); }
+        100% { transform: translateY(120%); }
+    }
+
+    /* --- TEXT ENTRANCE ANIMATIONS --- */
+    @keyframes fadeUp {
+        0% { transform: translateY(40px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+    .animate-fade-up { animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+    /* --- AMBIENT BACKGROUND ANIMATION --- */
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: blob 15s infinite alternate ease-in-out; }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-primary antialiased min-h-screen selection:bg-primary selection:text-white">
+    
+    <!-- 🟢 CINEMATIC PRELOADER 🟢 -->
+    <div id="preloader" class="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center text-white transition-opacity duration-700 ease-out">
+        
+        <!-- Center Content -->
+        <div class="relative flex flex-col items-center gap-6">
+            
+            <!-- Brand Glitch Effect -->
+            <h1 class="font-serif font-black text-4xl md:text-6xl tracking-tighter animate-pulse">
+                GDRIPX<span class="text-xs align-top opacity-50 font-display">®</span>
+            </h1>
+
+            <!-- The Counter & Bar -->
+            <div class="w-[200px] md:w-[300px]">
+                <div class="flex justify-between items-end mb-2 font-display text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                    <span id="loader-text">Initializing...</span>
+                    <span id="loader-counter" class="text-white font-bold">0%</span>
+                </div>
+                
+                <!-- Progress Track -->
+                <div class="w-full h-[2px] bg-white/10 rounded-full overflow-hidden">
+                    <div id="loader-bar" class="h-full bg-white w-0 transition-all duration-100 ease-linear shadow-[0_0_10px_white]"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Technical Footer -->
+        <div class="absolute bottom-8 left-0 w-full text-center">
+            <p class="font-display text-[9px] uppercase tracking-[0.3em] text-gray-600 animate-pulse">
+                System Version 2.5 • Secure Connection
+            </p>
+        </div>
+    </div>
+    <!-- Top Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 transition-all duration-500">
+        <div id="nav-pill" class="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-full px-8 py-3 flex items-center justify-between gap-12 max-w-[960px] w-full transition-all duration-500">
+
+            <a href="#" class="flex items-center gap-3 group" aria-label="GDRIPX Home">
+                <!-- LOGO IMAGE (Spin on Hover) -->
+                <img src="./images/logo.png" 
+                     alt="GDRIPX Logo" 
+                     class="w-8 h-8 md:w-9 md:h-9 object-contain transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:rotate-[360deg]" 
+                />
+
+                <!-- BRAND TEXT -->
+                <div class="flex items-baseline">
+                    <span class="gdripx-wordmark font-serif font-black text-xl md:text-2xl text-primary select-none tracking-tight">GDRIPX</span>
+                    <span class="w-[6px] h-[6px] rounded-full bg-primary inline-block ml-1 opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all duration-300"></span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8">
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="#drops">Shop</a>
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="#lookbook">Lookbook</a>
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="#about">About</a>
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="#contact">Contact</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="cart.html" id="cart-btn" class="bg-primary text-background-light px-5 py-2 rounded-full text-xs font-bold tracking-widest flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <span class="material-symbols-outlined text-[14px]">shopping_bag</span>
+                    <span>CART (0)</span>
+                </a>
+                <!-- Mobile hamburger -->
+                <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-[5px] p-2" aria-label="Open menu">
+                    <span class="hamburger-line w-5 h-[1.5px] bg-primary block transition-all duration-300"></span>
+                    <span class="hamburger-line w-5 h-[1.5px] bg-primary block transition-all duration-300"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown (Added md:hidden to prevent desktop bleed) -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-4 right-4 mt-2 bg-white/95 backdrop-blur-md border border-black/10 rounded-2xl shadow-xl p-6 flex-col gap-4">
+            <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-black/5 block" href="#drops">Shop</a>
+            <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-black/5 block" href="#lookbook">Lookbook</a>
+            <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-black/5 block" href="#about">About</a>
+            <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 block" href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero-track" class="hidden md:block relative h-[250vh] w-full bg-[#F5F0E8] overflow-clip">
+        
+        <!-- 3D Stage Wrapper -->
+        <div class="sticky top-0 h-[100dvh] w-full flex items-center justify-center perspective-stage z-10 px-4 overflow-hidden">
+            
+            <!-- Ambient Shadows & Film Grain -->
+            <div class="absolute inset-0 z-0 pointer-events-none">
+                <div class="absolute inset-0 z-10 opacity-[0.35] mix-blend-overlay pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+                <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gray-400/40 rounded-full mix-blend-multiply filter blur-[100px] animate-blob"></div>
+                <div class="absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] bg-gray-500/30 rounded-full mix-blend-multiply filter blur-[120px] animate-blob animation-delay-2000"></div>
+                <div class="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] bg-[#d6cfc0] rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-4000"></div>
+            </div>
+
+            <!-- 🟢 HERO AESTHETIC UPGRADES 🟢 -->
+
+            <!-- 1. Massive Background Outline Watermark -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden opacity-30 mix-blend-multiply">
+                <h1 class="font-serif font-black text-[40vw] text-transparent whitespace-nowrap select-none" style="-webkit-text-stroke: 1px rgba(10, 10, 10, 0.2);">
+                    GDRIPX
+                </h1>
+            </div>
+
+<!-- 2. Technical Corner Brackets -->
+<div class="absolute inset-6 md:inset-10 pointer-events-none z-20 mix-blend-difference hidden sm:block">
+    <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-primary/40"></div>
+    <div class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-primary/40"></div>
+    <div class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-primary/40"></div>
+    <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-primary/40"></div>
+    <div class="absolute top-1/2 left-0 w-2 h-[1px] bg-primary/40 -translate-y-1/2"></div>
+    <div class="absolute top-1/2 right-0 w-2 h-[1px] bg-primary/40 -translate-y-1/2"></div>
+</div>
+
+<!-- 3. Spinning Typographic Stamp (Hidden on very small screens) -->
+<div class="absolute right-[10%] top-[25%] md:top-[20%] animate-[spin_15s_linear_infinite] opacity-60 pointer-events-none hidden md:block z-20">
+    <svg width="120" height="120" viewBox="0 0 100 100" class="overflow-visible">
+        <path id="curve" fill="transparent" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
+        <text class="text-[9.5px] font-display font-bold uppercase tracking-[0.25em] fill-primary">
+            <textPath href="#curve">LUXURY STREETWEAR • EST 2026 • </textPath>
+        </text>
+    </svg>
+    <div class="absolute inset-0 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary text-xl font-light">emergency</span>
+    </div>
+</div>
+
+<!-- 🟢 END AESTHETIC UPGRADES 🟢 -->
+
+            <!-- Text Content (Sits centered behind the card) -->
+            <div id="hero-text-group" class="absolute z-10 text-center w-full flex flex-col items-center pointer-events-none transform-gpu">
+                <h2 class="animate-fade-up text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase text-primary/60 mb-2" style="animation-delay: 0.1s;">
+                    Establish The New Standard
+                </h2>
+
+                <h1 class="animate-fade-up text-[15vw] md:text-[11vw] font-serif font-black leading-[1] tracking-tighter text-primary select-none pb-2" style="animation-delay: 0.2s;">
+                    GDRIPX<span class="text-xl md:text-4xl align-top opacity-30 font-display font-normal relative -top-1 md:-top-3">®</span>
+                </h1>
+
+                <p class="animate-fade-up mt-1 md:mt-2 max-w-[85%] md:max-w-lg mx-auto font-mix text-xs md:text-sm font-medium leading-relaxed text-primary/80 tracking-wide" style="animation-delay: 0.4s;">
+                    Merging raw street energy with the precision of modern luxury. 
+                    <strong class="text-primary font-bold">GDRIPX</strong> is the uniform for those who move in silence and strike with volume.
+                </p>
+                <!-- Action Buttons -->
+                <div class="animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-4 pointer-events-auto" style="animation-delay: 0.6s;">
+                    <a href="#drops" class="bg-primary text-background-light px-8 py-3.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase hover:scale-105 hover:bg-black/80 transition-all duration-300 shadow-xl shadow-black/20">
+                        Shop Drops
+                    </a>
+                    <a href="#lookbook" class="border border-primary/30 text-primary backdrop-blur-sm px-8 py-3.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300">
+                        View Lookbook
+                    </a>
+                </div>
+            </div>
+
+<!-- 3D Image Card (Upgraded with Dynamic Border & True 3D Layers) -->
+            <div id="hero-card" class="hero-card-container absolute z-30 w-[90%] md:w-[65%] max-w-[1000px] h-[55vh] md:h-[65vh] pointer-events-auto transform-gpu p-[2px] rounded-[2rem] md:rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.9)]" style="transform-style: preserve-3d;">
+                
+                <!-- 1. The Dynamic 3D Borderline (Spinning Light Sweep) -->
+                <div class="absolute inset-0 z-0 overflow-hidden rounded-[2rem] md:rounded-[3rem]">
+                    <div class="absolute inset-[-100%] top-1/2 left-1/2 w-[300%] h-[300%] origin-center -translate-x-1/2 -translate-y-1/2 bg-[conic-gradient(from_0deg,transparent_70%,rgba(255,255,255,0.8)_100%)] animate-[spin_4s_linear_infinite] opacity-70"></div>
+                </div>
+
+                <!-- 2. The Main Inner Card -->
+                <div class="relative w-full h-full bg-[#050505] rounded-[calc(2rem-2px)] md:rounded-[calc(3rem-2px)] overflow-hidden z-10 group" style="transform-style: preserve-3d;">
+                    
+                    <!-- Dynamic Light Glare -->
+                    <div id="card-glare" class="absolute inset-0 w-[200%] h-[200%] -top-[50%] -left-[50%] bg-gradient-to-tr from-transparent via-white/15 to-transparent z-40 pointer-events-none mix-blend-overlay transition-transform duration-75"></div>
+
+                    <div class="hero-scan-line"></div>
+                    
+                    <!-- The Image (Sits flat at Z=0) -->
+                    <img src="./images/hero-image.png" 
+                         alt="GDRIPX Visuals" 
+                         class="absolute inset-0 w-full h-full object-cover object-center grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 ease-out scale-105 z-0" 
+                         draggable="false" />
+                    
+                    <!-- Gradient Dark Overlay -->
+                    <div class="absolute bottom-0 left-0 w-full h-3/4 bg-gradient-to-t from-black via-black/40 to-transparent z-10 opacity-90 pointer-events-none"></div>
+                    
+                    <!-- 3. Floating 3D Elements (Notice the translateZ values pushing them off the glass) -->
+                    
+                    <!-- Badge (Floats 40px off the image) -->
+                    <div class="absolute top-4 left-4 md:top-6 md:left-6 z-20 bg-black/60 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full flex items-center gap-2 shadow-2xl" style="transform: translateZ(40px);">
+                        <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></div>
+                        <span class="text-[10px] font-bold text-white uppercase tracking-widest font-display drop-shadow-md">SIGNATURE COLLECTION</span>
+                    </div>
+
+                    <!-- Text (Floats 60px off the image) -->
+                    <div class="absolute bottom-4 left-4 md:bottom-10 md:left-10 z-20 pointer-events-none" style="transform: translateZ(60px);">
+                        <p class="text-white/80 text-[10px] font-bold tracking-[0.3em] uppercase mb-1 md:mb-2 drop-shadow-lg">Founders Drop</p>
+                        <h3 class="text-white font-serif italic text-3xl md:text-5xl drop-shadow-[0_15px_15px_rgba(0,0,0,0.8)]">Gdripx Prive’</h3>
+                    </div>
+
+                    <!-- Button (Floats 80px off the image - highest element) -->
+                    <div class="absolute bottom-4 right-4 md:bottom-10 md:right-10 z-30" style="transform: translateZ(80px);">
+                        <button class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/90 backdrop-blur-md text-black flex items-center justify-center hover:scale-110 hover:rotate-45 hover:bg-white transition-all duration-300 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.8)] border border-transparent hover:border-black/20 group/btn">
+                            <span class="material-symbols-outlined text-xl md:text-2xl transition-transform duration-300 group-hover/btn:scale-110">arrow_outward</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+<!-- 📱 MOBILE HERO: FINAL ALIGNED LAYOUT 📱 -->
+<section id="mobile-hero-track" class="md:hidden relative w-full bg-[#F5F0E8] overflow-hidden min-h-[100dvh] flex flex-col items-center justify-center pt-24 pb-12">
+    
+    <!-- 1. IDENTICAL BACKGROUND (The Desktop Grain & Blobs) -->
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 z-10 opacity-[0.35] mix-blend-overlay" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[80vw] h-[80vw] bg-gray-400/30 rounded-full mix-blend-multiply filter blur-[80px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[80vw] h-[80vw] bg-[#d6cfc0] rounded-full mix-blend-multiply filter blur-[80px]"></div>
+    </div>
+
+<!-- 2. THE 5-CARD PHYSICS DECK -->
+    <div class="deck-container relative w-[60vw] max-w-[280px] aspect-[3/4] mb-20" style="perspective: 1000px; transform-style: preserve-3d;">
+        
+        <!-- CARD 5 (Back) -->
+        <div class="deck-card-physics deck-5">
+            <img src="https://images.unsplash.com/photo-1772501222551-5192a00125c1?q=80&w=717" class="w-full h-full object-cover">
+        </div>
+        <!-- CARD 4 -->
+        <div class="deck-card-physics deck-4">
+            <img src="https://images.unsplash.com/photo-1772501387415-4d41f7a055c8?q=80&w=686" class="w-full h-full object-cover">
+        </div>
+        <!-- CARD 3 -->
+        <div class="deck-card-physics deck-3">
+            <img src="https://images.unsplash.com/photo-1772501387435-78352ddac96c?q=80&w=753" class="w-full h-full object-cover">
+        </div>
+        <!-- CARD 2 -->
+        <div class="deck-card-physics deck-2">
+            <img src="https://images.unsplash.com/photo-1772501387434-36b4ee48e1fb?q=80&w=696" class="w-full h-full object-cover">
+        </div>
+        <!-- CARD 1 (Front) -->
+        <div class="deck-card-physics deck-1">
+            <img src="./images/hero-image.png" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <div class="absolute bottom-6 left-6">
+                <h3 class="text-white font-serif italic text-2xl">Archive.I</h3>
+            </div>
+        </div>
+    </div>
+    <!-- 3. CENTERED TEXT & BUTTONS (The Desktop Content) -->
+    <div class="w-full flex flex-col items-center text-center px-6 z-30">
+        <h2 class="text-[10px] font-bold tracking-[0.3em] uppercase text-primary/60 mb-2">Establish The New Standard</h2>
+        <h1 class="text-[16vw] font-serif font-black leading-[0.9] tracking-tighter text-primary mb-4">GDRIPX</h1>
+        <p class="text-xs text-primary/70 font-medium max-w-[240px] leading-relaxed mb-8">
+            Merging raw street energy with the precision of modern luxury.
+        </p>
+
+        <!-- Properly Aligned Buttons -->
+        <div class="flex flex-col w-full max-w-[240px] gap-3">
+            <a href="#drops" class="bg-primary text-background-light py-4 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase shadow-xl hover:scale-105 active:scale-95 transition-all text-center">
+                Shop Drops
+            </a>
+            <a href="#lookbook" class="border border-primary/20 text-primary bg-white/30 backdrop-blur py-4 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase hover:bg-primary/5 transition-all text-center">
+                View Lookbook
+            </a>
+        </div>
+    </div>
+</section>
+    
+
+<!-- 🟢 FEATURED DROPS (GRID & SHUFFLE SYSTEM) 🟢 -->
+    <section class="py-32 bg-background-light relative z-10 overflow-hidden" id="drops">
+        <div class="layout-container max-w-[1400px] mx-auto px-4 sm:px-8">
+            
+<div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 md:mb-16 gap-8 w-full">
+                
+                <!-- 1. Header Text Group (Centered on Mobile, Left on Desktop) -->
+                <div class="flex flex-col items-center md:items-start text-center md:text-left w-full md:w-auto relative">
+                    
+                    <!-- Mobile Top Badge -->
+                    <div class="md:hidden mb-4 animate-fade-up" style="animation-delay: 0.1s;">
+                        <span class="px-3 py-1 rounded-full border border-primary/10 bg-white/50 backdrop-blur text-[10px] font-bold tracking-[0.2em] uppercase text-primary/60">
+                            SS25 Collection
+                        </span>
+                    </div>
+
+                    <h2 class="relative font-serif text-[12vw] sm:text-6xl md:text-7xl font-bold text-primary leading-[0.9] mb-4 drop-shadow-sm animate-fade-up" style="animation-delay: 0.2s;">
+                        Featured
+                        <!-- Mobile Break / Desktop Space -->
+                        <span class="block md:inline"></span>
+                        <span class="italic font-light text-primary/50 relative inline-block">
+                            Drops
+                            <!-- Rotating Star Accent -->
+                            <span class="material-symbols-outlined absolute -top-2 -right-6 md:top-0 md:-right-10 text-xl md:text-3xl text-primary/30 animate-[spin_6s_linear_infinite]">
+                                asterisk
+                            </span>
+                        </span>
+                    </h2>
+
+                    <!-- 2. The New Mobile Description -->
+                    <p class="animate-fade-up text-sm text-primary/60 font-medium max-w-[280px] sm:max-w-sm leading-relaxed md:max-w-xs mt-2 md:mt-0" style="animation-delay: 0.3s;">
+                        Curated heavyweights and essential silhouettes. 
+                        <span class="text-primary font-bold">Limited quantities available</span> globally.
+                    </p>
+                </div>
+                
+                <!-- 3. Filter Buttons (Updated for Mobile Scroll) -->
+                <div class="w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0" id="filter-container">
+                    <div class="flex justify-center md:justify-end gap-3 min-w-max px-4 md:px-0">
+                        <button class="filter-btn active-filter px-6 py-3 md:py-2.5 rounded-full bg-primary text-background-light text-[10px] md:text-xs font-bold tracking-widest hover:scale-105 transition-transform duration-300 shadow-xl shadow-black/20" data-filter="all">ALL</button>
+                        <button class="filter-btn px-6 py-3 md:py-2.5 rounded-full border border-primary/20 text-primary text-[10px] md:text-xs font-bold tracking-widest hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300" data-filter="hoodie">HOODIES</button>
+                        <button class="filter-btn px-6 py-3 md:py-2.5 rounded-full border border-primary/20 text-primary text-[10px] md:text-xs font-bold tracking-widest hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300" data-filter="tee">TEES</button>
+                        <button class="filter-btn px-6 py-3 md:py-2.5 rounded-full border border-primary/20 text-primary text-[10px] md:text-xs font-bold tracking-widest hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300" data-filter="accessory">ACCESSORIES</button>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Product Grid (Responsive Rows & Columns) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="product-grid">
+                
+                <!-- CARD 1 (Hoodie - Black) -->
+                <div class="product-card group relative aspect-[4/5] bg-[#e5e5e5] rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="hoodie">
+                    <!-- LOCAL IMAGE PATH -->
+                    <img src="./images/hoodies/hoodie.png" class="absolute inset-0 w-full h-full object-contain p-8 transition-transform duration-1000 group-hover:scale-110 drop-shadow-xl" alt="Gdripx hoodies" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                    
+                    <div class="absolute top-6 left-6 z-20">
+                        <div class="bg-white text-primary text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">New</div>
+                    </div>
+
+                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
+                        <div class="flex justify-between items-end mb-4">
+                            <div>
+                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Heavyweight</p>
+                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Gdripx Hoodies</h3>
+                            </div>
+                            <span class="font-serif text-xl font-bold italic text-white">$145</span>
+                        </div>
+                        <!-- MODAL TRIGGER BUTTON -->
+                        <button class="open-modal-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" data-product-id="phantom-hoodie">
+                            <span class="btn-text">Select Options</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 2 (Tee) -->
+                <div class="product-card group relative aspect-[4/5] bg-gray-200 rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="tee">
+                    <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Tee" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
+                    
+                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
+                        <div class="flex justify-between items-end mb-4">
+                            <div>
+                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Oversized</p>
+                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Void Graphic Tee</h3>
+                            </div>
+                            <span class="font-serif text-xl font-bold italic text-white">$65</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                            <span class="btn-text">Add To Cart</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 3 (Accessory) -->
+                <div class="product-card group relative aspect-[4/5] bg-gray-200 rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="accessory">
+                    <img src="https://plus.unsplash.com/premium_photo-1679314407939-858a78e9e1ac?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Bag" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
+                    
+                    <div class="absolute top-6 left-6 z-20">
+                        <div class="bg-red-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Limited</div>
+                    </div>
+
+                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
+                        <div class="flex justify-between items-end mb-4">
+                            <div>
+                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Tactical</p>
+                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Utility Rig Bag</h3>
+                            </div>
+                            <span class="font-serif text-xl font-bold italic text-white">$145</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                            <span class="btn-text">Add To Cart</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 4 (Hoodie) -->
+                <div class="product-card group relative aspect-[4/5] bg-gray-200 rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="hoodie">
+                    <img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Zip Hoodie" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
+
+                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
+                        <div class="flex justify-between items-end mb-4">
+                            <div>
+                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Fleece Lined</p>
+                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Onyx Zip-Up</h3>
+                            </div>
+                            <span class="font-serif text-xl font-bold italic text-white">$135</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                            <span class="btn-text">Add To Cart</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 5 (Tee) -->
+                <div class="product-card group relative aspect-[4/5] bg-gray-200 rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="tee">
+                    <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Blank Tee" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
+
+                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
+                        <div class="flex justify-between items-end mb-4">
+                            <div>
+                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Boxy Fit</p>
+                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Essential Blank</h3>
+                            </div>
+                            <span class="font-serif text-xl font-bold italic text-white">$45</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                            <span class="btn-text">Add To Cart</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARD 6 (Accessory) -->
+                <div class="product-card group relative aspect-[4/5] bg-gray-200 rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="accessory">
+                    <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Cap" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
+
+                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
+                        <div class="flex justify-between items-end mb-4">
+                            <div>
+                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Embroidered</p>
+                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Signature Cap</h3>
+                            </div>
+                            <span class="font-serif text-xl font-bold italic text-white">$40</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                            <span class="btn-text">Add To Cart</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+<!-- 🟢 INTERACTIVE LOOKBOOK (DARKROOM GALLERY) 🟢 -->
+<section class="py-24 bg-primary text-background-light relative overflow-hidden select-none" id="lookbook">
+    
+    <!-- Background Texture (Grain) -->
+    <div class="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+
+    <!-- Dynamic Lookbook Header -->
+    <div class="layout-container max-w-[1400px] mx-auto px-4 sm:px-8 mb-12 md:mb-16 relative z-10">
+        
+        <!-- Mobile Decor: Vertical Data Line -->
+        <div class="md:hidden absolute -top-8 left-1/2 -translate-x-1/2 w-[1px] h-12 bg-gradient-to-b from-transparent via-white/20 to-white/0"></div>
+
+        <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 pt-6 md:pt-0">
+            
+            <!-- 1. Centralized Title Group -->
+            <div class="text-center md:text-left relative">
+                
+                <!-- Live Status Badge -->
+                <div class="inline-flex items-center gap-2 mb-3 md:mb-4 bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md">
+                    <span class="relative flex h-1.5 w-1.5">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                    </span>
+                    <p class="font-display text-[9px] font-bold tracking-[0.2em] text-white/60 uppercase">
+                        Visual Dossier
+                    </p>
+                </div>
+
+                <!-- Massive Responsive Title -->
+                <h2 class="font-serif text-[13vw] md:text-8xl text-white leading-[0.85] tracking-tighter drop-shadow-2xl">
+                    LOOK<span class="italic font-light text-white/40">BOOK</span>
+                </h2>
+                
+                <!-- Mobile Context Subtitle -->
+                <p class="md:hidden text-white/40 text-[10px] uppercase tracking-widest mt-3 font-medium">
+                    Spring / Summer 2025 Archive
+                </p>
+            </div>
+
+            <!-- 2. Device-Aware Interaction Hint -->
+            <div class="flex items-center justify-center">
+                <div class="flex items-center gap-3 text-white/50 border border-white/10 bg-black/20 backdrop-blur-sm px-5 py-2.5 rounded-full transition-all hover:bg-white/10 hover:border-white/20 hover:text-white">
+                    
+                    <!-- Icon: Changes animation based on context -->
+                    <span class="material-symbols-outlined text-lg animate-[pulse_2s_infinite]">
+                        <span class="md:hidden">swipe</span>       
+                        <span class="hidden md:block">mouse</span> 
+                    </span>
+                    
+                    <div class="text-left leading-none">
+                        <p class="text-[9px] font-bold tracking-[0.2em] uppercase text-white/80">
+                            <span class="md:hidden">Swipe Gallery</span>
+                            <!-- Updated Desktop Text -->
+                            <span class="hidden md:block">Hover to Pause • Drag to Explore</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Horizontal Scroll Track -->
+    <div class="relative w-full overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing pl-4 md:pl-8" id="lookbook-track">
+        <div class="flex gap-4 md:gap-8 w-max pb-12 pr-8">
+            
+            <!-- LOOK 01 -->
+            <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                <img src="https://images.unsplash.com/photo-1772494805793-16147cf8ed50?q=80&w=711&auto=format&fit=crop" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 01" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase">Look 01</span>
+                        <span class="material-symbols-outlined text-sm">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 02 -->
+            <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                <img src="https://images.unsplash.com/photo-1772494842533-f3f4d89d79c3?q=80&w=687&auto=format&fit=crop" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 02" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase">Look 02</span>
+                        <span class="material-symbols-outlined text-sm">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 03 (Landscape Feature) -->
+            <div class="lookbook-item group relative w-[450px] md:w-[600px] aspect-[16/9] md:aspect-[3/2] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                <img src="https://images.unsplash.com/photo-1772501387435-78352ddac96c?q=80&w=753&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 03" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase">Campaign Feature</span>
+                        <span class="material-symbols-outlined text-sm">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 04 -->
+            <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                <img src="https://images.unsplash.com/photo-1772501387403-47b67c3caf63?q=80&w=718&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 04" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase">Look 04</span>
+                        <span class="material-symbols-outlined text-sm">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 05 -->
+            <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                <img src="https://images.unsplash.com/photo-1772501387421-ed71b07b51ef?q=80&w=729&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 05" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase">Look 05</span>
+                        <span class="material-symbols-outlined text-sm">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 06 -->
+            <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                <img src="https://images.unsplash.com/photo-1772501387434-36b4ee48e1fb?q=80&w=696&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 05" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase">Look 06</span>
+                        <span class="material-symbols-outlined text-sm">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- LOOK 07 -->
+            <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                <img src="https://images.unsplash.com/photo-1772501222551-5192a00125c1?q=80&w=717&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 05" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase">Look 07</span>
+                        <span class="material-symbols-outlined text-sm">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- LOOK 08 -->
+            <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                <img src="https://images.unsplash.com/photo-1772501387415-4d41f7a055c8?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 05" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase">Look 08</span>
+                        <span class="material-symbols-outlined text-sm">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- LOOK 09 -->
+            <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                <img src="https://images.unsplash.com/photo-1772501387418-0f47bbb2b13b?q=80&w=707&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 05" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase">Look 09</span>
+                        <span class="material-symbols-outlined text-sm">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- LOOK 10 -->
+            <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                <img src="https://images.unsplash.com/photo-1772501387294-4be8ea1e72be?q=80&w=777&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 05" loading="lazy">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase">Look 10</span>
+                        <span class="material-symbols-outlined text-sm">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 🟢 LIGHTBOX MODAL (Hidden by default) 🟢 -->
+    <div id="lb-modal" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <!-- Close Button -->
+        <button id="lb-close" class="absolute top-6 right-6 z-50 text-white hover:rotate-90 transition-transform duration-300">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+        
+        <!-- Modal Image Container -->
+        <div class="relative w-full max-w-6xl max-h-[90vh] overflow-hidden rounded-lg shadow-2xl">
+            <img id="lb-image" src="" alt="Full View" class="w-full h-full object-contain max-h-[85vh] scale-95 opacity-0 transition-all duration-500">
+            
+            <!-- Loading Spinner -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
+                <span class="material-symbols-outlined animate-spin text-white/20 text-4xl">progress_activity</span>
+            </div>
+        </div>
+
+        <!-- Modal Caption -->
+        <div class="absolute bottom-8 left-0 w-full text-center">
+            <p class="font-display text-white/50 text-xs tracking-[0.3em] uppercase">GDRIPX / SS25 / ARCHIVE</p>
+        </div>
+    </div>
+
+</section>
+
+<!-- 🟢 DYNAMIC BRAND MANIFESTO (EDITORIAL STYLE) 🟢 -->
+    <section class="py-16 md:py-40 bg-background-light relative overflow-hidden" id="about">
+        
+        <!-- Background Rolling Text (Parallax Layer 0) -->
+        <div class="absolute top-1/2 left-0 w-full -translate-y-1/2 opacity-[0.03] pointer-events-none select-none overflow-hidden">
+            <div class="whitespace-nowrap animate-[scroll_60s_linear_infinite]">
+                <span class="text-[25vh] font-black font-display uppercase leading-none">Global Underground • Precision Luxury • </span>
+                <span class="text-[25vh] font-black font-display uppercase leading-none">Global Underground • Precision Luxury • </span>
+            </div>
+        </div>
+
+        <div class="layout-container max-w-[1400px] mx-auto px-4 sm:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
+                
+                <!-- 1. The Image Collage (Mobile: Poster | Desktop: Parallax) -->
+                <div class="lg:col-span-7 relative group mb-8 md:mb-0">
+                    
+                    <!-- Decor Lines (Desktop Only) -->
+                    <div class="absolute -top-10 -left-10 w-32 h-32 border-t-2 border-l-2 border-primary/20 hidden md:block transition-all duration-700 group-hover:w-40 group-hover:h-40"></div>
+
+                    <!-- Main Large Image (Mobile: Tall Poster Cut) -->
+                    <div class="relative z-10 w-full md:w-[90%] lg:w-[80%] h-[55vh] md:h-auto md:aspect-[3/4] overflow-hidden rounded-[2rem] md:rounded-sm grayscale contrast-125 transition-all duration-700 group-hover:grayscale-0 shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=1000&auto=format&fit=crop" 
+                             class="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-1000" 
+                             alt="GDRIPX Model" loading="lazy">
+                        
+                        <!-- Mobile Overlay Gradient -->
+                        <div class="md:hidden absolute inset-0 bg-gradient-to-t from-background-light via-transparent to-transparent opacity-90"></div>
+                        
+                        <!-- Mobile Title Overlay (Sits ON the image) -->
+                        <div class="md:hidden absolute bottom-4 left-4 right-4">
+                            <h2 class="font-serif text-[15vw] leading-[0.8] text-primary mix-blend-hard-light opacity-80">
+                                NYC<br>2024
+                            </h2>
+                        </div>
+                    </div>
+
+                    <!-- Floating Secondary Image -->
+                    <!-- Mobile: A "Sticker" at the bottom right | Desktop: Large Parallax Image -->
+                    <div id="about-float-img" class="absolute -bottom-6 right-4 w-28 aspect-[3/4] md:bottom-[-10%] md:right-[0%] md:w-[45%] md:aspect-square overflow-hidden rounded-xl md:rounded-sm shadow-xl z-20 grayscale brightness-110 border-[3px] md:border-4 border-background-light transition-transform duration-100 ease-linear rotate-3 md:rotate-0">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop" 
+                             class="w-full h-full object-cover" 
+                             alt="Detail Shot" loading="lazy">
+                        
+                        <!-- Spinning Badge Overlay -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/10">
+                            <div class="animate-[spin_10s_linear_infinite]">
+                                <svg class="w-12 h-12 md:w-24 md:h-24 text-white mix-blend-overlay" viewBox="0 0 100 100">
+                                    <path id="textPath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
+                                    <text class="text-[14px] font-bold uppercase tracking-widest fill-current">
+                                        <textPath href="#textPath">Est. 2024 • NYC • Worldwide •</textPath>
+                                    </text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. The Text Manifesto -->
+                <div class="lg:col-span-5 relative mt-4 md:mt-16 lg:mt-0">
+                    
+                    <!-- Mobile "Tape" Divider -->
+                    <div class="md:hidden w-full overflow-hidden border-y border-primary/10 py-1 mb-6 opacity-60">
+                         <div class="whitespace-nowrap animate-[scroll_20s_linear_infinite] flex gap-4">
+                            <span class="text-[10px] uppercase font-bold tracking-[0.2em]">The Manifesto /// </span>
+                            <span class="text-[10px] uppercase font-bold tracking-[0.2em]">The Manifesto /// </span>
+                            <span class="text-[10px] uppercase font-bold tracking-[0.2em]">The Manifesto /// </span>
+                            <span class="text-[10px] uppercase font-bold tracking-[0.2em]">The Manifesto /// </span>
+                         </div>
+                    </div>
+
+                    <div class="space-y-6 md:space-y-8">
+                        
+                        <!-- Header -->
+                        <div class="animate-fade-up">
+                            <span class="hidden md:inline-block py-1 px-3 border border-primary/20 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] mb-6">The Manifesto</span>
+                            <h2 class="font-serif text-5xl md:text-7xl font-bold leading-[0.9] text-primary">
+                                Silence is <br/>
+                                <span class="italic font-light text-primary/50">Loud.</span>
+                            </h2>
+                        </div>
+
+                        <!-- Main Paragraph -->
+                        <p class="font-display text-sm md:text-lg leading-relaxed text-primary/70 animate-fade-up text-justify md:text-left" style="animation-delay: 0.2s;">
+                            We don't chase trends; we engineer the uniform for the modern shadow. 
+                            <strong class="text-primary font-bold">GDRIPX</strong> merges the raw, unfiltered energy of the concrete jungle with the surgical precision of high-end tailoring.
+                        </p>
+
+                        <div class="w-full h-[1px] bg-primary/10 my-4 md:my-8"></div>
+
+                        <!-- Stats Grid (Scrollable on Mobile) -->
+                        <div class="flex overflow-x-auto gap-8 pb-4 md:pb-0 md:grid md:grid-cols-2 animate-fade-up no-scrollbar" style="animation-delay: 0.4s;">
+                            <div class="min-w-[120px]">
+                                <h4 class="font-serif text-3xl font-bold text-primary">01.</h4>
+                                <p class="text-[10px] uppercase tracking-widest mt-1 text-primary/60 font-bold">Concept</p>
+                            </div>
+                            <div class="min-w-[120px]">
+                                <h4 class="font-serif text-3xl font-bold text-primary">NYC.</h4>
+                                <p class="text-[10px] uppercase tracking-widest mt-1 text-primary/60 font-bold">Origin</p>
+                            </div>
+                            <div class="min-w-[120px] md:hidden">
+                                <h4 class="font-serif text-3xl font-bold text-primary">∞</h4>
+                                <p class="text-[10px] uppercase tracking-widest mt-1 text-primary/60 font-bold">Vision</p>
+                            </div>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <div class="pt-4 md:pt-8 animate-fade-up" style="animation-delay: 0.6s;">
+                            <a href="#drops" class="w-full md:w-auto bg-primary text-background-light md:bg-transparent md:text-primary md:border-b md:border-primary py-4 md:py-1 rounded-full md:rounded-none flex items-center justify-center md:justify-start gap-3 text-sm font-bold tracking-[0.2em] uppercase hover:opacity-80 md:hover:text-primary/60 transition-all">
+                                Read Our Story
+                                <span class="material-symbols-outlined text-lg transition-transform duration-300 group-hover:translate-x-2">arrow_right_alt</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer -->
+<!-- 🟢 FOOTER / CONTACT SECTION 🟢 -->
+<!-- 🟢 UPGRADED FOOTER (COMMAND CENTER) 🟢 -->
+    <footer class="bg-[#050505] text-[#F5F0E8] mt-24 rounded-t-[2.5rem] md:rounded-t-[4rem] relative overflow-hidden font-display z-10" id="contact">
+        
+        <!-- 1. Scrolling Ticker Tape -->
+        <div class="w-full bg-white text-black py-3 overflow-hidden relative z-20 border-b border-white/10 select-none">
+            <div class="whitespace-nowrap animate-[scroll_20s_linear_infinite] flex gap-8">
+                <span class="text-xs font-bold tracking-[0.3em] uppercase">Join The Movement /// </span>
+                <span class="text-xs font-bold tracking-[0.3em] uppercase">Global Shipping /// </span>
+                <span class="text-xs font-bold tracking-[0.3em] uppercase">Secure Checkout /// </span>
+                <span class="text-xs font-bold tracking-[0.3em] uppercase">Join The Movement /// </span>
+                <span class="text-xs font-bold tracking-[0.3em] uppercase">Global Shipping /// </span>
+                <span class="text-xs font-bold tracking-[0.3em] uppercase">Secure Checkout /// </span>
+            </div>
+        </div>
+
+        <!-- Background Grid & Noise -->
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div class="absolute inset-0 opacity-[0.05]" style="background-image: url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0h40v40H0V0zm1 1h38v38H1V1z\' fill=\'%23ffffff\' fill-opacity=\'1\' fill-rule=\'evenodd\'/%3E%3C/svg%3E');"></div>
+            <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-primary-inverse/5 rounded-full blur-[150px]"></div>
+        </div>
+
+        <div class="layout-container max-w-[1400px] mx-auto relative z-10">
+            
+            <!-- 2. Main Architectural Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 border-b border-white/10">
+                
+                <!-- Column 1: Brand Identity (Spans 4 cols) -->
+                <div class="lg:col-span-4 p-8 md:p-12 border-b md:border-b-0 lg:border-r border-white/10 relative overflow-hidden group">
+                    <h2 class="font-serif text-6xl md:text-8xl leading-none tracking-tighter mb-4 text-white group-hover:scale-105 transition-transform duration-500 origin-left">
+                        GDRIPX
+                    </h2>
+                    <p class="text-white/40 text-xs uppercase tracking-widest max-w-[200px] leading-relaxed">
+                        Precision engineered streetwear for the modern shadow.
+                    </p>
+                    
+                    <!-- Decor Number -->
+                    <span class="absolute bottom-4 right-4 text-[100px] font-black text-white/5 leading-none -z-10 select-none">01</span>
+                </div>
+
+                <!-- Column 2: Navigation (Spans 2 cols) -->
+                <div class="lg:col-span-2 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10">
+                    <h4 class="text-xs font-bold text-white/40 uppercase tracking-[0.2em] mb-8">Explore</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#drops" class="text-sm font-medium hover:text-white/60 hover:pl-2 transition-all flex items-center gap-2"><span class="w-1 h-1 bg-white rounded-full opacity-0 hover:opacity-100 transition-opacity"></span>Shop Drops</a></li>
+                        <li><a href="#lookbook" class="text-sm font-medium hover:text-white/60 hover:pl-2 transition-all flex items-center gap-2"><span class="w-1 h-1 bg-white rounded-full opacity-0 hover:opacity-100 transition-opacity"></span>Lookbook</a></li>
+                        <li><a href="#about" class="text-sm font-medium hover:text-white/60 hover:pl-2 transition-all flex items-center gap-2"><span class="w-1 h-1 bg-white rounded-full opacity-0 hover:opacity-100 transition-opacity"></span>Manifesto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Legal/Support (Spans 2 cols) -->
+                <div class="lg:col-span-2 p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-white/10">
+                    <h4 class="text-xs font-bold text-white/40 uppercase tracking-[0.2em] mb-8">Legal</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-sm font-medium hover:text-white/60 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-sm font-medium hover:text-white/60 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-sm font-medium hover:text-white/60 transition-colors">Shipping & Returns</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Newsletter (Spans 4 cols) -->
+                <div class="lg:col-span-4 p-8 md:p-12 flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-xs font-bold text-white/40 uppercase tracking-[0.2em] mb-6">Stay Connected</h4>
+                        <p class="text-sm text-white/70 mb-6">Unlock early access to drops and exclusive archive sales.</p>
+                        
+                        <form class="relative group">
+                            <input type="email" placeholder="ENTER EMAIL ADDRESS" class="w-full bg-transparent border-b border-white/20 py-4 text-sm focus:outline-none focus:border-white transition-colors uppercase placeholder:text-white/30" />
+                            <button type="submit" class="absolute right-0 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors">
+                                <span class="material-symbols-outlined">east</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Socials -->
+                    <div class="flex gap-4 mt-8">
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                            <span class="font-bold text-[10px]">IG</span>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                            <span class="font-bold text-[10px]">X</span>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                            <span class="font-bold text-[10px]">TT</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 3. Footer Bottom: Credits & Signature -->
+            <div class="p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                
+                <!-- Copyright -->
+                <p class="text-[10px] uppercase tracking-widest text-white/30 font-bold">
+                    © 2026 GDRIPX Inc. All Rights Reserved.
+                </p>
+
+                <!-- THE ALPHA SK3TCH SIGNATURE -->
+<!-- 🟢 CENTERED ALPHA SK3TCH BADGE 🟢 -->
+<div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 w-max">
+    
+    <div class="group relative cursor-default">
+        
+        <!-- 1. The Glowing Aura (Expands on Hover) -->
+        <div class="absolute -inset-[1px] bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-full blur opacity-20 group-hover:opacity-75 group-hover:blur-md transition-all duration-500 animate-pulse"></div>
+        
+        <!-- 2. The Black Capsule -->
+        <div class="relative bg-[#0a0a0a] border border-white/10 rounded-full px-6 py-3 flex items-center gap-3 shadow-xl backdrop-blur-md">
+            
+            <!-- Tech Dot -->
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
+
+            <span class="text-[9px] font-bold uppercase tracking-widest text-gray-500">
+                Made with <span class="material-symbols-outlined text-[10px] text-red-500 animate-[ping_1.5s_infinite] align-middle px-0.5">favorite</span> by
+            </span>
+
+            <!-- Name with Gradient Reveal -->
+            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-cyan-400 transition-all duration-300">
+                ALPHA SK3TCH
+            </span>
+        </div>
+
+    </div>
+</div>
+
+            </div>
+        </div>
+    </footer>
+
+        <!-- 🟢 FLOAT CONCIERGE WIDGET 🟢 -->
+ <!-- 🟢 FLOAT CONCIERGE WIDGET (FIXED) 🟢 -->
+    <!-- Added 'pointer-events-none' to the wrapper so it doesn't block the website -->
+    <div class="fixed bottom-6 right-6 z-[9000] flex flex-col items-end gap-4 font-display pointer-events-none">
+        
+        <!-- Chat Window (Added pointer-events-auto so you can type inside) -->
+        <div id="concierge-window" class="w-[300px] md:w-[360px] bg-[#050505]/90 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom-right scale-0 opacity-0 translate-y-10 pointer-events-auto">
+            
+            <!-- Header -->
+            <div class="bg-white/5 p-5 border-b border-white/5 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                            <img src="./images/logo.png" alt="G" class="w-5 h-5 object-contain">
+                        </div>
+                        <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-black rounded-full animate-pulse"></div>
+                    </div>
+                    <div>
+                        <h4 class="text-white text-sm font-bold tracking-widest uppercase">GDRIPX Support</h4>
+                        <p class="text-[10px] text-white/50">Typically replies instantly</p>
+                    </div>
+                </div>
+                <!-- Close Button -->
+                <button id="close-chat" class="text-white/40 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+            </div>
+
+            <!-- Chat Body -->
+            <div class="p-5 h-[250px] overflow-y-auto space-y-4" id="chat-body">
+                <!-- Timestamp -->
+                <div class="text-center">
+                    <span class="text-[9px] text-white/30 uppercase tracking-widest">Today</span>
+                </div>
+
+                <!-- Brand Message -->
+                <div class="flex gap-3 animate-fade-up">
+                    <div class="w-6 h-6 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white">G</div>
+                    <div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs text-white/90 leading-relaxed border border-white/5">
+                        <p>Welcome to the archive. <br>Need sizing help or checking on an order? Type below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 bg-black/50 border-t border-white/10">
+                <form id="whatsapp-form" class="relative">
+                    <input type="text" id="whatsapp-input" placeholder="Type your message..." 
+                           class="w-full bg-white/5 border border-white/10 rounded-full pl-5 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all placeholder:text-white/20">
+                    
+                    <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-[16px] -ml-0.5 mt-0.5">send</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 3D Toggle Button (Added pointer-events-auto so it is clickable) -->
+        <button id="concierge-btn" class="group relative flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300 z-50 hover:translate-y-[-4px] active:scale-95 pointer-events-auto">
+
+            <!-- 1. The Spinning Radar Ring (Glows on Hover) -->
+            <div class="absolute inset-[-3px] rounded-full bg-[conic-gradient(from_0deg,transparent_60%,#22c55e_100%)] animate-[spin_2s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-[2px]"></div>
+
+            <!-- 2. The Main 3D Button Body -->
+            <div class="absolute inset-0 bg-[#0a0a0a] rounded-full shadow-[inset_0_4px_10px_rgba(255,255,255,0.15),0_15px_30px_-5px_rgba(0,0,0,0.8)] border border-white/10 overflow-hidden flex items-center justify-center backdrop-blur-md">
+                
+                <!-- Glossy Reflection (Glass Effect) -->
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-gradient-to-b from-white/20 to-transparent rounded-full blur-[1px]"></div>
+
+                <!-- Icons (Swap Logic) -->
+                <span class="material-symbols-outlined text-2xl text-white transition-all duration-300 rotate-0 scale-100 absolute drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" id="chat-icon-open">chat_bubble</span>
+                <span class="material-symbols-outlined text-2xl text-white transition-all duration-300 rotate-90 scale-0 absolute opacity-0" id="chat-icon-close">close</span>
+            </div>
+
+            <!-- 3. The 3D Notification Badge -->
+            <div class="absolute -top-1 -right-1 w-6 h-6 bg-red-600 rounded-full flex items-center justify-center border-[3px] border-[#0a0a0a] shadow-lg animate-[bounce_2s_infinite]" id="notification-badge">
+                <span class="text-[10px] font-bold text-white font-display relative z-10">1</span>
+                <!-- Ping Wave -->
+                <span class="absolute inset-0 rounded-full bg-red-600 animate-ping opacity-75"></span>
+            </div>
+
+            <!-- Tooltip Label (Desktop Only) -->
+            <div class="absolute right-full mr-6 bg-black/90 text-white border border-white/20 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none shadow-xl hidden md:block">
+                Priority Support
+                <div class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-black/90 border-r border-t border-white/20 transform rotate-45"></div>
+            </div>
+
+        </button>
+
+    </div>
+
+<!-- 🟢 PREMIUM GLASSMORPHIC PRODUCT MODAL (WITH ARROWS & MEMORY) 🟢 -->
+<div id="product-modal" class="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-md hidden opacity-0 transition-opacity duration-500 flex items-center justify-center p-4 md:p-8">
+    
+    <!-- Modal Container (Frosted Glass) -->
+    <div class="relative w-full max-w-6xl bg-[#F5F0E8]/90 backdrop-blur-2xl border border-white/50 rounded-[2rem] md:rounded-[3rem] shadow-[0_30px_60px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row transform scale-95 transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]" id="product-modal-card">
+        
+        <!-- Close Button -->
+        <button id="close-modal-btn" class="absolute top-4 right-4 md:top-6 md:right-6 z-50 w-12 h-12 bg-white/50 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center text-primary hover:bg-black hover:text-white hover:rotate-90 transition-all duration-300 shadow-lg">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <!-- LEFT: Interactive Image Slider (Arrows instead of Hover) -->
+        <div class="w-full md:w-[50%] h-[45vh] md:h-[80vh] bg-gradient-to-br from-white/60 to-transparent relative overflow-hidden flex items-center justify-center border-b md:border-b-0 md:border-r border-white/30 group">
+            
+            <!-- Navigation Arrows -->
+            <button id="view-prev" class="absolute left-4 md:left-6 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/60 backdrop-blur-md border border-white flex items-center justify-center text-primary hover:bg-white hover:scale-110 transition-all shadow-lg opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0">
+                <span class="material-symbols-outlined text-xl md:text-2xl">chevron_left</span>
+            </button>
+            <button id="view-next" class="absolute right-4 md:right-6 z-30 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/60 backdrop-blur-md border border-white flex items-center justify-center text-primary hover:bg-white hover:scale-110 transition-all shadow-lg opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0">
+                <span class="material-symbols-outlined text-xl md:text-2xl">chevron_right</span>
+            </button>
+
+            <!-- Front Image (Layer 1) -->
+            <img id="modal-img-front" src="" class="absolute inset-0 w-full h-full object-contain p-8 md:p-16 transition-opacity duration-500 ease-in-out drop-shadow-2xl z-20 opacity-100" alt="Front View">
+            
+            <!-- Back Image (Layer 2) -->
+            <img id="modal-img-back" src="" class="absolute inset-0 w-full h-full object-contain p-8 md:p-16 transition-opacity duration-500 ease-in-out drop-shadow-2xl z-10 opacity-0" alt="Back View">
+            
+            <!-- Dot Indicators -->
+            <div class="absolute bottom-6 flex gap-3 z-30 bg-white/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/50">
+                <button id="dot-front" class="w-2.5 h-2.5 rounded-full bg-primary transition-all duration-300 scale-110"></button>
+                <button id="dot-back" class="w-2.5 h-2.5 rounded-full bg-primary/30 hover:bg-primary/60 transition-all duration-300"></button>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div id="modal-img-loader" class="absolute inset-0 flex items-center justify-center bg-white/30 backdrop-blur-sm z-40 transition-opacity duration-300 pointer-events-none opacity-0">
+                <span class="material-symbols-outlined animate-spin text-primary text-4xl">progress_activity</span>
+            </div>
+        </div>
+
+        <!-- RIGHT: Configuration Panel -->
+        <div class="w-full md:w-[50%] h-[50vh] md:h-[80vh] overflow-y-auto no-scrollbar p-6 md:p-12 flex flex-col relative z-10">
+            
+            <!-- Header & Dynamic Price -->
+            <div class="mb-8 animate-fade-up">
+                <div class="flex justify-between items-start gap-4">
+                    <div>
+                        <!-- Updated Brand Title Here -->
+                        <span class="inline-block px-3 py-1 bg-black text-white text-[9px] font-bold tracking-[0.3em] uppercase rounded-full mb-3 shadow-md" id="modal-collection">GDRIPX HOODIES</span>
+                        <h2 class="font-serif text-3xl md:text-5xl font-black text-primary leading-[1.1] mb-2 tracking-tight" id="modal-title">Phantom Zip-Up</h2>
+                    </div>
+                    <div class="text-right">
+                        <span class="font-serif italic text-3xl md:text-4xl font-bold text-primary transition-all duration-300 block" id="modal-price">$0</span>
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-primary/40" id="price-note">Base Price</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color Selection -->
+            <div class="mb-8 animate-fade-up" style="animation-delay: 0.1s;">
+                <div class="flex justify-between items-end mb-3">
+                    <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-primary">Colorway</span>
+                    <span class="text-[10px] font-bold text-primary/60 uppercase tracking-[0.2em]" id="color-label">Select Color</span>
+                </div>
+                <div class="flex flex-wrap gap-3" id="color-thumbnail-container">
+                    <!-- Javascript injects thumbnails here -->
+                </div>
+            </div>
+
+            <!-- Size Selection -->
+            <div class="mb-8 animate-fade-up" style="animation-delay: 0.2s;">
+                <div class="flex justify-between items-end mb-3">
+                    <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-primary">Size <span class="text-primary/40 lowercase normal-case tracking-normal ml-1" id="size-modifier-label"></span></span>
+                    <a href="#" class="text-[10px] font-bold tracking-widest uppercase text-primary/50 underline hover:text-primary transition-colors">Size Guide</a>
+                </div>
+                <div class="grid grid-cols-4 md:grid-cols-5 gap-2 md:gap-3" id="size-btn-container">
+                    <!-- Javascript injects size buttons here -->
+                </div>
+                <p class="text-[10px] text-red-500 mt-2 hidden uppercase tracking-widest font-bold flex items-center gap-1" id="size-error">
+                    <span class="material-symbols-outlined text-[14px]">error</span> Please select a size
+                </p>
+            </div>
+
+            <!-- Quantity & Add To Cart Row -->
+            <div class="mt-auto pt-4 animate-fade-up flex flex-col md:flex-row gap-4" style="animation-delay: 0.3s;">
+                
+                <!-- Quantity Selector -->
+                <div class="flex items-center justify-between bg-white/60 backdrop-blur-md border border-white rounded-2xl p-2 w-full md:w-[130px] shadow-sm">
+                    <button id="qty-minus" class="w-10 h-10 flex items-center justify-center text-primary hover:bg-white rounded-xl transition-all shadow-sm"><span class="material-symbols-outlined text-sm">remove</span></button>
+                    <span id="qty-value" class="text-sm font-bold w-6 text-center">1</span>
+                    <button id="qty-plus" class="w-10 h-10 flex items-center justify-center text-primary hover:bg-white rounded-xl transition-all shadow-sm"><span class="material-symbols-outlined text-sm">add</span></button>
+                </div>
+
+                <!-- Add Button -->
+                <button id="modal-add-to-cart" class="flex-1 bg-primary text-white py-4 md:py-0 rounded-2xl text-xs font-bold tracking-[0.2em] uppercase hover:bg-black hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.5)] group">
+                    <span class="btn-text">Add to Stash</span>
+                    <span class="material-symbols-outlined text-lg transition-transform group-hover:translate-x-2">east</span>
+                </button>
+            </div>
+
+            <!-- Standard E-commerce Accordions -->
+            <div class="mt-8 border-t border-primary/10 pt-6 animate-fade-up" style="animation-delay: 0.4s;">
+                <div class="flex items-start gap-3 mb-4 text-primary/70">
+                    <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+                    <div>
+                        <h4 class="text-[10px] font-bold uppercase tracking-widest text-primary mb-1">Worldwide Shipping</h4>
+                        <p class="text-xs font-medium leading-relaxed">Orders process in 1-2 business days. Express global delivery available at checkout.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3 text-primary/70">
+                    <span class="material-symbols-outlined text-[18px]">checkroom</span>
+                    <div>
+                        <h4 class="text-[10px] font-bold uppercase tracking-widest text-primary mb-1">Premium Build</h4>
+                        <p class="text-xs font-medium leading-relaxed">100% Heavyweight French Terry Cotton. Dropped shoulders, cropped body, oversized fit.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+// --- 3D HERO PHYSICS ENGINE ---
+    const track = document.getElementById('hero-track');
+    const card = document.getElementById('hero-card');
+    const textGroup = document.getElementById('hero-text-group');
+    const cardGlare = document.getElementById('card-glare');
+
+    let smoothProgress = 0; 
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetRotateY = 0;
+    let targetRotateX = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+    });
+
+    function animateHero() {
+        if (!track || !card) return;
+
+        const rect = track.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const totalHeight = Math.max(1, rect.height - viewportHeight);
+        
+        let rawProgress = -rect.top / totalHeight;
+        rawProgress = Math.max(0, Math.min(1, rawProgress));
+
+        smoothProgress += (rawProgress - smoothProgress) * 0.08;
+
+        const cardTranslateY = 45 - (smoothProgress * 45);
+        const scrollRotateX = 60 - (smoothProgress * 60); 
+        const scrollScale = 0.75 + (smoothProgress * 0.30); 
+
+        const tiltLimit = 12 * smoothProgress; 
+        targetRotateY += (mouseX * tiltLimit - targetRotateY) * 0.1;
+        targetRotateX += (-mouseY * tiltLimit - targetRotateX) * 0.1;
+
+        const finalRotateX = scrollRotateX + targetRotateX;
+
+        card.style.transform = `
+            translateY(${cardTranslateY}vh)
+            rotateX(${finalRotateX}deg) 
+            rotateY(${targetRotateY}deg) 
+            scale(${scrollScale})
+        `;
+
+        if (cardGlare) {
+            const glareX = (mouseX * 30) + (smoothProgress * 100) - 50;
+            cardGlare.style.transform = `rotate(-45deg) translateX(${glareX}%) translateY(${mouseY * 20}%)`;
+        }
+
+        const textTranslateZ = smoothProgress * -800; 
+        const textTranslateY = smoothProgress * 100;
+        const textOpacity = 1 - (smoothProgress * 1.8);
+
+        if (textGroup) {
+            textGroup.style.transform = `translateZ(${textTranslateZ}px) translateY(${textTranslateY}px)`;
+            textGroup.style.opacity = Math.max(0, textOpacity);
+            textGroup.style.filter = `blur(${smoothProgress * 12}px)`;
+        }
+
+        requestAnimationFrame(animateHero);
+    }
+
+    animateHero();
+
+    // --- NAVBAR LOGIC ---
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if(navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    // --- MOBILE MENU LOGIC ---
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+            const isOpen = mobileBtn.classList.toggle('open');
+            mobileMenu.classList.toggle('hidden', !isOpen);
+            mobileMenu.classList.toggle('flex', isOpen);
+        });
+        
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileBtn.classList.remove('open');
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+            });
+        });
+    }
+
+    // --- CATEGORY SHUFFLE FILTERING ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const productCards = document.querySelectorAll('.product-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => {
+                b.classList.remove('bg-primary', 'text-background-light', 'active-filter');
+                b.classList.add('border', 'border-primary/20', 'text-primary');
+            });
+            btn.classList.add('bg-primary', 'text-background-light', 'active-filter');
+            btn.classList.remove('border', 'border-primary/20', 'text-primary');
+
+            const filterValue = btn.getAttribute('data-filter');
+
+            productCards.forEach(card => {
+                card.classList.remove('opacity-100', 'scale-100');
+                card.classList.add('opacity-0', 'scale-95');
+
+                setTimeout(() => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                card.classList.remove('opacity-0', 'scale-95');
+                                card.classList.add('opacity-100', 'scale-100');
+                            });
+                        });
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }, 400); 
+            });
+        });
+    });
+
+    // --- CART SYSTEM ---
+    let cart = JSON.parse(localStorage.getItem('gdripx_cart')) ||[];
+    const navCartBtn = document.getElementById('cart-btn');
+    const navCartText = navCartBtn.querySelector('span:last-child');
+    const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
+
+    updateCartDisplay();
+
+    function updateCartDisplay() {
+        navCartText.innerText = `CART (${cart.length})`;
+    }
+
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'gdripx_cart') {
+            cart = JSON.parse(e.newValue) || [];
+            updateCartDisplay();
+        }
+    });
+
+    addToCartBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const card = btn.closest('.product-card');
+            const productName = card.querySelector('h3').innerText;
+            const productPrice = card.querySelector('span.font-serif').innerText;
+            const productImage = card.querySelector('img').src;
+            const textSpan = btn.querySelector('.btn-text');
+            const originalText = textSpan.innerText;
+            
+            btn.classList.add('bg-black', 'text-white');
+            btn.classList.remove('bg-white', 'text-primary');
+            textSpan.innerHTML = `<span class="material-symbols-outlined animate-[spin_1s_linear_infinite] text-[16px]">sync</span> Processing`;
+
+            setTimeout(() => {
+                cart.push({
+                    name: productName,
+                    price: productPrice,
+                    image: productImage,
+                    size: 'L', // Default for basic items
+                    id: Date.now() 
+                });
+
+                localStorage.setItem('gdripx_cart', JSON.stringify(cart));
+                updateCartDisplay();
+
+                navCartBtn.classList.add('scale-110', '!bg-green-500', 'text-white', 'shadow-lg');
+                setTimeout(() => {
+                    navCartBtn.classList.remove('scale-110', '!bg-green-500', 'text-white', 'shadow-lg');
+                }, 400);
+
+                btn.classList.remove('bg-black');
+                btn.classList.add('bg-green-500', 'text-white');
+                textSpan.innerHTML = `<span class="material-symbols-outlined text-[16px]">check_circle</span> Added to Cart`;
+
+                setTimeout(() => {
+                    btn.classList.remove('bg-green-500', 'text-white');
+                    btn.classList.add('bg-white', 'text-primary');
+                    textSpan.innerText = originalText;
+                }, 2000);
+
+            }, 600);
+        });
+    });
+
+    // --- 🟢 LOOKBOOK LIGHTBOX LOGIC (FIXED) 🟢 ---
+    const lbItems = document.querySelectorAll('.lookbook-item');
+    const lbModal = document.getElementById('lb-modal');
+    const lbImage = document.getElementById('lb-image');
+    const lbClose = document.getElementById('lb-close');
+    const body = document.body;
+
+    lbItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const imgSource = item.querySelector('img').src;
+            lbModal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                lbModal.classList.remove('opacity-0');
+                body.style.overflow = 'hidden'; 
+            });
+            lbImage.src = imgSource;
+            lbImage.onload = () => {
+                lbImage.classList.remove('scale-95', 'opacity-0');
+                lbImage.classList.add('scale-100', 'opacity-100');
+            };
+        });
+    });
+
+    // RENAMED FUNCTION TO AVOID CONFLICT
+    function closeLookbook() {
+        lbImage.classList.remove('scale-100', 'opacity-100');
+        lbImage.classList.add('scale-95', 'opacity-0');
+        lbModal.classList.add('opacity-0');
+        setTimeout(() => {
+            lbModal.classList.add('hidden');
+            lbImage.src = ''; 
+            body.style.overflow = ''; 
+        }, 300);
+    }
+
+    if(lbClose) lbClose.addEventListener('click', closeLookbook);
+    if(lbModal) {
+        lbModal.addEventListener('click', (e) => {
+            if (e.target === lbModal) closeLookbook(); 
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (!lbModal.classList.contains('hidden')) closeLookbook();
+            if (!productModal.classList.contains('hidden')) closeProductModal();
+        }
+    });
+
+    // --- LOOKBOOK AUTO-SCROLL ---
+    const lbTrack = document.getElementById('lookbook-track');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let isHovering = false;
+    let scrollDirection = 1; 
+    let scrollSpeed = 0.8;   
+    let autoScrollAnimation;
+
+    if(lbTrack) {
+        lbTrack.addEventListener('mousedown', (e) => {
+            isDown = true;
+            lbTrack.classList.add('cursor-grabbing');
+            lbTrack.classList.remove('cursor-grab');
+            startX = e.pageX - lbTrack.offsetLeft;
+            scrollLeft = lbTrack.scrollLeft;
+        });
+
+        lbTrack.addEventListener('mouseup', () => {
+            isDown = false;
+            lbTrack.classList.remove('cursor-grabbing');
+            lbTrack.classList.add('cursor-grab');
+        });
+
+        lbTrack.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - lbTrack.offsetLeft;
+            const walk = (x - startX) * 2; 
+            lbTrack.scrollLeft = scrollLeft - walk;
+        });
+
+        lbTrack.addEventListener('mouseenter', () => { isHovering = true; });
+        lbTrack.addEventListener('mouseleave', () => { 
+            isDown = false;
+            isHovering = false;
+            lbTrack.classList.remove('cursor-grabbing');
+            lbTrack.classList.add('cursor-grab');
+        });
+
+        function autoScroll() {
+            if (!isHovering && !isDown && window.innerWidth >= 768) {
+                lbTrack.scrollLeft += scrollSpeed * scrollDirection;
+                if (lbTrack.scrollLeft >= (lbTrack.scrollWidth - lbTrack.clientWidth - 1)) {
+                    scrollDirection = -1; 
+                } else if (lbTrack.scrollLeft <= 0) {
+                    scrollDirection = 1;  
+                }
+            }
+            autoScrollAnimation = requestAnimationFrame(autoScroll);
+        }
+        autoScrollAnimation = requestAnimationFrame(autoScroll);
+    }
+
+    // --- ABOUT PARALLAX ---
+    const aboutSection = document.getElementById('about');
+    const floatImg = document.getElementById('about-float-img');
+
+    if (aboutSection && floatImg) {
+        window.addEventListener('scroll', () => {
+            const rect = aboutSection.getBoundingClientRect();
+            const viewHeight = window.innerHeight;
+            const isMobile = window.innerWidth < 768; 
+
+            if (rect.top <= viewHeight && rect.bottom >= 0) {
+                if (isMobile) {
+                    const factor = (viewHeight - rect.top) * 0.05;
+                    floatImg.style.transform = `translateY(-${factor}px) rotate(${3 + (factor * 0.1)}deg)`;
+                } else {
+                    const factor = (viewHeight - rect.top) * 0.15;
+                    floatImg.style.transform = `translateY(-${factor}px)`;
+                }
+            }
+        });
+    }
+
+    // --- PRELOADER ---
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        const counter = document.getElementById('loader-counter');
+        const bar = document.getElementById('loader-bar');
+        const text = document.getElementById('loader-text');
+        let progress = 0;
+        const messages = ["Initializing...", "Loading Assets...", "Rendering 3D...", "Securing Connection...", "Welcome."];
+        
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 5) + 1; 
+            if (progress > 100) progress = 100;
+            counter.innerText = `${progress}%`;
+            bar.style.width = `${progress}%`;
+
+            if (progress < 30) text.innerText = messages[0];
+            else if (progress < 50) text.innerText = messages[1];
+            else if (progress < 70) text.innerText = messages[2];
+            else if (progress < 90) text.innerText = messages[3];
+            else text.innerText = messages[4];
+
+            if (progress === 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.style.pointerEvents = 'none'; 
+                    document.body.classList.remove('overflow-hidden');
+                }, 500);
+            }
+        }, 30); 
+    });
+
+    // --- CONCIERGE ---
+    const conciergeBtn = document.getElementById('concierge-btn');
+    const conciergeWindow = document.getElementById('concierge-window');
+    const closeChatBtn = document.getElementById('close-chat');
+    const iconOpen = document.getElementById('chat-icon-open');
+    const iconClose = document.getElementById('chat-icon-close');
+    const whatsappForm = document.getElementById('whatsapp-form');
+    const whatsappInput = document.getElementById('whatsapp-input');
+
+    function toggleChat() {
+        const isClosed = conciergeWindow.classList.contains('scale-0');
+        if (isClosed) {
+            conciergeWindow.classList.remove('scale-0', 'opacity-0', 'translate-y-10');
+            conciergeWindow.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+            iconOpen.classList.add('rotate-90', 'scale-0', 'opacity-0');
+            iconClose.classList.remove('rotate-90', 'scale-0', 'opacity-0');
+            iconClose.classList.add('rotate-0', 'scale-100', 'opacity-100');
+            setTimeout(() => whatsappInput.focus(), 300);
+        } else {
+            conciergeWindow.classList.add('scale-0', 'opacity-0', 'translate-y-10');
+            conciergeWindow.classList.remove('scale-100', 'opacity-100', 'translate-y-0');
+            iconOpen.classList.remove('rotate-90', 'scale-0', 'opacity-0');
+            iconClose.classList.add('rotate-90', 'scale-0', 'opacity-0');
+            iconClose.classList.remove('rotate-0', 'scale-100', 'opacity-100');
+        }
+    }
+
+    conciergeBtn.addEventListener('click', toggleChat);
+    closeChatBtn.addEventListener('click', toggleChat);
+
+    whatsappForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = whatsappInput.value.trim();
+        if (message) {
+            const phoneNumber = "2349000000000"; 
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/${+2347071090642}?text=${encodedMessage}`;
+            window.open(whatsappURL, '_blank');
+            whatsappInput.value = '';
+            toggleChat(); 
+        }
+    });
+
+// --- 🟢 PRODUCT MODAL LOGIC (RENAMED TO AVOID CONFLICT) 🟢 ---
+    
+    // 1. Product Database (Local Image Paths)
+    const productDatabase = {
+        'phantom-hoodie': { 
+            id: 'phantom-hoodie',
+            title: 'For The Love Zip-Up',
+            basePrice: 145, 
+            collection: 'GDRIPX HOODIES',
+            sizes: [
+                { id: 'S', modifier: 0 },
+                { id: 'M', modifier: 0 },
+                { id: 'L', modifier: 0 },
+                { id: 'XL', modifier: 15 }, 
+                { id: 'XXL', modifier: 25 } 
+            ],
+            colors: [
+                { 
+                    id: 'black', 
+                    name: 'Onyx Black', 
+                    thumb: './images/hoodies/black-front.png', 
+                    front: './images/hoodies/black-front.png', 
+                    back:  './images/hoodies/black-back.png'  
+                },
+                { 
+                    id: 'white', 
+                    name: 'Ghost White', 
+                    thumb: './images/hoodies/white-front.png', 
+                    front: './images/hoodies/white-front.png', 
+                    back:  './images/hoodies/white-back.png' 
+                },
+                { 
+                    id: 'green', 
+                    name: 'Forest Green', 
+                    thumb: './images/hoodies/green-front.png', 
+                    front: './images/hoodies/green-front.png', 
+                    back:  './images/hoodies/green-back.png' 
+                },
+                { 
+                    id: 'pink', 
+                    name: 'Faded Pink', 
+                    thumb: './images/hoodies/pink-front.png', 
+                    front: './images/hoodies/pink-front.png', 
+                    back:  './images/hoodies/pink-back.png' 
+                },
+                { 
+                    id: 'brown', 
+                    name: 'Earth Brown', 
+                    thumb: './images/hoodies/brown-front.png', 
+                    front: './images/hoodies/brown-front.png', 
+                    back:  './images/hoodies/brown-back.png' 
+                }
+            ]
+        }
+    };
+
+    // 2. DOM Elements
+    const productModal = document.getElementById('product-modal');
+    const productModalCard = document.getElementById('product-modal-card');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    
+    // Slider Elements
+    const imgFront = document.getElementById('modal-img-front');
+    const imgBack = document.getElementById('modal-img-back');
+    const imgLoader = document.getElementById('modal-img-loader');
+    const viewPrevBtn = document.getElementById('view-prev');
+    const viewNextBtn = document.getElementById('view-next');
+    const dotFront = document.getElementById('dot-front');
+    const dotBack = document.getElementById('dot-back');
+    
+    const thumbContainer = document.getElementById('color-thumbnail-container');
+    const sizeContainer = document.getElementById('size-btn-container');
+    const colorLabel = document.getElementById('color-label');
+    const sizeModifierLabel = document.getElementById('size-modifier-label');
+    const priceDisplay = document.getElementById('modal-price');
+    const priceNote = document.getElementById('price-note');
+    
+    const sizeError = document.getElementById('size-error');
+    const modalAddToCart = document.getElementById('modal-add-to-cart');
+    
+    const qtyMinus = document.getElementById('qty-minus');
+    const qtyPlus = document.getElementById('qty-plus');
+    const qtyValueDisplay = document.getElementById('qty-value');
+
+    // State Variables
+    let currentProduct = null;
+    let selectedColorObj = null;
+    let selectedSizeObj = null;
+    let currentQty = 1;
+    let activeSide = 'front'; 
+
+    let modalMemory = JSON.parse(localStorage.getItem('gdripx_modal_memory')) || {};
+
+    // 3. Slider Logic
+    function setSide(side) {
+        activeSide = side;
+        if (side === 'front') {
+            imgFront.style.opacity = '1';
+            imgBack.style.opacity = '0';
+            dotFront.classList.replace('bg-primary/30', 'bg-primary');
+            dotFront.classList.add('scale-110');
+            dotBack.classList.replace('bg-primary', 'bg-primary/30');
+            dotBack.classList.remove('scale-110');
+        } else {
+            imgFront.style.opacity = '0';
+            imgBack.style.opacity = '1';
+            dotBack.classList.replace('bg-primary/30', 'bg-primary');
+            dotBack.classList.add('scale-110');
+            dotFront.classList.replace('bg-primary', 'bg-primary/30');
+            dotFront.classList.remove('scale-110');
+        }
+    }
+
+    function toggleSide() {
+        setSide(activeSide === 'front' ? 'back' : 'front');
+    }
+
+    viewPrevBtn.addEventListener('click', toggleSide);
+    viewNextBtn.addEventListener('click', toggleSide);
+    dotFront.addEventListener('click', () => setSide('front'));
+    dotBack.addEventListener('click', () => setSide('back'));
+
+    // 4. Helper: Update Price Display
+    function updatePrice() {
+        if (!currentProduct) return;
+        let base = currentProduct.basePrice;
+        let modifier = selectedSizeObj ? selectedSizeObj.modifier : 0;
+        let total = (base + modifier) * currentQty;
+
+        priceDisplay.style.transform = 'scale(1.1)';
+        priceDisplay.innerText = `$${total}`;
+        setTimeout(() => priceDisplay.style.transform = 'scale(1)', 150);
+
+        if (selectedSizeObj && modifier > 0) {
+            priceNote.innerText = `Includes +$${modifier} size fee`;
+            sizeModifierLabel.innerText = `(+$${modifier})`;
+        } else {
+            priceNote.innerText = currentQty > 1 ? `Total for ${currentQty} items` : 'Base Price';
+            sizeModifierLabel.innerText = '';
+        }
+    }
+
+    // 5. Quantity Handlers
+    qtyMinus.addEventListener('click', () => {
+        if (currentQty > 1) {
+            currentQty--;
+            qtyValueDisplay.innerText = currentQty;
+            updatePrice();
+        }
+    });
+
+    qtyPlus.addEventListener('click', () => {
+        if (currentQty < 10) { 
+            currentQty++;
+            qtyValueDisplay.innerText = currentQty;
+            updatePrice();
+        }
+    });
+
+    // 6. Handle Color Swaps
+    function selectColor(colorObj, thumbElement) {
+        selectedColorObj = colorObj;
+        colorLabel.innerText = colorObj.name;
+        
+        imgLoader.style.opacity = '1';
+        
+        const allThumbs = thumbContainer.querySelectorAll('button');
+        allThumbs.forEach(btn => {
+            btn.classList.remove('border-primary', 'scale-110', 'shadow-md');
+            btn.classList.add('border-transparent');
+        });
+        if(thumbElement) {
+            thumbElement.classList.add('border-primary', 'scale-110', 'shadow-md');
+            thumbElement.classList.remove('border-transparent');
+        }
+
+        const tempImage = new Image();
+        tempImage.src = colorObj.front; 
+        tempImage.onload = () => {
+            imgFront.src = colorObj.front;
+            imgBack.src = colorObj.back;
+            imgLoader.style.opacity = '0'; 
+        };
+    }
+
+    // 7. Open Modal
+    document.querySelectorAll('.open-modal-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const productId = btn.getAttribute('data-product-id');
+            currentProduct = productDatabase[productId];
+
+            if (!currentProduct) return;
+
+            const savedState = modalMemory[productId] || null;
+            
+            document.getElementById('modal-title').innerText = currentProduct.title;
+            document.getElementById('modal-collection').innerText = currentProduct.collection;
+            sizeError.classList.add('hidden'); 
+
+            let initialColorObj = currentProduct.colors[0];
+            selectedSizeObj = null;
+            currentQty = 1;
+            setSide('front'); 
+
+            if(savedState) {
+                initialColorObj = currentProduct.colors.find(c => c.id === savedState.colorId) || initialColorObj;
+                selectedSizeObj = currentProduct.sizes.find(s => s.id === savedState.sizeId) || null;
+                currentQty = savedState.qty || 1;
+                setSide(savedState.activeSide || 'front');
+            }
+
+            qtyValueDisplay.innerText = currentQty;
+
+            thumbContainer.innerHTML = '';
+            currentProduct.colors.forEach((color) => {
+                const thumbBtn = document.createElement('button');
+                thumbBtn.className = `w-14 h-14 md:w-16 md:h-16 rounded-2xl overflow-hidden border-2 transition-all duration-300 p-0.5 bg-white shadow-sm border-transparent hover:border-primary/50`;
+                thumbBtn.innerHTML = `<img src="${color.thumb}" class="w-full h-full object-cover rounded-xl" alt="${color.name}">`;
+                
+                thumbBtn.addEventListener('click', () => selectColor(color, thumbBtn));
+                thumbContainer.appendChild(thumbBtn);
+
+                if (color.id === initialColorObj.id) {
+                    selectColor(color, thumbBtn);
+                }
+            });
+
+            sizeContainer.innerHTML = '';
+            currentProduct.sizes.forEach(size => {
+                const sizeBtn = document.createElement('button');
+                sizeBtn.className = `size-btn border-2 bg-white/60 backdrop-blur-md rounded-2xl py-3.5 text-xs font-bold text-primary hover:border-primary transition-all shadow-sm ${selectedSizeObj && selectedSizeObj.id === size.id ? 'bg-primary text-white border-primary' : 'border-white'}`;
+                sizeBtn.innerText = size.id;
+                
+                sizeBtn.addEventListener('click', () => {
+                    selectedSizeObj = size;
+                    sizeError.classList.add('hidden'); 
+                    
+                    document.querySelectorAll('.size-btn').forEach(b => {
+                        b.classList.remove('bg-primary', 'text-white', 'border-primary');
+                        b.classList.add('bg-white/60', 'text-primary', 'border-white');
+                    });
+                    sizeBtn.classList.add('bg-primary', 'text-white', 'border-primary');
+                    sizeBtn.classList.remove('bg-white/60', 'text-primary', 'border-white');
+
+                    updatePrice();
+                });
+                sizeContainer.appendChild(sizeBtn);
+            });
+
+            updatePrice();
+
+            productModal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                productModal.classList.remove('opacity-0');
+                productModalCard.classList.remove('scale-95');
+                productModalCard.classList.add('scale-100');
+                document.body.style.overflow = 'hidden'; 
+            });
+        });
+    });
+
+    // 8. Add to Cart & Save Memory
+    modalAddToCart.addEventListener('click', () => {
+        if (!selectedSizeObj) {
+            sizeError.classList.remove('hidden');
+            sizeContainer.classList.add('animate-[bounce_0.5s_ease-in-out]');
+            setTimeout(() => sizeContainer.classList.remove('animate-[bounce_0.5s_ease-in-out]'), 500);
+            return;
+        }
+
+        const btnText = modalAddToCart.querySelector('.btn-text');
+        const icon = modalAddToCart.querySelector('span:last-child');
+        
+        modalAddToCart.classList.add('bg-black', 'scale-95');
+        btnText.innerHTML = `Processing`;
+        icon.innerText = 'sync';
+        icon.classList.add('animate-spin');
+
+        setTimeout(() => {
+            const finalPrice = currentProduct.basePrice + selectedSizeObj.modifier;
+
+            modalMemory[currentProduct.id] = {
+                colorId: selectedColorObj.id,
+                sizeId: selectedSizeObj.id,
+                qty: currentQty,
+                activeSide: activeSide
+            };
+            localStorage.setItem('gdripx_modal_memory', JSON.stringify(modalMemory));
+
+            for(let i = 0; i < currentQty; i++) {
+                cart.push({
+                    name: `${currentProduct.title} - ${selectedColorObj.name}`,
+                    price: `$${finalPrice}`, 
+                    image: activeSide === 'front' ? selectedColorObj.front : selectedColorObj.back, 
+                    size: selectedSizeObj.id,
+                    id: Date.now() + i 
+                });
+            }
+            
+            localStorage.setItem('gdripx_cart', JSON.stringify(cart));
+            updateCartDisplay(); 
+
+            modalAddToCart.classList.remove('bg-black');
+            modalAddToCart.classList.add('bg-green-500');
+            btnText.innerHTML = `Added to Stash`;
+            icon.classList.remove('animate-spin');
+            icon.innerText = 'check_circle';
+
+            setTimeout(() => {
+                closeProductModal();
+                setTimeout(() => {
+                    modalAddToCart.classList.remove('bg-green-500');
+                    modalAddToCart.classList.add('bg-primary');
+                    btnText.innerText = `Add to Stash`;
+                    icon.innerText = 'east';
+                }, 500);
+            }, 1200);
+
+        }, 800);
+    });
+
+    // RENAMED FUNCTION TO AVOID CONFLICT
+    function closeProductModal() {
+        productModal.classList.add('opacity-0');
+        productModalCard.classList.remove('scale-100');
+        productModalCard.classList.add('scale-95');
+        
+        setTimeout(() => {
+            productModal.classList.add('hidden');
+            document.body.style.overflow = ''; 
+        }, 500);
+    }
+
+    closeModalBtn.addEventListener('click', closeProductModal);
+    productModal.addEventListener('click', (e) => {
+        if (e.target === productModal) closeProductModal();
+    });
+
+
+</script>
+
+</body>
+</html>
