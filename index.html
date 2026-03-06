@@ -274,7 +274,7 @@
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 transition-all duration-500">
         <div id="nav-pill" class="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-full px-8 py-3 flex items-center justify-between gap-12 max-w-[960px] w-full transition-all duration-500">
 
-            <a href="#" class="flex items-center gap-3 group" aria-label="GDRIPX Home">
+            <a href="/index.html" class="flex items-center gap-3 group" aria-label="GDRIPX Home">
                 <!-- LOGO IMAGE (Spin on Hover) -->
                 <img src="./images/logo.png" 
                      alt="GDRIPX Logo" 
@@ -587,20 +587,31 @@
                     </div>
                 </div>
 
-                <!-- CARD 2 (Tee) -->
-                <div class="product-card group relative aspect-[4/5] bg-gray-200 rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="tee">
-                    <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Tee" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
+                <!-- CARD 2 (Singlet) -->
+                <div class="product-card group relative aspect-[4/5] bg-[#e5e5e5] rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="tee">
                     
+                    <!-- Using a clean background and object-contain just like Card 1 -->
+                    <img src="./images/singlets/singlet.png" class="absolute inset-0 w-full h-full object-contain p-8 transition-transform duration-1000 group-hover:scale-110 drop-shadow-xl" alt="Gdripx Singlet" />
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                    
+                    <!-- New Badge -->
+                    <div class="absolute top-6 left-6 z-20">
+                        <div class="bg-white text-primary text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Summer '25</div>
+                    </div>
+
                     <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
                         <div class="flex justify-between items-end mb-4">
                             <div>
-                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Oversized</p>
-                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Void Graphic Tee</h3>
+                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Athletic Fit</p>
+                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Gdripx Singlets</h3>
                             </div>
-                            <span class="font-serif text-xl font-bold italic text-white">$65</span>
+                            <!-- Update price as needed -->
+                            <span class="font-serif text-xl font-bold italic text-white">$55</span> 
                         </div>
-                        <button class="open-modal-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" data-product-id="void-tee">
+                        
+                        <!-- MODAL TRIGGER BUTTON -->
+                        <button class="open-modal-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" data-product-id="gdripx-singlet">
                             <span class="btn-text">Select Options</span>
                         </button>
                     </div>
@@ -783,15 +794,15 @@
                 </div>
             </div>
 
-            <!-- LOOK 03 (Landscape Feature) -->
-            <div class="lookbook-item group relative w-[450px] md:w-[600px] aspect-[16/9] md:aspect-[3/2] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
+                        <!-- LOOK 03 -->
+            <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
                 <img src="https://images.unsplash.com/photo-1772501387435-78352ddac96c?q=80&w=753&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
                      class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
-                     alt="Look 03" loading="lazy">
+                     alt="Look 02" loading="lazy">
                 <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
                 <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
                     <div class="flex justify-between items-end border-t border-white/30 pt-4">
-                        <span class="text-xs font-bold tracking-widest uppercase">Campaign Feature</span>
+                        <span class="text-xs font-bold tracking-widest uppercase">Look 03</span>
                         <span class="material-symbols-outlined text-sm">open_in_full</span>
                     </div>
                 </div>
@@ -1773,32 +1784,116 @@ whatsappForm.addEventListener('submit', (e) => {
 // --- 🟢 PRODUCT MODAL LOGIC (RENAMED TO AVOID CONFLICT) 🟢 ---
     
 // 1. Product Database (Local Image Paths & Unsplash placeholders)
+// 1. Product Database
     const productDatabase = {
         'phantom-hoodie': { 
             id: 'phantom-hoodie',
-            title: 'Gdripx Hoodies', // Updated to match card
+            title: 'Gdripx Hoodies', // Re-named to match your grid
             basePrice: 145, 
             collection: 'GDRIPX HOODIES',
             sizes: [
-                { id: 'S', modifier: 0 }, { id: 'M', modifier: 0 }, { id: 'L', modifier: 0 },
-                { id: 'XL', modifier: 15 }, { id: 'XXL', modifier: 25 } 
+                { id: 'S', modifier: 0 },
+                { id: 'M', modifier: 0 },
+                { id: 'L', modifier: 0 },
+                { id: 'XL', modifier: 15 }, 
+                { id: 'XXL', modifier: 25 } 
             ],
+            // ALL 5 ORIGINAL COLORS RESTORED 🟢
             colors: [
-                { id: 'black', name: 'Onyx Black', thumb: './images/hoodies/hoodie.png', front: './images/hoodies/hoodie.png', back: './images/hoodies/hoodie.png' },
-                { id: 'white', name: 'Ghost White', thumb: './images/hoodies/white-front.png', front: './images/hoodies/white-front.png', back: './images/hoodies/white-back.png' },
-                { id: 'green', name: 'Forest Green', thumb: './images/hoodies/green-front.png', front: './images/hoodies/green-front.png', back: './images/hoodies/green-back.png' }
+                { 
+                    id: 'black', 
+                    name: 'Onyx Black', 
+                    thumb: './images/hoodies/black-front.png', 
+                    front: './images/hoodies/black-front.png', 
+                    back:  './images/hoodies/black-back.png'  
+                },
+                { 
+                    id: 'white', 
+                    name: 'Ghost White', 
+                    thumb: './images/hoodies/white-front.png', 
+                    front: './images/hoodies/white-front.png', 
+                    back:  './images/hoodies/white-back.png' 
+                },
+                { 
+                    id: 'green', 
+                    name: 'Forest Green', 
+                    thumb: './images/hoodies/green-front.png', 
+                    front: './images/hoodies/green-front.png', 
+                    back:  './images/hoodies/green-back.png' 
+                },
+                { 
+                    id: 'pink', 
+                    name: 'Faded Pink', 
+                    thumb: './images/hoodies/pink-front.png', 
+                    front: './images/hoodies/pink-front.png', 
+                    back:  './images/hoodies/pink-back.png' 
+                },
+                { 
+                    id: 'brown', 
+                    name: 'Earth Brown', 
+                    thumb: './images/hoodies/brown-front.png', 
+                    front: './images/hoodies/brown-front.png', 
+                    back:  './images/hoodies/brown-back.png' 
+                }
             ]
         },
-        'void-tee': {
-            id: 'void-tee',
-            title: 'Void Graphic Tee',
-            basePrice: 65,
-            collection: 'GDRIPX TEES',
+        
+'gdripx-singlet': {
+            id: 'gdripx-singlet',
+            title: 'Gdripx Singlet',
+            basePrice: 55, // Change this to your actual price
+            collection: 'GDRIPX SUMMER',
             sizes: [
-                { id: 'S', modifier: 0 }, { id: 'M', modifier: 0 }, { id: 'L', modifier: 0 }, { id: 'XL', modifier: 5 }, { id: 'XXL', modifier: 10 }
+                { id: 'S', modifier: 0 }, 
+                { id: 'M', modifier: 0 }, 
+                { id: 'L', modifier: 0 }, 
+                { id: 'XL', modifier: 5 }, 
+                { id: 'XXL', modifier: 10 }
             ],
+            // All 6 colors from your design sheet
             colors: [
-                { id: 'black', name: 'Washed Black', thumb: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=200', front: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1000', back: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1000' }
+                { 
+                    id: 'black-white', 
+                    name: 'Black / White Stripe', 
+                    thumb: './images/singlets/black-white.png', 
+                    front: './images/singlets/black-white.png', 
+                    back: './images/singlets/black-white-back.png' 
+                },
+                { 
+                    id: 'white-black', 
+                    name: 'White / Black Stripe', 
+                    thumb: './images/singlets/white-black.png', 
+                    front: './images/singlets/white-black.png', 
+                    back: './images/singlets/white-black-back.png' 
+                },
+                { 
+                    id: 'grey-black', 
+                    name: 'Grey / Black Stripe', 
+                    thumb: './images/singlets/grey-black.png', 
+                    front: './images/singlets/grey-black.png', 
+                    back: './images/singlets/grey-black-back.png' 
+                },
+                { 
+                    id: 'pink-black', 
+                    name: 'Pink / Black Stripe', 
+                    thumb: './images/singlets/pink-black.png', 
+                    front: './images/singlets/pink-black.png', 
+                    back: './images/singlets/pink-black-back.png' 
+                },
+                { 
+                    id: 'green-black', 
+                    name: 'Green / Black Stripe', 
+                    thumb: './images/singlets/green-black.png', 
+                    front: './images/singlets/green-black.png', 
+                    back: './images/singlets/green-black-back.png' 
+                },
+                { 
+                    id: 'black-pink', 
+                    name: 'Black / Pink Stripe', 
+                    thumb: './images/singlets/black-pink.png', 
+                    front: './images/singlets/black-pink.png', 
+                    back: './images/singlets/black-pink-back.png' 
+                }
             ]
         },
         'utility-bag': {
