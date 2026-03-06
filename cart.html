@@ -44,10 +44,17 @@
             background-position: bottom;
             height: 10px;
         }
+
+        /* --- TEXT ENTRANCE ANIMATIONS (Imported from Index) --- */
+        @keyframes fadeUp {
+            0% { transform: translateY(40px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .animate-fade-up { animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
     </style>
 </head>
 
-<body class="font-display text-primary antialiased min-h-screen flex flex-col">
+<body class="font-display text-primary antialiased min-h-screen flex flex-col overflow-hidden">
     <!-- 🟢 CINEMATIC PRELOADER 🟢 -->
     <div id="preloader" class="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center text-white transition-opacity duration-700 ease-out">
         <div class="relative flex flex-col items-center gap-6">
@@ -309,10 +316,22 @@
                                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                                 <span class="text-[10px] font-bold uppercase tracking-widest text-primary/50">In Stock</span>
                             </div>
-                            <!-- Remove Button: Passes Name and Size to remove specific item group -->
-                            <button onclick="removeItem('${item.name}', '${item.size}')" class="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-700 flex items-center gap-1 bg-red-50 px-3 py-1.5 rounded-full hover:bg-red-100 transition-colors">
-                                <span class="material-symbols-outlined text-sm">remove</span> Decrease
-                            </button>
+                            
+                            <!-- NEW: Quantity Control Pill -->
+                            <div class="flex items-center gap-1 bg-primary/5 rounded-full p-1 border border-primary/10">
+                                <!-- Decrease Button -->
+                                <button onclick="removeItem('${item.name}', '${item.size}')" class="w-7 h-7 flex items-center justify-center rounded-full bg-white text-primary hover:text-red-500 hover:bg-red-50 shadow-sm transition-all">
+                                    <span class="material-symbols-outlined text-[16px]">remove</span>
+                                </button>
+                                
+                                <!-- Current Quantity -->
+                                <span class="text-xs font-bold w-6 text-center select-none">${item.qty}</span>
+                                
+                                <!-- Increase Button -->
+                                <button onclick="addItem('${item.name}', '${item.size}')" class="w-7 h-7 flex items-center justify-center rounded-full bg-white text-primary hover:text-green-500 hover:bg-green-50 shadow-sm transition-all">
+                                    <span class="material-symbols-outlined text-[16px]">add</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -344,6 +363,24 @@
             }
         }
 
+
+// 2.5 Smart Add Function (Increases Quantity)
+        window.addItem = (name, size) => {
+            // Find an existing item in the raw cart to copy its properties (price, image, etc.)
+            const existingItem = rawCart.find(item => item.name === name && item.size === size);
+            
+            if (existingItem) {
+                // Create an exact clone of the item, but give it a new unique timestamp ID
+                const newItem = { ...existingItem, id: Date.now() };
+                
+                // Push to the raw cart array
+                rawCart.push(newItem);
+                
+                // Save and Re-render
+                localStorage.setItem('gdripx_cart', JSON.stringify(rawCart));
+                renderCart();
+            }
+        }
         // 3. Checkout Logic (WhatsApp Integration)
         checkoutBtn.addEventListener('click', () => {
             if (rawCart.length === 0) return;
@@ -423,6 +460,7 @@
                     setTimeout(() => {
                         preloader.style.opacity = '0';
                         preloader.style.pointerEvents = 'none'; 
+                        document.body.classList.remove('overflow-hidden');
                     }, 500);
                 }
             }, 30);
@@ -453,6 +491,25 @@
         }
         conciergeBtn.addEventListener('click', toggleChat);
         closeChatBtn.addEventListener('click', toggleChat);
+
+    const whatsappForm = document.getElementById('whatsapp-form');
+    const whatsappInput = document.getElementById('whatsapp-input');
+
+    whatsappForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = whatsappInput.value.trim();
+        if (message) {
+            // ⚠️ ENTER YOUR ACTUAL WHATSAPP NUMBER HERE
+            const phoneNumber = "2347071090642"; 
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            window.open(whatsappURL, '_blank');
+            whatsappInput.value = '';
+            toggleChat(); 
+        }
+    });
     </script>
 </body>
 </html>
