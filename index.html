@@ -1709,94 +1709,48 @@
         });
     }
 
-    // --- REAL ASSET PRELOADER ---
-// --- 🟢 TRUE SYNC ASSET PRELOADER 🟢 ---
+// --- 🟢 FAST CINEMATIC PRELOADER 🟢 ---
     document.addEventListener('DOMContentLoaded', () => {
         const preloader = document.getElementById('preloader');
         const counter = document.getElementById('loader-counter');
         const bar = document.getElementById('loader-bar');
         const text = document.getElementById('loader-text');
+
+        // Force scroll to top on load
+        window.scrollTo(0, 0);
+
+        let progress = 0;
+        const messages =["Initializing...", "Loading Assets...", "Rendering 3D...", "Securing Connection...", "Welcome."];
         
-        window.scrollTo(0, 0); // Force scroll to top
+        // Simulates the loading progress lightning fast
+        const interval = setInterval(() => {
+            // Randomly jump progress by 2 to 6 percent every few milliseconds
+            progress += Math.floor(Math.random() * 5) + 2; 
 
-        // Find every single image on the page
-        const images = Array.from(document.images);
-        const totalImages = images.length;
-        let loadedImages = 0;
-        let isRevealed = false;
+            if (progress > 100) progress = 100;
 
-        // Function to calculate and update real percentage
-        function updateProgress() {
-            if (isRevealed) return;
-            
-            let percentage = 0;
-            if (totalImages > 0) {
-                // Calculate exact percentage based on real loaded images
-                percentage = Math.floor((loadedImages / totalImages) * 100);
-            } else {
-                percentage = 100;
+            // Update DOM
+            counter.innerText = `${progress}%`;
+            bar.style.width = `${progress}%`;
+
+            // Cycle through messages based on progress
+            if (progress < 30) text.innerText = messages[0];
+            else if (progress < 50) text.innerText = messages[1];
+            else if (progress < 70) text.innerText = messages[2];
+            else if (progress < 90) text.innerText = messages[3];
+            else text.innerText = messages[4];
+
+            if (progress === 100) {
+                clearInterval(interval);
+                
+                // Small delay at 100% before fading out smoothly
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.style.pointerEvents = 'none'; // Allow clicking through
+                    document.body.classList.remove('overflow-hidden'); // Enable scrolling
+                }, 400); // 400ms snap reveal
             }
-
-            counter.innerText = `${percentage}%`;
-            bar.style.width = `${percentage}%`;
-
-            if (percentage < 30) text.innerText = "Initializing...";
-            else if (percentage < 60) text.innerText = "Downloading Assets...";
-            else if (percentage < 90) text.innerText = "Rendering Textures...";
-            else text.innerText = "Securing Connection...";
-        }
-
-        // Function to unlock the website
-        function revealWebsite() {
-            if (isRevealed) return;
-            isRevealed = true;
-            
-            // Force UI to 100% just in case
-            counter.innerText = `100%`;
-            bar.style.width = `100%`;
-            text.innerText = "Welcome.";
-            
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                preloader.style.pointerEvents = 'none'; 
-                document.body.classList.remove('overflow-hidden');
-            }, 500);
-        }
-
-        // 1. Track every individual image load
-        if (totalImages > 0) {
-            images.forEach(img => {
-                if (img.complete) {
-                    loadedImages++;
-                    updateProgress();
-                } else {
-                    img.addEventListener('load', () => {
-                        loadedImages++;
-                        updateProgress();
-                    });
-                    // Count errors as "loaded" so a broken link doesn't freeze the website forever
-                    img.addEventListener('error', () => {
-                        loadedImages++; 
-                        updateProgress();
-                    });
-                }
-            });
-        }
-
-        // 2. THE ULTIMATE GUARANTEE: window.onload
-        // This browser event ONLY fires when HTML, CSS, Javascript, and ALL images are 100% finished downloading.
-        window.addEventListener('load', () => {
-            loadedImages = totalImages; // Max out the counter
-            updateProgress();
-            revealWebsite();
-        });
-
-        // 3. FAILSAFE
-        // If the user has terrible internet or an external Unsplash server hangs, 
-        // force open the site after 10 seconds so they aren't trapped on the loading screen.
-        setTimeout(() => {
-            if (!isRevealed) revealWebsite();
-        }, 10000);
+        }, 20); // 20ms speed (Lower = Faster loading)
     });
 
     // --- CONCIERGE ---
