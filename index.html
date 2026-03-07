@@ -1743,7 +1743,7 @@
         });
     }
 
-// --- 🟢 TARGETED ASSET PRELOADER (HERO & FEATURED) 🟢 ---
+// --- 🟢 TRUE MOBILE-SYNC PRELOADER 🟢 ---
     document.addEventListener('DOMContentLoaded', () => {
         const preloader = document.getElementById('preloader');
         const counter = document.getElementById('loader-counter');
@@ -1752,7 +1752,7 @@
         
         window.scrollTo(0, 0); // Force scroll to top
 
-        // THE UPGRADE: Explicitly target the Desktop Hero, Mobile Hero, and Featured Drops Grid images
+        // Explicitly target the Desktop Hero, Mobile Hero (Deck Cards), and Featured Drops Grid
         const criticalImages = Array.from(document.querySelectorAll('#hero-card img, .deck-card-physics img, #product-grid img'));
         const totalImages = criticalImages.length;
         let loadedImages = 0;
@@ -1775,39 +1775,47 @@
 
         function updateProgress() {
             if (isRevealed) return;
+            
             let percentage = totalImages > 0 ? Math.floor((loadedImages / totalImages) * 100) : 100;
 
             counter.innerText = `${percentage}%`;
             bar.style.width = `${percentage}%`;
 
-            if (percentage < 40) text.innerText = "Loading Collections...";
-            else if (percentage < 80) text.innerText = "Rendering Fits...";
+            if (percentage < 40) text.innerText = "Downloading Core Assets...";
+            else if (percentage < 80) text.innerText = "Rendering Mobile Graphics...";
             else text.innerText = "Securing Connection...";
 
+            // Only trigger reveal when the exact DOM images are done
             if (loadedImages >= totalImages) {
-                setTimeout(revealWebsite, 300); // Give browser a split second to paint the images
+                // 🟢 MOBILE FIX: Add a 600ms buffer at 100% to allow the mobile GPU to paint the pixels
+                setTimeout(revealWebsite, 600); 
             }
         }
 
-        // Track exact Network Downloads of the targeted images
         if (totalImages > 0) {
             criticalImages.forEach(img => {
-                const tempImg = new Image();
-                tempImg.onload = () => { loadedImages++; updateProgress(); };
-                tempImg.onerror = () => { loadedImages++; updateProgress(); }; // Failsafe for broken links
-                tempImg.src = img.src; 
+                // 🟢 MOBILE FIX: Check if the image is complete AND has physical width (rendered)
+                if (img.complete && img.naturalWidth > 0) {
+                    loadedImages++;
+                    updateProgress();
+                } else {
+                    // Attach directly to the actual DOM element, not a background copy
+                    img.addEventListener('load', () => {
+                        loadedImages++;
+                        updateProgress();
+                    });
+                    img.addEventListener('error', () => {
+                        loadedImages++; // Failsafe for broken links
+                        updateProgress();
+                    });
+                }
             });
         } else {
             revealWebsite();
         }
 
-        // Global Failsafes
-        window.addEventListener('load', () => {
-            loadedImages = totalImages;
-            updateProgress();
-            revealWebsite();
-        });
-        setTimeout(revealWebsite, 7000); // 7 Second max wait time to prevent trapping users
+        // Failsafe: Force open after 10 seconds so mobile users on 3G aren't trapped
+        setTimeout(revealWebsite, 10000); 
     });
 
     // --- CONCIERGE ---
