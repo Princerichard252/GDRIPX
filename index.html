@@ -238,6 +238,18 @@
     .animate-blob { animation: blob 15s infinite alternate ease-in-out; }
     .animation-delay-2000 { animation-delay: 2s; }
     .animation-delay-4000 { animation-delay: 4s; }
+
+    /* --- 🟢 SCROLL REVEAL CLASSES 🟢 --- */
+    .js-reveal {
+        opacity: 0;
+        transform: translateY(40px) scale(0.98);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+    }
+    .js-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 </style>
 </head>
 
@@ -525,7 +537,7 @@
 <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 md:mb-16 gap-8 w-full">
                 
                 <!-- 1. Header Text Group (Centered on Mobile, Left on Desktop) -->
-                <div class="flex flex-col items-center md:items-start text-center md:text-left w-full md:w-auto relative">
+                <div class="flex flex-col items-center md:items-start text-center md:text-left w-full md:w-auto relative js-reveal">
                     
                     <!-- Mobile Top Badge -->
                     <div class="md:hidden mb-4 animate-fade-up" style="animation-delay: 0.1s;">
@@ -555,7 +567,7 @@
                 </div>
                 
                 <!-- 3. Filter Buttons (Updated for Mobile Scroll) -->
-                <div class="w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0" id="filter-container">
+                <div class="w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0 js-reveal" id="filter-container">
                     <div class="flex justify-center md:justify-end gap-3 min-w-max px-4 md:px-0">
                         <button class="filter-btn active-filter px-6 py-3 md:py-2.5 rounded-full bg-primary text-background-light text-[10px] md:text-xs font-bold tracking-widest hover:scale-105 transition-transform duration-300 shadow-xl shadow-black/20" data-filter="all">ALL</button>
                         <button class="filter-btn px-6 py-3 md:py-2.5 rounded-full border border-primary/20 text-primary text-[10px] md:text-xs font-bold tracking-widest hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300" data-filter="hoodie">HOODIES</button>
@@ -567,7 +579,7 @@
             </div>
             
             <!-- Product Grid (Responsive Rows & Columns) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="product-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 js-reveal" id="product-grid">
                 
                 <!-- CARD 1 (Hoodie - Black) -->
                 <div class="product-card group relative aspect-[4/5] bg-[#e5e5e5] rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="hoodie">
@@ -722,7 +734,7 @@
         <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 pt-6 md:pt-0">
             
             <!-- 1. Centralized Title Group -->
-            <div class="text-center md:text-left relative">
+            <div class="text-center md:text-left relative js-reveal">
                 
                 <!-- Live Status Badge -->
                 <div class="inline-flex items-center gap-2 mb-3 md:mb-4 bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md">
@@ -770,7 +782,7 @@
     </div>
 
     <!-- Horizontal Scroll Track -->
-    <div class="relative w-full overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing pl-4 md:pl-8" id="lookbook-track">
+    <div class="relative w-full overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing pl-4 md:pl-8 js-reveal" id="lookbook-track">
         <div class="flex gap-4 md:gap-8 w-max pb-12 pr-8">
             
             <!-- LOOK 01 -->
@@ -1015,7 +1027,7 @@
                     <div class="space-y-6 md:space-y-8">
                         
                         <!-- Header -->
-                        <div class="animate-fade-up">
+                        <div class="js-reveal">
                             <span class="hidden md:inline-block py-1 px-3 border border-primary/20 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] mb-6">The Manifesto</span>
                             <h2 class="font-serif text-5xl md:text-7xl font-bold leading-[0.9] text-primary">
                                 Silence is <br/>
@@ -1024,7 +1036,7 @@
                         </div>
 
                         <!-- Main Paragraph -->
-                        <p class="font-display text-sm md:text-lg leading-relaxed text-primary/70 animate-fade-up text-justify md:text-left" style="animation-delay: 0.2s;">
+                        <p class="font-display text-sm md:text-lg leading-relaxed text-primary/70 js-reveal text-justify md:text-left">
                             We don't chase trends; we engineer the uniform for the modern shadow. 
                             <strong class="text-primary font-bold">GDRIPX</strong> merges the raw, unfiltered energy of the concrete jungle with the surgical precision of high-end tailoring.
                         </p>
@@ -1032,8 +1044,7 @@
                         <div class="w-full h-[1px] bg-primary/10 my-4 md:my-8"></div>
 
                         <!-- Stats Grid (Scrollable on Mobile) -->
-                        <div class="flex overflow-x-auto gap-8 pb-4 md:pb-0 md:grid md:grid-cols-2 animate-fade-up no-scrollbar" style="animation-delay: 0.4s;">
-                            <div class="min-w-[120px]">
+                        <div class="flex overflow-x-auto gap-8 pb-4 md:pb-0 md:grid md:grid-cols-2 js-reveal no-scrollbar">
                                 <h4 class="font-serif text-3xl font-bold text-primary">01.</h4>
                                 <p class="text-[10px] uppercase tracking-widest mt-1 text-primary/60 font-bold">Concept</p>
                             </div>
@@ -1048,7 +1059,7 @@
                         </div>
 
                         <!-- CTA Button -->
-                        <div class="pt-4 md:pt-8 animate-fade-up" style="animation-delay: 0.6s;">
+                        <div class="pt-4 md:pt-8 js-reveal">
                             <a href="#drops" class="w-full md:w-auto bg-primary text-background-light md:bg-transparent md:text-primary md:border-b md:border-primary py-4 md:py-1 rounded-full md:rounded-none flex items-center justify-center md:justify-start gap-3 text-sm font-bold tracking-[0.2em] uppercase hover:opacity-80 md:hover:text-primary/60 transition-all">
                                 Read Our Story
                                 <span class="material-symbols-outlined text-lg transition-transform duration-300 group-hover:translate-x-2">arrow_right_alt</span>
@@ -1088,7 +1099,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 border-b border-white/10">
             
             <!-- Column 1: Brand Identity (Spans 4 cols) -->
-            <div class="lg:col-span-4 p-8 md:p-12 lg:border-r border-white/10 border-b lg:border-b-0 relative group">
+            <div class="lg:col-span-4 p-8 md:p-12 lg:border-r border-white/10 border-b lg:border-b-0 relative group js-reveal">
                 <div class="w-12 h-12 bg-white flex items-center justify-center rounded-full mb-8 overflow-hidden group-hover:scale-110 transition-transform duration-500">
                     <!-- Update with your logo path or keep this clean text version -->
                     <span class="font-serif font-black text-black text-xl">G</span>
@@ -1104,7 +1115,7 @@
 
             <!-- Column 2: Navigation (Spans 2 cols) -->
             <!-- BUG #10 FIXED: Links now point to actual sections -->
-            <div class="lg:col-span-2 p-8 md:p-12 md:border-r border-white/10 border-b md:border-b-0">
+            <div class="lg:col-span-2 p-8 md:p-12 md:border-r border-white/10 border-b md:border-b-0 js-reveal">
                 <h4 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-8">Directory</h4>
                 <ul class="space-y-5">
                     <li><a href="#drops" class="text-sm font-medium text-white/80 hover:text-white hover:translate-x-2 transition-all flex items-center justify-between group">Shop Drops <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">east</span></a></li>
@@ -1116,7 +1127,7 @@
 
             <!-- Column 3: Legal/Support (Spans 2 cols) -->
             <!-- BUG #10 FIXED: Prepared for your actual page URLs -->
-            <div class="lg:col-span-2 p-8 md:p-12 lg:border-r border-white/10 border-b lg:border-b-0">
+            <div class="lg:col-span-2 p-8 md:p-12 lg:border-r border-white/10 border-b lg:border-b-0 js-reveal">
                 <h4 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-8">Support</h4>
                 <ul class="space-y-5">
                     <li><a href="javascript:void(0)" onclick="alert('Shipping Policy page coming soon.')" class="text-sm font-medium text-white/60 hover:text-white transition-colors">Shipping Info</a></li>
@@ -1127,7 +1138,7 @@
             </div>
 
             <!-- Column 4: Newsletter (Spans 4 cols) -->
-            <div class="lg:col-span-4 p-8 md:p-12 flex flex-col justify-between relative overflow-hidden group">
+            <div class="lg:col-span-4 p-8 md:p-12 flex flex-col justify-between relative overflow-hidden group js-reveal">
                 <!-- Hover Glow -->
                 <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
                 
@@ -1402,6 +1413,29 @@
 </div>
 
 <script>
+    // --- 🟢 SCROLL REVEAL OBSERVER 🟢 ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const revealOptions = {
+            root: null,
+            rootMargin: '0px 0px -10% 0px', // Triggers slightly before the element hits the bottom of the screen
+            threshold: 0.1
+        };
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Stop tracking once it has animated
+                }
+            });
+        }, revealOptions);
+
+        // Find all elements with the 'js-reveal' class and track them
+        document.querySelectorAll('.js-reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+    });
+
 // --- 3D HERO PHYSICS ENGINE ---
     const track = document.getElementById('hero-track');
     const card = document.getElementById('hero-card');
@@ -1709,7 +1743,7 @@
         });
     }
 
-// --- 🟢 ULTIMATE TRUE SYNC PRELOADER (DEADLOCK FIXED) 🟢 ---
+// --- 🟢 TARGETED ASSET PRELOADER (HERO & FEATURED) 🟢 ---
     document.addEventListener('DOMContentLoaded', () => {
         const preloader = document.getElementById('preloader');
         const counter = document.getElementById('loader-counter');
@@ -1718,9 +1752,8 @@
         
         window.scrollTo(0, 0); // Force scroll to top
 
-        // THE FIX: Only track images that are NOT lazy-loaded!
-        // This stops the preloader from waiting for images the browser refuses to load.
-        const criticalImages = Array.from(document.images).filter(img => img.loading !== 'lazy');
+        // THE UPGRADE: Explicitly target the Desktop Hero, Mobile Hero, and Featured Drops Grid images
+        const criticalImages = Array.from(document.querySelectorAll('#hero-card img, .deck-card-physics img, #product-grid img'));
         const totalImages = criticalImages.length;
         let loadedImages = 0;
         let isRevealed = false;
@@ -1737,59 +1770,44 @@
                 preloader.style.opacity = '0';
                 preloader.style.pointerEvents = 'none'; 
                 document.body.classList.remove('overflow-hidden');
-            }, 400); // Fast, smooth reveal
+            }, 400); // Smooth snap to reveal
         }
 
         function updateProgress() {
             if (isRevealed) return;
-            
-            // Calculate real percentage based strictly on downloaded critical files
             let percentage = totalImages > 0 ? Math.floor((loadedImages / totalImages) * 100) : 100;
 
             counter.innerText = `${percentage}%`;
             bar.style.width = `${percentage}%`;
 
-            if (percentage < 40) text.innerText = "Downloading Core Assets...";
-            else if (percentage < 80) text.innerText = "Rendering Textures...";
+            if (percentage < 40) text.innerText = "Loading Collections...";
+            else if (percentage < 80) text.innerText = "Rendering Fits...";
             else text.innerText = "Securing Connection...";
 
-            // If images load incredibly fast, instantly reveal
-            if (loadedImages >= totalImages && document.readyState === 'complete') {
-                revealWebsite();
+            if (loadedImages >= totalImages) {
+                setTimeout(revealWebsite, 300); // Give browser a split second to paint the images
             }
         }
 
-        // Track actual network downloading of critical images
+        // Track exact Network Downloads of the targeted images
         if (totalImages > 0) {
             criticalImages.forEach(img => {
-                if (img.complete) {
-                    loadedImages++;
-                    updateProgress();
-                } else {
-                    img.addEventListener('load', () => {
-                        loadedImages++;
-                        updateProgress();
-                    });
-                    // If an Unsplash link breaks, count it as loaded so the site doesn't freeze
-                    img.addEventListener('error', () => {
-                        loadedImages++; 
-                        updateProgress();
-                    });
-                }
+                const tempImg = new Image();
+                tempImg.onload = () => { loadedImages++; updateProgress(); };
+                tempImg.onerror = () => { loadedImages++; updateProgress(); }; // Failsafe for broken links
+                tempImg.src = img.src; 
             });
         } else {
-            window.addEventListener('load', revealWebsite);
+            revealWebsite();
         }
 
-        // Failsafe 1: The browser's native 'load' event fires when EVERYTHING is mathematically done
+        // Global Failsafes
         window.addEventListener('load', () => {
             loadedImages = totalImages;
             updateProgress();
             revealWebsite();
         });
-
-        // Failsafe 2: Max wait time is 5 seconds. Never trap a user with slow Wi-Fi.
-        setTimeout(revealWebsite, 5000);
+        setTimeout(revealWebsite, 7000); // 7 Second max wait time to prevent trapping users
     });
 
     // --- CONCIERGE ---
