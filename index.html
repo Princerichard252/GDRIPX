@@ -2304,6 +2304,47 @@ whatsappForm.addEventListener('submit', (e) => {
     productModal.addEventListener('click', (e) => {
         if (e.target === productModal) closeProductModal();
     });
+
+    // --- 🟢 SILENT BACKGROUND ASSET PRELOADER 🟢 ---
+    // This runs quietly in the background AFTER the main website has loaded.
+    // It pre-downloads all hidden hoodie colors, singlet variations, and back-views
+    // so that when a user clicks a product, it opens instantly without loading.
+    window.addEventListener('load', () => {
+        // Wait 2 seconds to ensure the main site animations are buttery smooth first
+        setTimeout(() => {
+            const assetsToLoad =[];
+            
+            // 1. Gather all product images from your productDatabase
+            if (typeof productDatabase !== 'undefined') {
+                for (const key in productDatabase) {
+                    const product = productDatabase[key];
+                    product.colors.forEach(color => {
+                        if (color.front) assetsToLoad.push(color.front);
+                        if (color.back) assetsToLoad.push(color.back);
+                        if (color.thumb) assetsToLoad.push(color.thumb);
+                    });
+                }
+            }
+
+            // 2. Gather Lookbook images (forces them to cache while user is at the top of the page)
+            document.querySelectorAll('.lookbook-item img').forEach(img => {
+                // Ignore the placeholder, grab the actual high-res source
+                let src = img.getAttribute('src');
+                if (src) assetsToLoad.push(src);
+            });
+
+            // 3. Remove duplicates to save bandwidth
+            const uniqueAssets =[...new Set(assetsToLoad)];
+
+            // 4. Download them into the browser cache invisibly
+            uniqueAssets.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+            
+            console.log(`[GDRIPX] Silently preloaded ${uniqueAssets.length} background assets for instant interaction.`);
+        }, 2000); // 2000ms = 2 seconds
+    });
 </script>
 
 </body>
