@@ -1460,6 +1460,7 @@
         if (textGroup) {
             textGroup.style.transform = `translateZ(${textTranslateZ}px) translateY(${textTranslateY}px)`;
             textGroup.style.opacity = Math.max(0, textOpacity);
+            textGroup.style.filter = `blur(${smoothProgress * 12}px)`;
         }
 
         requestAnimationFrame(animateHero);
@@ -1673,11 +1674,7 @@
         });
 
         function autoScroll() {
-            // Check if element is in viewport before doing math to save battery
-            const rect = lbTrack.getBoundingClientRect();
-            const isInView = (rect.top < window.innerHeight && rect.bottom > 0);
-
-            if (!isHovering && !isDown && window.innerWidth >= 768 && isInView) {
+            if (!isHovering && !isDown && window.innerWidth >= 768) {
                 lbTrack.scrollLeft += scrollSpeed * scrollDirection;
                 if (lbTrack.scrollLeft >= (lbTrack.scrollWidth - lbTrack.clientWidth - 1)) {
                     scrollDirection = -1; 
@@ -1712,7 +1709,8 @@
         });
     }
 
-// --- 🟢 TRUE ASSET PRELOADER (FIXED) 🟢 ---
+    // --- REAL ASSET PRELOADER ---
+// --- 🟢 TRUE SYNC ASSET PRELOADER 🟢 ---
     document.addEventListener('DOMContentLoaded', () => {
         const preloader = document.getElementById('preloader');
         const counter = document.getElementById('loader-counter');
@@ -1721,66 +1719,84 @@
         
         window.scrollTo(0, 0); // Force scroll to top
 
-        // Target ALL images in the DOM
+        // Find every single image on the page
         const images = Array.from(document.images);
         const totalImages = images.length;
         let loadedImages = 0;
         let isRevealed = false;
 
-        function updateUI(percentage, message) {
+        // Function to calculate and update real percentage
+        function updateProgress() {
+            if (isRevealed) return;
+            
+            let percentage = 0;
+            if (totalImages > 0) {
+                // Calculate exact percentage based on real loaded images
+                percentage = Math.floor((loadedImages / totalImages) * 100);
+            } else {
+                percentage = 100;
+            }
+
             counter.innerText = `${percentage}%`;
             bar.style.width = `${percentage}%`;
-            if (message) text.innerText = message;
+
+            if (percentage < 30) text.innerText = "Initializing...";
+            else if (percentage < 60) text.innerText = "Downloading Assets...";
+            else if (percentage < 90) text.innerText = "Rendering Textures...";
+            else text.innerText = "Securing Connection...";
         }
 
+        // Function to unlock the website
         function revealWebsite() {
             if (isRevealed) return;
             isRevealed = true;
-            updateUI(100, "Welcome.");
+            
+            // Force UI to 100% just in case
+            counter.innerText = `100%`;
+            bar.style.width = `100%`;
+            text.innerText = "Welcome.";
             
             setTimeout(() => {
                 preloader.style.opacity = '0';
                 preloader.style.pointerEvents = 'none'; 
                 document.body.classList.remove('overflow-hidden');
-            }, 300); // Fast snap to reveal
+            }, 500);
         }
 
-        function handleImageLoad() {
-            loadedImages++;
-            const progress = Math.floor((loadedImages / totalImages) * 100);
-
-            let msg = "Initializing...";
-            if (progress > 30) msg = "Loading Core Assets...";
-            if (progress > 70) msg = "Securing Connection...";
-
-            updateUI(Math.min(progress, 99), msg); // Hold at 99% until window fires
-
-            // If images finish fast, and the browser is ready, reveal instantly
-            if (loadedImages >= totalImages && document.readyState === 'complete') {
-                revealWebsite();
-            }
-        }
-
-        if (totalImages === 0) {
-            window.addEventListener('load', revealWebsite);
-        } else {
+        // 1. Track every individual image load
+        if (totalImages > 0) {
             images.forEach(img => {
                 if (img.complete) {
-                    handleImageLoad();
+                    loadedImages++;
+                    updateProgress();
                 } else {
-                    img.addEventListener('load', handleImageLoad);
-                    img.addEventListener('error', handleImageLoad); // Count errors so loader doesn't hang
+                    img.addEventListener('load', () => {
+                        loadedImages++;
+                        updateProgress();
+                    });
+                    // Count errors as "loaded" so a broken link doesn't freeze the website forever
+                    img.addEventListener('error', () => {
+                        loadedImages++; 
+                        updateProgress();
+                    });
                 }
             });
         }
 
-        // Final safety check: When window fully loads, force reveal
+        // 2. THE ULTIMATE GUARANTEE: window.onload
+        // This browser event ONLY fires when HTML, CSS, Javascript, and ALL images are 100% finished downloading.
         window.addEventListener('load', () => {
-            if (loadedImages >= totalImages) revealWebsite();
+            loadedImages = totalImages; // Max out the counter
+            updateProgress();
+            revealWebsite();
         });
 
-        // Failsafe: If network is terrible, unlock site after 5 seconds maximum
-        setTimeout(revealWebsite, 5000);
+        // 3. FAILSAFE
+        // If the user has terrible internet or an external Unsplash server hangs, 
+        // force open the site after 10 seconds so they aren't trapped on the loading screen.
+        setTimeout(() => {
+            if (!isRevealed) revealWebsite();
+        }, 10000);
     });
 
     // --- CONCIERGE ---
@@ -2023,7 +2039,7 @@ whatsappForm.addEventListener('submit', (e) => {
     const qtyPlus = document.getElementById('qty-plus');
     const qtyValueDisplay = document.getElementById('qty-value');
 
-// State Variables
+    // State Variables
     let currentProduct = null;
     let selectedColorObj = null;
     let selectedSizeObj = null;
@@ -2031,9 +2047,6 @@ whatsappForm.addEventListener('submit', (e) => {
     let activeSide = 'front'; 
 
     let modalMemory = JSON.parse(localStorage.getItem('gdripx_modal_memory')) || {};
-    
-    // NEW: Variable to track image loading to prevent race conditions
-    let currentImageLoadId = 0;
 
     // 3. Slider Logic
     function setSide(side) {
@@ -2101,7 +2114,7 @@ whatsappForm.addEventListener('submit', (e) => {
         }
     });
 
-// 6. Handle Color Swaps
+    // 6. Handle Color Swaps
     function selectColor(colorObj, thumbElement) {
         selectedColorObj = colorObj;
         colorLabel.innerText = colorObj.name;
@@ -2118,24 +2131,13 @@ whatsappForm.addEventListener('submit', (e) => {
             thumbElement.classList.remove('border-transparent');
         }
 
-        // --- NEW RACE CONDITION FIX ---
-        // Increase the ID every time a color is clicked
-        currentImageLoadId++; 
-        const loadId = currentImageLoadId; // Save the current ID for this specific click
-
         const tempImage = new Image();
-        
-        tempImage.onload = () => {
-            // Only update the images if this is STILL the most recently clicked color
-            if (loadId === currentImageLoadId) {
-                imgFront.src = colorObj.front;
-                imgBack.src = colorObj.back;
-                imgLoader.style.opacity = '0'; 
-            }
-        };
-        
-        // IMPORTANT: Always set .src AFTER defining .onload
         tempImage.src = colorObj.front; 
+        tempImage.onload = () => {
+            imgFront.src = colorObj.front;
+            imgBack.src = colorObj.back;
+            imgLoader.style.opacity = '0'; 
+        };
     }
 
     // 7. Open Modal
