@@ -771,7 +771,7 @@
             <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
                 <img src="https://images.unsplash.com/photo-1772494805793-16147cf8ed50?q=80&w=711&auto=format&fit=crop" 
                      class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
-                     alt="Look 01" loading="lazy">
+                     alt="Look 01">
                 <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
                 <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
                     <div class="flex justify-between items-end border-t border-white/30 pt-4">
@@ -785,7 +785,7 @@
             <div class="lookbook-item group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-4">
                 <img src="https://images.unsplash.com/photo-1772494842533-f3f4d89d79c3?q=80&w=687&auto=format&fit=crop" 
                      class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
-                     alt="Look 02" loading="lazy">
+                     alt="Look 02">
                 <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
                 <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
                     <div class="flex justify-between items-end border-t border-white/30 pt-4">
@@ -1703,44 +1703,93 @@
         });
     }
 
-// --- PRELOADER ---
-    // Changed to 'DOMContentLoaded' so it starts instantly on mobile
+    // --- REAL ASSET PRELOADER ---
     document.addEventListener('DOMContentLoaded', () => {
         const preloader = document.getElementById('preloader');
         const counter = document.getElementById('loader-counter');
         const bar = document.getElementById('loader-bar');
         const text = document.getElementById('loader-text');
         
-        // Force scroll to top on refresh so user starts at the top
+        // Force scroll to top on refresh
         window.scrollTo(0, 0);
 
-        let progress = 0;
-        const messages = ["Initializing...", "Loading Assets...", "Rendering 3D...", "Securing Connection...", "Welcome."];
+        const messages = ["Initializing...", "Loading Assets...", "Rendering Layout...", "Securing Connection...", "Welcome."];
         
-        const interval = setInterval(() => {
-            progress += Math.floor(Math.random() * 5) + 1; 
-            if (progress > 100) progress = 100;
-            counter.innerText = `${progress}%`;
-            bar.style.width = `${progress}%`;
+        // 1. Gather all images on the page
+        const images = Array.from(document.images);
+        const totalImages = images.length;
+        let loadedImages = 0;
+        
+        // Progress variables
+        let currentProgress = 0; // Visual progress
+        let targetProgress = 0;  // Actual loaded progress
 
-            if (progress < 30) text.innerText = messages[0];
-            else if (progress < 50) text.innerText = messages[1];
-            else if (progress < 70) text.innerText = messages[2];
-            else if (progress < 90) text.innerText = messages[3];
+        // 2. Smooth Animation Loop
+        function updateProgressUI() {
+            // Smoothly ease the visual progress towards the actual loaded progress
+            currentProgress += (targetProgress - currentProgress) * 0.1;
+            
+            const displayProgress = Math.min(Math.round(currentProgress), 100);
+            
+            counter.innerText = `${displayProgress}%`;
+            bar.style.width = `${displayProgress}%`;
+
+            // Update Text
+            if (displayProgress < 30) text.innerText = messages[0];
+            else if (displayProgress < 50) text.innerText = messages[1];
+            else if (displayProgress < 75) text.innerText = messages[2];
+            else if (displayProgress < 95) text.innerText = messages[3];
             else text.innerText = messages[4];
 
-            if (progress === 100) {
-                clearInterval(interval);
+            // If we haven't hit 100%, keep animating
+            if (currentProgress < 99.9) {
+                requestAnimationFrame(updateProgressUI);
+            } else {
+                // Loading Complete - Fade Out
+                counter.innerText = `100%`;
+                bar.style.width = `100%`;
                 setTimeout(() => {
                     preloader.style.opacity = '0';
                     preloader.style.pointerEvents = 'none'; 
-                    
-                    // 🟢 THIS IS THE FIX: Unlock the scrollbar
-                    document.body.classList.remove('overflow-hidden');
-                    
-                }, 500);
+                    document.body.classList.remove('overflow-hidden'); // Unlock scrolling
+                }, 600);
             }
-        }, 30); 
+        }
+
+        // Start the UI animation
+        requestAnimationFrame(updateProgressUI);
+
+        // 3. Track Image Loading
+        function imageLoaded() {
+            loadedImages++;
+            // Images loading pushes progress up to 90%
+            targetProgress = totalImages > 0 ? (loadedImages / totalImages) * 90 : 90; 
+        }
+
+        if (totalImages > 0) {
+            images.forEach(img => {
+                if (img.complete) {
+                    imageLoaded(); // Image was cached
+                } else {
+                    img.addEventListener('load', imageLoaded);
+                    img.addEventListener('error', imageLoaded); // Count errors so loader doesn't get stuck
+                }
+            });
+        } else {
+            targetProgress = 90;
+        }
+
+        // 4. Wait for fully rendered page (CSS, Fonts, etc.) to push to 100%
+        window.addEventListener('load', () => {
+            targetProgress = 100;
+        });
+
+        // 5. Failsafe: Force close the preloader after 8 seconds just in case a network request hangs
+        setTimeout(() => {
+            if (targetProgress < 100) {
+                targetProgress = 100;
+            }
+        }, 8000);
     });
 
     // --- CONCIERGE ---
