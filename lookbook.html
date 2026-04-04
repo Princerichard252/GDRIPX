@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>GDRIPX | Visual Dossier</title>
+    
+    <!-- 🟢 DNS Prefetching & Preconnects 🟢 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&amp;display=swap" rel="stylesheet" />
+    
+    <link rel="icon" type="image/png" href="./images/favicon.png" />
+    <link rel="apple-touch-icon" href="./images/favicon.png" />
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a0a0a",
+                        "primary-inverse": "#F5F0E8", 
+                        "background-light": "#F5F0E8", 
+                        "background-dark": "#0a0a0a", 
+                        "chrome": "#a1a1aa", 
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif":["Playfair Display", "serif"], 
+                    },
+                    keyframes: {
+                        scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(calc(-100% - 1rem))' } },
+                        fadeUp: { '0%': { transform: 'translateY(40px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } }
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    /* --- CORE SETTINGS --- */
+    body { margin: 0; padding: 0; overflow-x: hidden; background-color: #050505; color: #F5F0E8; }
+    
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* --- NAVIGATION ANIMATIONS --- */
+    .nav-link { position: relative; padding-bottom: 2px; }
+    .nav-link::after {
+        content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 1px;
+        background: linear-gradient(to right, #71717a, #000, #71717a);
+        transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    #navbar { animation: navSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    #navbar.scrolled #nav-pill {
+        background: rgba(255, 255, 255, 0.9);
+        border-color: rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        padding-top: 0.5rem; padding-bottom: 0.5rem;
+    }
+
+    @keyframes navSlideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    #mobile-menu-btn.open .hamburger-line:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+    #mobile-menu-btn.open .hamburger-line:nth-child(2) { transform: translateY(-3.25px) rotate(-45deg); }
+
+    /* --- 🟢 SCROLL REVEAL CLASSES 🟢 --- */
+    .js-reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+    }
+    .js-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+</head>
+
+<body class="bg-[#050505] font-display text-[#F5F0E8] antialiased min-h-screen selection:bg-white selection:text-black">
+
+    <!-- 🟢 CINEMATIC PRELOADER 🟢 -->
+    <div id="preloader" class="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center text-white transition-opacity duration-700 ease-out">
+        <div class="relative flex flex-col items-center gap-6">
+            <h1 class="font-serif font-black text-4xl md:text-6xl tracking-tighter animate-pulse">
+                GDRIPX<span class="text-xs align-top opacity-50 font-display">®</span>
+            </h1>
+            <div class="w-[200px] md:w-[300px]">
+                <div class="flex justify-between items-end mb-2 font-display text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                    <span id="loader-text">Loading Stash...</span>
+                    <span id="loader-counter" class="text-white font-bold">0%</span>
+                </div>
+                <div class="w-full h-[2px] bg-white/10 rounded-full overflow-hidden">
+                    <div id="loader-bar" class="h-full bg-white w-0 transition-all duration-100 ease-linear shadow-[0_0_10px_white]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 🟢 TOP NAVIGATION (UPDATED ACTIVE STATE) 🟢 -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 transition-all duration-500">
+        <div id="nav-pill" class="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-full px-8 py-3 flex items-center justify-between gap-12 max-w-[960px] w-full transition-all duration-500">
+
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3 group" aria-label="GDRIPX Home">
+                <img src="./images/logo.png" alt="GDRIPX Logo" class="w-8 h-8 md:w-9 md:h-9 object-contain transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:rotate-[360deg] filter invert" />
+                <div class="flex items-baseline">
+                    <span class="gdripx-wordmark font-serif font-black text-xl md:text-2xl text-white select-none tracking-tight">GDRIPX</span>
+                    <span class="w-[6px] h-[6px] rounded-full bg-white inline-block ml-1 opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all duration-300"></span>
+                </div>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-white" href="index.html#drops">Shop</a>
+                
+                <!-- 🟢 UPDATED: Active Lookbook Link (Pulsing Dot + Hover Line) 🟢 -->
+                <a class="nav-link relative text-xs font-bold uppercase tracking-[0.2em] text-white" href="#">
+                    <!-- Active Recording/Dossier Dot -->
+                    <span class="absolute -left-3.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                    Lookbook
+                </a>
+                
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-white" href="index.html#about">About</a>
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-white" href="#contact">Contact</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="cart.html" id="cart-btn" class="relative flex items-center justify-center w-10 h-10 md:w-auto md:px-5 md:py-2 rounded-full bg-white text-black transition-all hover:scale-105">
+                    <span class="material-symbols-outlined text-[20px] md:text-[14px]">shopping_bag</span>
+                    <span id="cart-count-badge" class="absolute -top-1 -right-1 md:static md:ml-2 bg-black text-white text-[9px] font-black w-4 h-4 md:w-auto md:h-auto md:px-1.5 md:rounded-full rounded-full flex items-center justify-center shadow-lg border border-white/20">0</span>
+                    <span class="hidden md:block ml-2 text-xs font-bold tracking-widest uppercase">Cart</span>
+                </a>
+
+                <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-[5px] p-2" aria-label="Open menu">
+                    <span class="hamburger-line w-5 h-[1.5px] bg-white block transition-all duration-300"></span>
+                    <span class="hamburger-line w-5 h-[1.5px] bg-white block transition-all duration-300"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden absolute top-full left-4 right-4 mt-2 bg-black/95 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-6 flex-col gap-4">
+            <a class="text-sm font-bold uppercase tracking-widest text-white py-2 border-b border-white/10 block" href="index.html#drops">Shop</a>
+            
+            <!-- 🟢 UPDATED: Mobile Active Lookbook Link -->
+            <a class="text-sm font-bold uppercase tracking-widest text-white py-2 border-b border-white/10 flex items-center gap-2" href="#">
+                <span class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                Lookbook
+            </a>
+            
+            <a class="text-sm font-bold uppercase tracking-widest text-white py-2 border-b border-white/10 block" href="index.html#about">About</a>
+            <a class="text-sm font-bold uppercase tracking-widest text-white py-2 block" href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- 🟢 LOOKBOOK HEADER (DARKROOM VIBE) 🟢 -->
+    <header class="relative pt-40 pb-16 md:pt-48 md:pb-24 w-full flex flex-col items-center justify-center text-center px-4 overflow-hidden select-none">
+        <!-- Film Grain -->
+        <div class="absolute inset-0 opacity-[0.2] mix-blend-overlay pointer-events-none z-0" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+        
+        <!-- Big Faded Background Text -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full z-0 opacity-5 pointer-events-none">
+            <h1 class="font-serif font-black text-[25vw] whitespace-nowrap tracking-tighter">THE DOSSIER</h1>
+        </div>
+
+        <div class="relative z-10 animate-fade-up">
+            <div class="inline-flex items-center gap-2 mb-6 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                </span>
+                <p class="font-display text-[10px] font-bold tracking-[0.3em] text-white/60 uppercase">Classified Visuals</p>
+            </div>
+
+            <h1 class="font-serif text-[15vw] md:text-8xl lg:text-9xl font-bold leading-[0.8] tracking-tighter text-white drop-shadow-2xl mb-6">
+                ARCHIVE<span class="italic font-light text-white/40">.</span>
+            </h1>
+
+            <p class="font-display text-xs md:text-sm text-white/50 tracking-widest uppercase max-w-lg mx-auto font-medium">
+                A complete catalog of raw street energy and precision tailoring. Silence is loud.
+            </p>
+        </div>
+    </header>
+
+    <!-- 🟢 THE GRID CONTAINER 🟢 -->
+    <!-- This uses a CSS Grid that goes from 1 column (mobile) -> 2 cols (tablet) -> 4 cols (desktop) -->
+    <main class="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-32">
+        
+        <div id="lookbook-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            
+<!-- LOOK 01 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1772494805793-16147cf8ed50?q=80&w=711&auto=format&fit=crop" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 01">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 01</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 02 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 50ms;">
+                <img src="https://images.unsplash.com/photo-1772494842533-f3f4d89d79c3?q=80&w=687&auto=format&fit=crop" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 02">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 02</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 03 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 100ms;">
+                <img src="https://images.unsplash.com/photo-1772501387435-78352ddac96c?q=80&w=753&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 03" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 03</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 04 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 150ms;">
+                <img src="https://images.unsplash.com/photo-1772501387403-47b67c3caf63?q=80&w=718&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 04" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 04</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 05 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1772501387421-ed71b07b51ef?q=80&w=729&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 05" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 05</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 06 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 50ms;">
+                <img src="https://images.unsplash.com/photo-1772501387434-36b4ee48e1fb?q=80&w=696&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 06" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 06</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 07 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 100ms;">
+                <img src="https://images.unsplash.com/photo-1772501222551-5192a00125c1?q=80&w=717&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 07" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 07</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 08 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 150ms;">
+                <img src="https://images.unsplash.com/photo-1772501387415-4d41f7a055c8?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 08" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 08</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 09 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1772501387418-0f47bbb2b13b?q=80&w=707&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 09" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 09</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 10 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 50ms;">
+                <img src="https://images.unsplash.com/photo-1772501387294-4be8ea1e72be?q=80&w=777&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out" 
+                     alt="Look 10" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 10</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LOOKS 11-20 (PLACEHOLDERS WITH "x")        -->
+            <!-- ========================================== -->
+
+            <!-- LOOK 11 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 100ms;">
+                <img src="https://images.unsplash.com/photo-1775303394817-01ef50ed564d?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out bg-white/5" 
+                     alt="Look 11" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 11</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 12 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 150ms;">
+                <img src="https://images.unsplash.com/photo-1775303545494-5eee318e31de?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out bg-white/5" 
+                     alt="Look 12" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 12</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 13 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1775303742567-e8496989b417?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out bg-white/5" 
+                     alt="Look 13" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 13</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 14 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 50ms;">
+                <img src="https://images.unsplash.com/photo-1775303742495-186d122e1b3d?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out bg-white/5" 
+                     alt="Look 14" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 14</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 15 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 100ms;">
+                <img src="https://images.unsplash.com/photo-1775303742482-7295d475faaf?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out bg-white/5" 
+                     alt="Look 15" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 15</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 16 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 150ms;">
+                <img src="https://images.unsplash.com/photo-1775303507585-933ee6ae9030?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out bg-white/5" 
+                     alt="Look 16" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 16</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 17 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1775303742518-2592cce2de5a?q=80&w=656&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out bg-white/5" 
+                     alt="Look 17" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 17</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 18 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 50ms;">
+                <img src="https://images.unsplash.com/photo-1775303507598-dc6fe766fca2?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out bg-white/5" 
+                     alt="Look 18" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 18</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 19 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 100ms;">
+                <img src="https://images.unsplash.com/photo-1775303097513-e87c02c6cd60?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out bg-white/5" 
+                     alt="Look 19" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 19</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOOK 20 -->
+            <div class="lookbook-item js-reveal group relative w-full aspect-[3/4] overflow-hidden rounded-sm cursor-zoom-in transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl" style="transition-delay: 150ms;">
+                <img src="https://images.unsplash.com/photo-1775303742515-fd5af1c25a64?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                     class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-700 ease-out bg-white/5" 
+                     alt="Look 20" loading="lazy">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                    <div class="flex justify-between items-end border-t border-white/30 pt-4">
+                        <span class="text-xs font-bold tracking-widest uppercase text-white">Look 20</span>
+                        <span class="material-symbols-outlined text-sm text-white">open_in_full</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    </div> <!-- This is the closing div for #lookbook-gallery -->
+
+<!-- ========================================== -->
+        <!-- 🟢 END OF ARCHIVE NOTIFICATION (BRIGHT THEME) 🟢 -->
+        <!-- ========================================== -->
+        <div class="mt-20 md:mt-32 w-full bg-[#F5F0E8] rounded-[2rem] md:rounded-[3rem] flex flex-col items-center justify-center py-20 md:py-32 relative js-reveal select-none px-6 md:px-12 overflow-hidden shadow-[0_30px_80px_-15px_rgba(0,0,0,0.8)] border border-white/10">
+            
+            <!-- Subtle Ambient Grain (Makes the cream color look like real paper/fabric) -->
+            <div class="absolute inset-0 opacity-[0.3] mix-blend-overlay pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+
+            <!-- Massive Background Watermark (Tech-Brutalism detail) -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden opacity-5">
+                <h2 class="font-serif font-black text-[35vw] md:text-[25vw] text-transparent whitespace-nowrap select-none" style="-webkit-text-stroke: 2px #0a0a0a;">
+                    GDRIPX
+                </h2>
+            </div>
+
+            <!-- Main Headline (Dark Onyx Text) -->
+            <h2 class="relative z-10 font-serif flex flex-col md:flex-row items-center text-[13vw] sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#0a0a0a] leading-[0.9] md:leading-none tracking-tighter mb-5 md:mb-8 text-center">
+                <span>MORE DROPS</span>
+                <span class="italic font-light text-[#0a0a0a]/40 md:ml-4 mt-2 md:mt-0">IMMINENT.</span>
+            </h2>
+            
+            <!-- Subtext -->
+            <p class="relative z-10 font-display text-[10px] md:text-sm text-[#0a0a0a]/70 tracking-[0.2em] uppercase text-center max-w-[280px] sm:max-w-md md:max-w-xl leading-relaxed md:leading-loose mb-10 md:mb-12 font-bold">
+                The archive remains open. Additional silhouettes and classified visuals are currently being processed.
+            </p>
+
+            <!-- Action Button (Inverted to Black for high contrast) -->
+            <div class="relative z-10 w-full sm:w-auto flex justify-center">
+                <a href="index.html#drops" class="group flex w-full sm:w-auto items-center justify-center gap-4 px-8 py-5 md:py-4 bg-[#0a0a0a] text-[#F5F0E8] rounded-full text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl shadow-black/30">
+                    <span>Access Store</span>
+                    <span class="material-symbols-outlined text-[16px] md:text-[18px] group-hover:translate-x-1 transition-transform duration-300">east</span>
+                </a>
+            </div>
+
+        </div>
+
+
+<!-- 🟢 LIGHTBOX MODAL (Swipe & Desktop Arrows) 🟢 -->
+    <div id="lb-modal" class="fixed inset-0 z-[100] bg-[#050505]/95 backdrop-blur-xl hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4 select-none">
+        
+        <!-- Close Button -->
+        <button id="lb-close" class="absolute top-6 right-6 z-50 text-white hover:rotate-90 transition-transform duration-300">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+
+        <!-- Desktop Left/Right Arrows -->
+        <button id="lb-prev" class="hidden md:flex absolute left-4 lg:left-12 top-1/2 -translate-y-1/2 z-50 w-14 h-14 bg-white/5 border border-white/10 rounded-full items-center justify-center text-white/50 hover:bg-white hover:text-black hover:scale-110 transition-all duration-300 backdrop-blur-md">
+            <span class="material-symbols-outlined text-3xl">west</span>
+        </button>
+        <button id="lb-next" class="hidden md:flex absolute right-4 lg:right-12 top-1/2 -translate-y-1/2 z-50 w-14 h-14 bg-white/5 border border-white/10 rounded-full items-center justify-center text-white/50 hover:bg-white hover:text-black hover:scale-110 transition-all duration-300 backdrop-blur-md">
+            <span class="material-symbols-outlined text-3xl">east</span>
+        </button>
+        
+        <!-- Image & Mobile Touch Area -->
+        <div id="lb-touch-area" class="relative w-full max-w-6xl h-[85vh] flex items-center justify-center overflow-hidden rounded-lg cursor-grab active:cursor-grabbing">
+            <img id="lb-image" src="" alt="Full View" class="w-full h-full object-contain max-h-[85vh] scale-95 opacity-0 transition-all duration-300 pointer-events-none drop-shadow-2xl">
+            
+            <!-- Loading Spinner -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
+                <span class="material-symbols-outlined animate-spin text-white/20 text-4xl">progress_activity</span>
+            </div>
+        </div>
+
+        <!-- Footer Text & Image Counter -->
+        <div class="absolute bottom-8 left-0 w-full text-center pointer-events-none">
+            <p class="font-display text-white/50 text-xs tracking-[0.3em] uppercase">GDRIPX / FULL DOSSIER</p>
+            <p id="lb-counter" class="font-display text-white/30 text-[10px] tracking-widest mt-2">1 / 20</p>
+        </div>
+    </div>
+
+    <!-- 🟢 FOOTER (IDENTICAL TO INDEX) 🟢 -->
+    <footer class="bg-[#050505] text-[#F5F0E8] mt-12 relative overflow-hidden font-display z-10 rounded-t-[2.5rem] md:rounded-t-[4rem] border-t border-white/10" id="contact">
+        <div class="w-full border-b border-white/10 overflow-hidden relative z-10 py-8 md:py-12 bg-black/50 backdrop-blur-sm">
+            <div class="whitespace-nowrap animate-[scroll_40s_linear_infinite] flex items-center">
+                <h2 class="font-serif text-[15vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 select-none px-8">GDRIPX ARCHIVE</h2>
+                <span class="material-symbols-outlined text-[8vw] text-white/20 px-8">emergency</span>
+                <h2 class="font-serif text-[15vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 select-none px-8">GDRIPX ARCHIVE</h2>
+                <span class="material-symbols-outlined text-[8vw] text-white/20 px-8">emergency</span>
+            </div>
+        </div>
+
+        <div class="layout-container max-w-[1400px] mx-auto relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 border-b border-white/10">
+                
+                <div class="lg:col-span-4 p-8 md:p-12 lg:border-r border-white/10 border-b lg:border-b-0 js-reveal">
+                    <div class="w-12 h-12 bg-white flex items-center justify-center rounded-full mb-8 overflow-hidden group-hover:scale-110 transition-transform">
+                        <span class="font-serif font-black text-black text-xl">G</span>
+                    </div>
+                    <p class="text-white/60 text-sm font-medium leading-relaxed max-w-[280px] mb-8">Precision engineered streetwear for the modern shadow. Silence is loud.</p>
+                    <a href="mailto:support@gdripx.com" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-green-400">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>support@gdripx.com
+                    </a>
+                </div>
+
+                <div class="lg:col-span-2 p-8 md:p-12 md:border-r border-white/10 border-b md:border-b-0 js-reveal">
+                    <h4 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-8">Directory</h4>
+                    <ul class="space-y-5">
+                        <li><a href="index.html#drops" class="text-sm font-medium text-white/80 hover:text-white flex items-center justify-between group">Shop Drops <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">east</span></a></li>
+                        <li><a href="#" class="text-sm font-medium text-white/80 hover:text-white flex items-center justify-between group">Lookbook <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">east</span></a></li>
+                        <li><a href="index.html#about" class="text-sm font-medium text-white/80 hover:text-white flex items-center justify-between group">Manifesto <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">east</span></a></li>
+                        <li><a href="cart.html" class="text-sm font-medium text-white/80 hover:text-white flex items-center justify-between group">Your Stash <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100">east</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="lg:col-span-2 p-8 md:p-12 lg:border-r border-white/10 border-b lg:border-b-0 js-reveal">
+                    <h4 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-8">Support</h4>
+                    <ul class="space-y-5">
+                        <li><a href="#" class="text-sm font-medium text-white/60 hover:text-white">Shipping Info</a></li>
+                        <li><a href="#" class="text-sm font-medium text-white/60 hover:text-white">Returns</a></li>
+                        <li><a href="#" class="text-sm font-medium text-white/60 hover:text-white">Terms</a></li>
+                        <li><a href="#" class="text-sm font-medium text-white/60 hover:text-white">Privacy</a></li>
+                    </ul>
+                </div>
+
+                <div class="lg:col-span-4 p-8 md:p-12 flex flex-col justify-between js-reveal">
+                    <h4 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-4">The Underground</h4>
+                    <p class="text-2xl font-serif font-black mb-6 leading-tight">Unlock early access <br>to limited drops.</p>
+                    <form class="relative group/form mt-4">
+                        <input type="email" required placeholder="Enter Email Address" class="w-full bg-white/5 border border-white/20 rounded-full py-4 pl-6 pr-16 text-sm text-white focus:outline-none focus:border-white focus:bg-white/10 transition-all placeholder:text-white/30" />
+                        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+                <p class="text-[10px] uppercase tracking-widest text-white/30 font-bold order-3 md:order-1">© 2026 GDRIPX Inc.</p>
+                <div class="flex gap-3 order-2 md:order-3">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all"><span class="font-bold text-[10px]">IG</span></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all"><span class="font-bold text-[10px]">X</span></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 🟢 SCRIPTS 🟢 -->
+    <script>
+        // Reveal Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
+            document.querySelectorAll('.js-reveal').forEach(el => observer.observe(el));
+        });
+
+        // Navbar Scroll
+        const navbar = document.getElementById('navbar');
+        const navPill = document.getElementById('nav-pill');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                // Invert navbar to light mode when scrolling down for visibility
+                navPill.classList.add('bg-white', 'text-black');
+                navPill.classList.remove('bg-white/10', 'backdrop-blur-md', 'border-white/20');
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.replace('text-white', 'text-black'));
+                document.querySelector('.gdripx-wordmark').classList.replace('text-white', 'text-black');
+                document.querySelector('img[alt="GDRIPX Logo"]').classList.remove('invert');
+                document.getElementById('cart-btn').classList.replace('bg-white', 'bg-black');
+                document.getElementById('cart-btn').classList.replace('text-black', 'text-white');
+                document.querySelectorAll('.hamburger-line').forEach(l => l.classList.replace('bg-white', 'bg-black'));
+            } else {
+                // Revert to dark mode at the top
+                navPill.classList.remove('bg-white', 'text-black');
+                navPill.classList.add('bg-white/10', 'backdrop-blur-md', 'border-white/20');
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.replace('text-black', 'text-white'));
+                document.querySelector('.gdripx-wordmark').classList.replace('text-black', 'text-white');
+                document.querySelector('img[alt="GDRIPX Logo"]').classList.add('invert');
+                document.getElementById('cart-btn').classList.replace('bg-black', 'bg-white');
+                document.getElementById('cart-btn').classList.replace('text-white', 'text-black');
+                document.querySelectorAll('.hamburger-line').forEach(l => l.classList.replace('bg-black', 'bg-white'));
+            }
+        });
+
+        // Mobile Menu
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileBtn.addEventListener('click', () => {
+            const isOpen = mobileBtn.classList.toggle('open');
+            mobileMenu.classList.toggle('hidden', !isOpen);
+            mobileMenu.classList.toggle('flex', isOpen);
+        });
+
+        // Cart Sync
+        function updateCartDisplay() {
+            let cart = JSON.parse(localStorage.getItem('gdripx_cart')) || [];
+            document.getElementById('cart-count-badge').innerText = cart.length;
+        }
+        updateCartDisplay();
+        window.addEventListener('storage', (e) => { if(e.key === 'gdripx_cart') updateCartDisplay(); });
+
+// 🟢 LIGHTBOX LOGIC (With Swipe & Arrows) 🟢
+        const lbModal = document.getElementById('lb-modal');
+        const lbImage = document.getElementById('lb-image');
+        const lbClose = document.getElementById('lb-close');
+        const lbPrev = document.getElementById('lb-prev');
+        const lbNext = document.getElementById('lb-next');
+        const lbCounter = document.getElementById('lb-counter');
+        const lbTouchArea = document.getElementById('lb-touch-area');
+
+        let galleryImages = [];
+        let currentIndex = 0;
+
+        // 1. Map all images and attach click listeners automatically
+        function initGallery() {
+            const items = document.querySelectorAll('.lookbook-item');
+            
+            items.forEach((item, index) => {
+                const img = item.querySelector('img');
+                if (img) {
+                    galleryImages.push(img.src);
+                    // Click to open specific image
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        openLightbox(index);
+                    });
+                }
+            });
+        }
+
+        // 2. Load the image into the modal with smooth transitions
+        function updateLightboxImage(index) {
+            // Fade out slightly
+            lbImage.classList.remove('scale-100', 'opacity-100');
+            lbImage.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                // Change source and counter
+                lbImage.src = galleryImages[index];
+                lbCounter.innerText = `${index + 1} / ${galleryImages.length}`;
+                
+                // Fade back in once loaded
+                lbImage.onload = () => {
+                    lbImage.classList.remove('scale-95', 'opacity-0');
+                    lbImage.classList.add('scale-100', 'opacity-100');
+                };
+            }, 200); // Matches CSS transition duration
+        }
+
+        // 3. Open & Close Functions
+        function openLightbox(index) {
+            currentIndex = index;
+            lbModal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                lbModal.classList.remove('opacity-0');
+                document.body.style.overflow = 'hidden'; // Stop background scroll
+            });
+            updateLightboxImage(currentIndex);
+        }
+
+        function closeLightbox() {
+            lbImage.classList.remove('scale-100', 'opacity-100');
+            lbImage.classList.add('scale-95', 'opacity-0');
+            lbModal.classList.add('opacity-0');
+            setTimeout(() => {
+                lbModal.classList.add('hidden');
+                lbImage.src = ''; 
+                document.body.style.overflow = ''; 
+            }, 300);
+        }
+
+        // 4. Next/Prev Controls
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % galleryImages.length; // Loops back to start
+            updateLightboxImage(currentIndex);
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length; // Loops to end
+            updateLightboxImage(currentIndex);
+        }
+
+        // 5. Desktop Event Listeners
+        lbClose.addEventListener('click', closeLightbox);
+        lbModal.addEventListener('click', (e) => { 
+            // Close if user clicks the dark background
+            if (e.target === lbModal || e.target === lbTouchArea) closeLightbox(); 
+        });
+
+        lbNext.addEventListener('click', nextImage);
+        lbPrev.addEventListener('click', prevImage);
+
+        // Keyboard Support
+        document.addEventListener('keydown', (e) => {
+            if (lbModal.classList.contains('hidden')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+
+        // 6. Mobile Touch/Swipe Logic
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        lbTouchArea.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        lbTouchArea.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50; // Minimum distance to trigger swipe
+            if (touchEndX < touchStartX - swipeThreshold) {
+                nextImage(); // Swiped Left -> Go Next
+            }
+            if (touchEndX > touchStartX + swipeThreshold) {
+                prevImage(); // Swiped Right -> Go Prev
+            }
+        }
+
+        // Run initialization on load
+        document.addEventListener('DOMContentLoaded', initGallery);
+
+                // --- PRELOADER ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            const counter = document.getElementById('loader-counter');
+            const bar = document.getElementById('loader-bar');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10) + 1; 
+                if (progress > 100) progress = 100;
+                counter.innerText = `${progress}%`;
+                bar.style.width = `${progress}%`;
+                if (progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        preloader.style.opacity = '0';
+                        preloader.style.pointerEvents = 'none'; 
+                        document.body.classList.remove('overflow-hidden');
+                    }, 500);
+                }
+            }, 30);
+        });
+    </script>
+</body>
+</html>

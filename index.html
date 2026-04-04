@@ -363,7 +363,7 @@
 
             <div class="hidden md:flex items-center gap-8">
                 <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="#drops">Shop</a>
-                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="#lookbook">Lookbook</a>
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="lookbook.html">Lookbook</a>
                 <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="#about">About</a>
                 <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="#contact">Contact</a>
             </div>
@@ -394,7 +394,7 @@
         <!-- Mobile Dropdown (Added md:hidden to prevent desktop bleed) -->
         <div id="mobile-menu" class="hidden md:hidden absolute top-full left-4 right-4 mt-2 bg-white/95 backdrop-blur-md border border-black/10 rounded-2xl shadow-xl p-6 flex-col gap-4">
             <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-black/5 block" href="#drops">Shop</a>
-            <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-black/5 block" href="#lookbook">Lookbook</a>
+            <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-black/5 block" href="lookbook.html">Lookbook</a>
             <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-black/5 block" href="#about">About</a>
             <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 block" href="#contact">Contact</a>
         </div>
@@ -467,7 +467,7 @@
                     <a href="#drops" class="bg-primary text-background-light px-8 py-3.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase hover:scale-105 hover:bg-black/80 transition-all duration-300 shadow-xl shadow-black/20">
                         Shop Drops
                     </a>
-                    <a href="#lookbook" class="border border-primary/30 text-primary backdrop-blur-sm px-8 py-3.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300">
+                    <a href="/lookbook.html" class="border border-primary/30 text-primary backdrop-blur-sm px-8 py-3.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300">
                         View Lookbook
                     </a>
                 </div>
@@ -576,7 +576,7 @@
             <a href="#drops" class="bg-primary text-background-light py-4 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase shadow-xl hover:scale-105 active:scale-95 transition-all text-center">
                 Shop Drops
             </a>
-            <a href="#lookbook" class="border border-primary/20 text-primary bg-white/30 backdrop-blur py-4 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase hover:bg-primary/5 transition-all text-center">
+            <a href="/lookbook.html" class="border border-primary/20 text-primary bg-white/30 backdrop-blur py-4 rounded-full text-[10px] font-bold tracking-[0.25em] uppercase hover:bg-primary/5 transition-all text-center">
                 View Lookbook
             </a>
         </div>
@@ -1106,6 +1106,28 @@
                     </div>
                 </div>
             </div>
+
+                        <!-- 🟢 VIEW FULL LOOKBOOK CARD (FINAL CARD IN TRACK) 🟢 -->
+            <a href="lookbook.html" class="group relative w-[280px] md:w-[400px] aspect-[3/4] overflow-hidden rounded-sm flex flex-col items-center justify-center border border-white/10 bg-white/5 hover:bg-white/10 hover:-translate-y-4 hover:border-white/30 transition-all duration-500 text-white cursor-pointer select-none">
+                
+                <!-- Glowing Aura on Hover -->
+                <div class="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div class="relative z-10 flex flex-col items-center">
+                    <!-- Icon -->
+                    <span class="material-symbols-outlined text-5xl mb-6 text-white/50 group-hover:text-white group-hover:translate-x-3 transition-all duration-500">trending_flat</span>
+                    
+                    <!-- Text -->
+                    <h3 class="font-serif italic text-3xl md:text-4xl font-bold mb-2">Full Archive</h3>
+                    <span class="text-[10px] font-bold tracking-[0.3em] uppercase text-white/40 group-hover:text-white/80 transition-colors">Enter The Dossier</span>
+                </div>
+
+                <!-- Corner Decor -->
+                <div class="absolute top-4 left-4 w-2 h-2 border-t border-l border-white/30"></div>
+                <div class="absolute top-4 right-4 w-2 h-2 border-t border-r border-white/30"></div>
+                <div class="absolute bottom-4 left-4 w-2 h-2 border-b border-l border-white/30"></div>
+                <div class="absolute bottom-4 right-4 w-2 h-2 border-b border-r border-white/30"></div>
+            </a>
 
         </div>
     </div>
