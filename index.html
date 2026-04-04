@@ -294,6 +294,16 @@
         transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
     }
     .size-btn:active { transform: scale(0.9); }
+
+    /* --- TACTICAL STATS TICKER ANIMATION --- */
+    @keyframes ticker {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .animate-ticker {
+        animation: ticker 25s linear infinite;
+        will-change: transform;
+    }
 </style>
 </head>
 
@@ -572,6 +582,134 @@
         </div>
     </div>
 </section>
+
+<!-- ========================================================= -->
+    <!-- 🟢 GDRIPX BRAND STATS TICKER (INTERSTITIAL LAYER) 🟢 -->
+    <!-- ========================================================= -->
+    <div class="relative w-full bg-[#050505] text-[#F5F0E8] border-y border-primary/20 overflow-hidden py-5 md:py-7 z-20 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] select-none">
+        
+        <!-- Ambient Grain Texture -->
+        <div class="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+
+        <!-- The Scrolling Track -->
+        <div class="flex w-max animate-ticker hover:[animation-play-state:paused] transition-all duration-300 cursor-default">
+            
+            <!-- ================= GROUP 1 ================= -->
+            <div class="flex items-center min-w-max">
+                
+                <!-- Stat 1: Brand Identity -->
+                <div class="flex items-center gap-4 px-8 md:px-16 group">
+                    <span class="material-symbols-outlined text-3xl md:text-4xl text-white/30 group-hover:text-white group-hover:rotate-180 transition-all duration-700">emergency</span>
+                    <span class="font-serif italic text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-white/40 group-hover:text-white transition-all duration-500">GDRIPX<span class="text-xl md:text-2xl font-display font-normal text-white/30 relative -top-3">®</span></span>
+                    <div class="flex flex-col text-left mt-1 ml-2 border-l border-white/20 pl-3">
+                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white">Est. 2026</span>
+                        <span class="text-[9px] text-white/40 tracking-widest uppercase">The Modern Shadow</span>
+                    </div>
+                </div>
+                
+                <!-- Divider -->
+                <span class="text-white/10 font-light text-2xl tracking-widest">///</span>
+
+                <!-- Stat 2: Logistics -->
+                <div class="flex items-center gap-4 px-8 md:px-16 group">
+                    <span class="material-symbols-outlined text-3xl md:text-4xl text-white/30 group-hover:text-green-400 group-hover:-translate-y-1 transition-all duration-500">bolt</span>
+                    <span class="font-serif italic text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-white/40 group-hover:from-green-400 group-hover:to-green-600 transition-all duration-500">24H</span>
+                    <div class="flex flex-col text-left mt-1 ml-2 border-l border-white/20 pl-3">
+                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white">GDRIPX Dispatch</span>
+                        <span class="text-[9px] text-white/40 tracking-widest uppercase">Global Express</span>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <span class="text-white/10 font-light text-2xl tracking-widest">///</span>
+
+                <!-- Stat 3: Quality / Engineering -->
+                <div class="flex items-center gap-4 px-8 md:px-16 group">
+                    <span class="material-symbols-outlined text-3xl md:text-4xl text-white/30 group-hover:text-white group-hover:scale-110 transition-all duration-500">fingerprint</span>
+                    <span class="font-serif italic text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-white/40 group-hover:text-white transition-all duration-500">100%</span>
+                    <div class="flex flex-col text-left mt-1 ml-2 border-l border-white/20 pl-3">
+                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white">Precision Milled</span>
+                        <span class="text-[9px] text-white/40 tracking-widest uppercase">Heavyweight Uniforms</span>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <span class="text-white/10 font-light text-2xl tracking-widest">///</span>
+
+                <!-- Stat 4: Exclusivity -->
+                <div class="flex items-center gap-4 px-8 md:px-16 group">
+                    <span class="material-symbols-outlined text-3xl md:text-4xl text-white/30 group-hover:text-red-500 group-hover:scale-95 transition-all duration-500">lock</span>
+                    <span class="font-serif italic text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-white/40 group-hover:text-white transition-all duration-500">0.0</span>
+                    <div class="flex flex-col text-left mt-1 ml-2 border-l border-white/20 pl-3">
+                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white">Zero Restocks</span>
+                        <span class="text-[9px] text-white/40 tracking-widest uppercase">The Archive is Final</span>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <span class="text-white/10 font-light text-2xl tracking-widest mr-8 md:mr-16">///</span>
+            </div>
+
+
+            <!-- ================= GROUP 2 (EXACT DUPLICATE FOR SEAMLESS LOOP) ================= -->
+            <div class="flex items-center min-w-max">
+                
+                <!-- Stat 1: Brand Identity -->
+                <div class="flex items-center gap-4 px-8 md:px-16 group">
+                    <span class="material-symbols-outlined text-3xl md:text-4xl text-white/30 group-hover:text-white group-hover:rotate-180 transition-all duration-700">emergency</span>
+                    <span class="font-serif italic text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-white/40 group-hover:text-white transition-all duration-500">GDRIPX<span class="text-xl md:text-2xl font-display font-normal text-white/30 relative -top-3">®</span></span>
+                    <div class="flex flex-col text-left mt-1 ml-2 border-l border-white/20 pl-3">
+                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white">Est. 2026</span>
+                        <span class="text-[9px] text-white/40 tracking-widest uppercase">The Modern Shadow</span>
+                    </div>
+                </div>
+                
+                <!-- Divider -->
+                <span class="text-white/10 font-light text-2xl tracking-widest">///</span>
+
+                <!-- Stat 2: Logistics -->
+                <div class="flex items-center gap-4 px-8 md:px-16 group">
+                    <span class="material-symbols-outlined text-3xl md:text-4xl text-white/30 group-hover:text-green-400 group-hover:-translate-y-1 transition-all duration-500">bolt</span>
+                    <span class="font-serif italic text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-white/40 group-hover:from-green-400 group-hover:to-green-600 transition-all duration-500">24H</span>
+                    <div class="flex flex-col text-left mt-1 ml-2 border-l border-white/20 pl-3">
+                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white">GDRIPX Dispatch</span>
+                        <span class="text-[9px] text-white/40 tracking-widest uppercase">Global Express</span>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <span class="text-white/10 font-light text-2xl tracking-widest">///</span>
+
+                <!-- Stat 3: Quality / Engineering -->
+                <div class="flex items-center gap-4 px-8 md:px-16 group">
+                    <span class="material-symbols-outlined text-3xl md:text-4xl text-white/30 group-hover:text-white group-hover:scale-110 transition-all duration-500">fingerprint</span>
+                    <span class="font-serif italic text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-white/40 group-hover:text-white transition-all duration-500">100%</span>
+                    <div class="flex flex-col text-left mt-1 ml-2 border-l border-white/20 pl-3">
+                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white">Precision Milled</span>
+                        <span class="text-[9px] text-white/40 tracking-widest uppercase">Heavyweight Uniforms</span>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <span class="text-white/10 font-light text-2xl tracking-widest">///</span>
+
+                <!-- Stat 4: Exclusivity -->
+                <div class="flex items-center gap-4 px-8 md:px-16 group">
+                    <span class="material-symbols-outlined text-3xl md:text-4xl text-white/30 group-hover:text-red-500 group-hover:scale-95 transition-all duration-500">lock</span>
+                    <span class="font-serif italic text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-white/40 group-hover:text-white transition-all duration-500">0.0</span>
+                    <div class="flex flex-col text-left mt-1 ml-2 border-l border-white/20 pl-3">
+                        <span class="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white">Zero Restocks</span>
+                        <span class="text-[9px] text-white/40 tracking-widest uppercase">The Archive is Final</span>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <span class="text-white/10 font-light text-2xl tracking-widest mr-8 md:mr-16">///</span>
+            </div>
+
+        </div>
+    </div>
+    <!-- ========================================================= -->
     
 
 <!-- 🟢 FEATURED DROPS (GRID & SHUFFLE SYSTEM) 🟢 -->
