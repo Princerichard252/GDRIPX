@@ -304,6 +304,17 @@
         animation: ticker 25s linear infinite;
         will-change: transform;
     }
+
+    /* --- SPLIT-FLAP CALENDAR FLIP ANIMATION --- */
+    @keyframes flipTop {
+        0% { transform: rotateX(-90deg); opacity: 0; }
+        100% { transform: rotateX(0deg); opacity: 1; }
+    }
+    .flip-animate {
+        animation: flipTop 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        transform-origin: bottom center;
+        display: inline-block;
+    }
 </style>
 </head>
 
@@ -721,194 +732,230 @@
     <!-- ========================================================= -->
     
 
-<!-- 🟢 FEATURED DROPS (GRID & SHUFFLE SYSTEM) 🟢 -->
-    <section class="py-32 bg-background-light relative z-10 overflow-hidden" id="drops">
-        <div class="layout-container max-w-[1400px] mx-auto px-4 sm:px-8">
-            
-<div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 md:mb-16 gap-8 w-full">
-                
-                <!-- 1. Header Text Group (Centered on Mobile, Left on Desktop) -->
-                <div class="flex flex-col items-center md:items-start text-center md:text-left w-full md:w-auto relative js-reveal">
-                    
-                    <!-- Mobile Top Badge -->
-                    <div class="md:hidden mb-4 animate-fade-up" style="animation-delay: 0.1s;">
-                        <span class="px-3 py-1 rounded-full border border-primary/10 bg-white/50 backdrop-blur text-[10px] font-bold tracking-[0.2em] uppercase text-primary/60">
-                            SS25 Collection
-                        </span>
-                    </div>
-
-                    <h2 class="relative font-serif text-[12vw] sm:text-6xl md:text-7xl font-bold text-primary leading-[0.9] mb-4 drop-shadow-sm animate-fade-up" style="animation-delay: 0.2s;">
-                        Featured
-                        <!-- Mobile Break / Desktop Space -->
-                        <span class="block md:inline"></span>
-                        <span class="italic font-light text-primary/50 relative inline-block">
-                            Drops
-                            <!-- Rotating Star Accent -->
-                            <span class="material-symbols-outlined absolute -top-2 -right-6 md:top-0 md:-right-10 text-xl md:text-3xl text-primary/30 animate-[spin_6s_linear_infinite]">
-                                asterisk
-                            </span>
-                        </span>
-                    </h2>
-
-                    <!-- 2. The New Mobile Description -->
-                    <p class="animate-fade-up text-sm text-primary/60 font-medium max-w-[280px] sm:max-w-sm leading-relaxed md:max-w-xs mt-2 md:mt-0" style="animation-delay: 0.3s;">
-                        Curated heavyweights and essential silhouettes. 
-                        <span class="text-primary font-bold">Limited quantities available</span> globally.
-                    </p>
-                </div>
-                
-                <!-- 3. Filter Buttons (Updated for Mobile Scroll) -->
-                <div class="w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0 js-reveal" id="filter-container">
-                    <div class="flex justify-center md:justify-end gap-3 min-w-max px-4 md:px-0">
-                        <button class="filter-btn active-filter px-6 py-3 md:py-2.5 rounded-full bg-primary text-background-light text-[10px] md:text-xs font-bold tracking-widest hover:scale-105 transition-transform duration-300 shadow-xl shadow-black/20" data-filter="all">ALL</button>
-                        <button class="filter-btn px-6 py-3 md:py-2.5 rounded-full border border-primary/20 text-primary text-[10px] md:text-xs font-bold tracking-widest hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300" data-filter="hoodie">HOODIES</button>
-                        <button class="filter-btn px-6 py-3 md:py-2.5 rounded-full border border-primary/20 text-primary text-[10px] md:text-xs font-bold tracking-widest hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300" data-filter="tee">TEES</button>
-                        <button class="filter-btn px-6 py-3 md:py-2.5 rounded-full border border-primary/20 text-primary text-[10px] md:text-xs font-bold tracking-widest hover:border-primary hover:bg-primary/5 hover:scale-105 transition-all duration-300" data-filter="accessory">ACCESSORIES</button>
-                    </div>
-                </div>
-
+<!-- 🟢 FEATURED DROPS (EDITORIAL BENTO LAYOUT - 3D POP-OUT) 🟢 -->
+<section class="py-24 md:py-32 bg-background-light relative z-10 overflow-hidden" id="drops">
+    
+    <div class="layout-container max-w-[1400px] mx-auto px-4 sm:px-8 relative z-10">
+        
+        <!-- Section Header -->
+        <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 md:mb-16 gap-6 w-full js-reveal">
+            <div class="text-center md:text-left">
+                <span class="px-4 py-1.5 rounded-full border border-primary/20 bg-white/50 backdrop-blur text-[9px] font-bold tracking-[0.3em] uppercase text-primary/60 mb-4 inline-block">
+                    Curated Selection
+                </span>
+                <h2 class="font-serif text-5xl md:text-7xl font-black text-primary leading-[0.9] tracking-tighter drop-shadow-sm">
+                    Featured <span class="italic font-light text-primary/40">Drops.</span>
+                </h2>
             </div>
             
-            <!-- Product Grid (Responsive Rows & Columns) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 js-reveal" id="product-grid">
-                
-                <!-- CARD 1 (Hoodie - Black) -->
-                <div class="product-card group relative aspect-[4/5] bg-[#e5e5e5] rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="hoodie">
-                    <!-- LOCAL IMAGE PATH -->
-                    <img src="./images/hoodies/hoodie.webp" class="absolute inset-0 w-full h-full object-contain p-8 transition-transform duration-1000 group-hover:scale-110 drop-shadow-xl" alt="Gdripx hoodies" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                    
-                    <div class="absolute top-6 left-6 z-20">
-                        <div class="bg-white text-primary text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">New</div>
-                    </div>
+            <p class="text-sm text-primary/60 font-medium max-w-[280px] sm:max-w-sm leading-relaxed md:max-w-xs text-center md:text-right">
+                Heavyweight staples and signature silhouettes. <strong class="text-primary font-bold">Limited allocations available.</strong>
+            </p>
+        </div>
 
-                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
-                        <div class="flex justify-between items-end mb-4">
-                            <div>
-                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Heavyweight</p>
-                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Gdripx Hoodies</h3>
-                            </div>
-                            <span class="font-serif text-xl font-bold italic text-white">$145</span>
-                        </div>
-                        <!-- MODAL TRIGGER BUTTON -->
-                        <button class="open-modal-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" data-product-id="phantom-hoodie">
-                            <span class="btn-text">Select Options</span>
-                        </button>
-                    </div>
+        <!-- 🟢 BENTO BOX GRID 🟢 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 js-reveal">
+            
+            <!-- ========================================== -->
+            <!-- PANEL 1: 3D POP-OUT CARD (LEFT)            -->
+            <!-- ========================================== -->
+            <a href="#shop" class="group relative col-span-1 h-[500px] lg:h-[600px] rounded-[2rem] overflow-hidden bg-[#e5e5e5] border border-primary/5 shadow-xl hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 block">
+                
+                <!-- 1. Background Typography (Creates depth behind the garment) -->
+                <div class="absolute top-12 left-1/2 -translate-x-1/2 w-full text-center z-0 transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-y-4 group-hover:scale-95">
+                    <span class="font-serif font-black text-[120px] leading-none text-transparent opacity-10 select-none tracking-tighter" style="-webkit-text-stroke: 2px #0a0a0a;">CORE</span>
                 </div>
 
-                <!-- CARD 2 (Singlet) -->
-                <div class="product-card group relative aspect-[4/5] bg-[#e5e5e5] rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="tee">
+                <!-- 2. The Transparent PNG Garment (The Pop-Out Element) -->
+                <div class="absolute inset-0 z-10 flex items-center justify-center p-8 transition-transform duration-[1500ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-110 group-hover:-translate-y-6">
+                    <!-- ⚠️ REPLACE THIS SRC WITH YOUR REALISTIC TRANSPARENT DRESS/HOODIE PNG ⚠️ -->
+                    <img src="./images/hoodies/jersey.webp" 
+                         class="w-full h-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.3)] group-hover:drop-shadow-[0_40px_40px_rgba(0,0,0,0.5)] transition-all duration-[1500ms]" 
+                         alt="Outerwear Drop">
+                </div>
+                
+                <!-- 3. Bottom Gradient (Smooth fade for text legibility) -->
+                <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white via-white/80 to-transparent z-20"></div>
+
+                <!-- 4. Text Content -->
+                <div class="absolute inset-x-0 bottom-0 p-8 md:p-10 flex flex-col items-start z-30 transition-transform duration-700 group-hover:-translate-y-2">
+                    <p class="text-[10px] font-bold tracking-[0.3em] uppercase text-primary/50 mb-2">Outerwear</p>
+                    <h3 class="font-serif text-3xl md:text-4xl font-black text-primary leading-tight mb-6">GDRIPX<br><span class="italic font-light text-primary/60">Jersey.</span></h3>
                     
-                    <!-- Using a clean background and object-contain just like Card 1 -->
-                    <img src="./images/singlets/singlet.webp" class="absolute inset-0 w-full h-full object-contain p-8 transition-transform duration-1000 group-hover:scale-110 drop-shadow-xl" alt="Gdripx Singlet" />
+                    <div class="bg-primary text-white px-6 py-3.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase flex items-center gap-3 overflow-hidden shadow-lg group-hover:shadow-black/20">
+                        <span>Explore Drop</span>
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-2 transition-transform duration-500">east</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ========================================== -->
+            <!-- PANEL 2: 3D POP-OUT CARD (CENTER)          -->
+            <!-- ========================================== -->
+            <a href="#shop" class="group relative col-span-1 h-[500px] lg:h-[600px] rounded-[2rem] overflow-hidden bg-[#e5e5e5] border border-primary/5 shadow-xl hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 block" style="transition-delay: 100ms;">
+                
+                <!-- 1. Background Typography -->
+                <div class="absolute top-12 left-1/2 -translate-x-1/2 w-full text-center z-0 transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-y-4 group-hover:scale-95">
+                    <span class="font-serif font-black text-[120px] leading-none text-transparent opacity-10 select-none tracking-tighter" style="-webkit-text-stroke: 2px #0a0a0a;">HVY</span>
+                </div>
+
+                <!-- 2. The Transparent PNG Garment -->
+                <div class="absolute inset-0 z-10 flex items-center justify-center p-8 transition-transform duration-[1500ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-110 group-hover:-translate-y-6">
+                    <!-- ⚠️ REPLACE THIS SRC WITH YOUR REALISTIC TRANSPARENT DRESS/HOODIE PNG ⚠️ -->
+                    <img src="./images/hoodies/hoood.webp" 
+                         class="w-full h-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.3)] group-hover:drop-shadow-[0_40px_40px_rgba(0,0,0,0.5)] transition-all duration-[1500ms]" 
+                         alt="Heavyweight Drop">
+                </div>
+                
+                <!-- 3. Bottom Gradient -->
+                <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white via-white/80 to-transparent z-20"></div>
+
+                <!-- 4. Text Content -->
+                <div class="absolute inset-x-0 bottom-0 p-8 md:p-10 flex flex-col items-start z-30 transition-transform duration-700 group-hover:-translate-y-2">
+                    <p class="text-[10px] font-bold tracking-[0.3em] uppercase text-primary/50 mb-2">Hoodies</p>
+                    <h3 class="font-serif text-3xl md:text-4xl font-black text-primary leading-tight mb-6">GDRIPX<br><span class="italic font-light text-primary/60">Zip-Up.</span></h3>
                     
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                    <div class="bg-primary text-white px-6 py-3.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase flex items-center gap-3 overflow-hidden shadow-lg group-hover:shadow-black/20">
+                        <span>View Fits</span>
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-2 transition-transform duration-500">east</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ========================================== -->
+            <!-- RIGHT COLUMN WRAPPER (Stacked Panels)      -->
+            <!-- ========================================== -->
+            <div class="col-span-1 flex flex-col gap-6 md:gap-8 h-full lg:h-[600px]">
+                
+<!-- PANEL 3: Horizontal (Top Right) - GDRIPX PRIVE' -->
+                <a href="#prive" class="group relative flex-1 min-h-[280px] lg:min-h-0 rounded-[2rem] overflow-hidden bg-[#050505] shadow-xl hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 flex flex-col block border border-white/5 hover:border-[#D4AF37]/50" style="transition-delay: 200ms;">
                     
-                    <!-- New Badge -->
-                    <div class="absolute top-6 left-6 z-20">
-                        <div class="bg-white text-primary text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Summer '25</div>
+                    <!-- Background Image (YOUR LOGO IMAGE GOES HERE) -->
+                    <!-- 'object-right' ensures the logo stays visible on the right side -->
+                    <img src="./images/prive.jpg" 
+                         class="absolute inset-0 w-full h-full object-cover object-right opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1500ms] ease-out" alt="GDRIPX Prive">
+                    
+                    <!-- Gradients to protect the text on the left -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-transparent w-[85%] md:w-[70%]"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-80"></div>
+
+                    <!-- Content Wrapper -->
+                    <div class="relative z-10 p-6 md:p-8 flex flex-col justify-between h-full w-full md:w-[80%]">
+                        
+                        <!-- Header -->
+                        <div>
+                            <span class="text-[#D4AF37] text-[8px] font-bold tracking-widest uppercase mb-2 block flex items-center gap-2">
+                                <span class="w-1 h-1 bg-[#D4AF37] rounded-full animate-pulse"></span> Exclusive Line
+                            </span>
+                            <h3 class="font-serif text-2xl lg:text-3xl font-black text-white italic leading-tight">Gdripx<br>Prive'</h3>
+                        </div>
+
+                        <!-- 🟢 CALENDAR FLIP COUNTDOWN 🟢 -->
+                        <div class="mt-4 mb-4">
+                            <p class="text-[8px] font-bold uppercase tracking-[0.2em] text-white/50 mb-2">Vault Unlocks In:</p>
+                            
+                            <div class="flex gap-1.5 md:gap-2 items-center">
+                                <!-- Days -->
+                                <div class="flex flex-col items-center">
+                                    <div class="relative bg-black/60 border border-white/10 backdrop-blur-md rounded-md w-9 h-10 md:w-11 md:h-12 flex items-center justify-center overflow-hidden group-hover:border-[#D4AF37]/30 transition-colors">
+                                        <span class="font-serif text-lg md:text-xl font-bold text-white relative z-10" id="prive-days">30</span>
+                                        <!-- Split line for classic calendar flip look -->
+                                        <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/80 z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                                    </div>
+                                    <span class="text-[6px] md:text-[7px] font-bold uppercase tracking-widest text-white/40 mt-1">Days</span>
+                                </div>
+                                <span class="text-white/20 text-sm font-light mb-3">:</span>
+                                
+                                <!-- Hours -->
+                                <div class="flex flex-col items-center">
+                                    <div class="relative bg-black/60 border border-white/10 backdrop-blur-md rounded-md w-9 h-10 md:w-11 md:h-12 flex items-center justify-center overflow-hidden group-hover:border-[#D4AF37]/30 transition-colors">
+                                        <span class="font-serif text-lg md:text-xl font-bold text-white relative z-10" id="prive-hours">00</span>
+                                        <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/80 z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                                    </div>
+                                    <span class="text-[6px] md:text-[7px] font-bold uppercase tracking-widest text-white/40 mt-1">Hrs</span>
+                                </div>
+                                <span class="text-white/20 text-sm font-light mb-3">:</span>
+                                
+                                <!-- Minutes -->
+                                <div class="flex flex-col items-center">
+                                    <div class="relative bg-black/60 border border-white/10 backdrop-blur-md rounded-md w-9 h-10 md:w-11 md:h-12 flex items-center justify-center overflow-hidden group-hover:border-[#D4AF37]/30 transition-colors">
+                                        <span class="font-serif text-lg md:text-xl font-bold text-white relative z-10" id="prive-mins">00</span>
+                                        <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/80 z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                                    </div>
+                                    <span class="text-[6px] md:text-[7px] font-bold uppercase tracking-widest text-white/40 mt-1">Min</span>
+                                </div>
+                                <span class="text-white/20 text-sm font-light mb-3">:</span>
+                                
+                                <!-- Seconds (Gets the flip animation) -->
+                                <div class="flex flex-col items-center">
+                                    <div class="relative bg-white/5 border border-white/20 backdrop-blur-md rounded-md w-9 h-10 md:w-11 md:h-12 flex items-center justify-center overflow-hidden group-hover:border-white/40 transition-colors group/sec">
+                                        <span class="font-serif text-lg md:text-xl font-bold text-white relative z-10" id="prive-secs">00</span>
+                                        <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/80 z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                                        <!-- Hover highlight sweep inside seconds box -->
+                                        <div class="absolute inset-0 bg-white/10 translate-y-full group-hover/sec:translate-y-0 transition-transform duration-300 z-0"></div>
+                                    </div>
+                                    <span class="text-[6px] md:text-[7px] font-bold uppercase tracking-widest text-[#D4AF37] mt-1">Sec</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <div class="mt-auto">
+                            <div class="inline-flex border border-white/30 text-white px-5 py-2.5 rounded-full text-[9px] font-bold tracking-widest uppercase items-center gap-2 group-hover:bg-white group-hover:text-black transition-all duration-300">
+                                Request Access <span class="material-symbols-outlined text-[14px]">lock</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+
+<!-- PANEL 4: Horizontal (Bottom Right) - ESSENTIALS / HEADWEAR -->
+                <a href="#headwear" class="group relative flex-1 min-h-[280px] lg:min-h-0 rounded-[2rem] overflow-hidden bg-gradient-to-br from-white to-[#e5e5e5] border border-primary/5 shadow-xl hover:shadow-[0_20px_40px_-10px_rgba(59,130,246,0.15)] transition-all duration-700 hover:-translate-y-2 block" style="transition-delay: 300ms;">
+                    
+                    <!-- 1. Massive Background Typography (Creates depth behind the cap) -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] z-0 transition-transform duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-95 group-hover:-translate-y-[50%] w-full text-center pointer-events-none">
+                        <span class="font-serif font-black text-[110px] leading-none text-black opacity-5 tracking-tighter select-none">GDRIPX</span>
                     </div>
 
-                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
-                        <div class="flex justify-between items-end mb-4">
-                            <div>
-                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Athletic Fit</p>
-                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Gdripx Singlets</h3>
-                            </div>
-                            <!-- Update price as needed -->
-                            <span class="font-serif text-xl font-bold italic text-white">$55</span> 
+                    <!-- 2. The Floating 3D Cap (Anchored bottom-right, bleeds off edge) -->
+                    <!-- We use absolute positioning so it breaks out of normal flow and overlays beautifully -->
+                    <div class="absolute -right-6 md:-right-10 -bottom-8 md:-bottom-12 w-[75%] md:w-[65%] aspect-square z-10 transition-all duration-[1200ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.15] group-hover:-rotate-[8deg] group-hover:-translate-y-4 group-hover:-translate-x-4 pointer-events-none">
+                        
+                        <!-- The drop-shadow utility maps to the actual shape of your PNG, unlike box-shadow -->
+                        <img src="./images/cap.webp" 
+                             class="w-full h-full object-contain drop-shadow-[0_15px_20px_rgba(0,0,0,0.15)] group-hover:drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] transition-all duration-[1200ms]" 
+                             alt="Signature Trucker Cap">
+                    </div>
+
+                    <!-- 3. Content Overlay (Top Left aligned) -->
+                    <div class="relative z-20 p-6 md:p-8 flex flex-col h-full w-[70%] justify-between pointer-events-none">
+                        
+                        <div class="transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-2">
+                            <!-- Blue Accent Tag -->
+                            <span class="text-primary/50 text-[8px] font-bold tracking-widest uppercase mb-2 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 bg-[#4a90e2] rounded-full animate-pulse shadow-[0_0_8px_rgba(74,144,226,0.6)]"></span> Headwear
+                            </span>
+                            
+                            <h3 class="font-serif text-3xl font-black text-primary leading-[0.9] drop-shadow-sm">
+                                Signature<br><span class="italic font-light text-primary/70">Trucker.</span>
+                            </h3>
                         </div>
                         
-                        <!-- MODAL TRIGGER BUTTON -->
-                        <button class="open-modal-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" data-product-id="gdripx-singlet">
-                            <span class="btn-text">Select Options</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- CARD 3 (Accessory) -->
-                <div class="product-card group relative aspect-[4/5] bg-gray-200 rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="accessory">
-                    <img src="https://plus.unsplash.com/premium_photo-1679314407939-858a78e9e1ac?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Bag" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
-                    
-                    <div class="absolute top-6 left-6 z-20">
-                        <div class="bg-red-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Limited</div>
-                    </div>
-
-                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
-                        <div class="flex justify-between items-end mb-4">
-                            <div>
-                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Tactical</p>
-                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Utility Rig Bag</h3>
+                        <div class="mt-auto pt-6">
+                            <!-- Magnetic Floating Pill Button -->
+                            <div class="pointer-events-auto inline-flex bg-white/80 backdrop-blur-md border border-white/60 shadow-[0_4px_15px_rgba(0,0,0,0.05)] text-primary px-5 py-2.5 rounded-full text-[9px] font-bold tracking-widest uppercase items-center gap-2 group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all duration-500 ease-out group-hover:shadow-lg">
+                                View Details <span class="material-symbols-outlined text-[14px] group-hover:translate-x-1 transition-transform duration-300">east</span>
                             </div>
-                            <span class="font-serif text-xl font-bold italic text-white">$145</span>
                         </div>
-                        <button class="open-modal-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" data-product-id="utility-bag">
-                            <span class="btn-text">Select Options</span>
-                        </button>
+
                     </div>
-                </div>
+                </a>
 
-                <!-- CARD 4 (Hoodie) -->
-                <div class="product-card group relative aspect-[4/5] bg-gray-200 rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="hoodie">
-                    <img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Zip Hoodie" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
-
-                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
-                        <div class="flex justify-between items-end mb-4">
-                            <div>
-                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Fleece Lined</p>
-                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Onyx Zip-Up</h3>
-                            </div>
-                            <span class="font-serif text-xl font-bold italic text-white">$135</span>
-                        </div>
-                        <button class="open-modal-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" data-product-id="onyx-zip">
-                            <span class="btn-text">Select Options</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- CARD 5 (Tee) -->
-                <div class="product-card group relative aspect-[4/5] bg-gray-200 rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="tee">
-                    <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Blank Tee" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
-
-                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
-                        <div class="flex justify-between items-end mb-4">
-                            <div>
-                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Boxy Fit</p>
-                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Essential Blank</h3>
-                            </div>
-                            <span class="font-serif text-xl font-bold italic text-white">$45</span>
-                        </div>
-                        <button class="open-modal-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" data-product-id="essential-blank">
-                            <span class="btn-text">Select Options</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- CARD 6 (Accessory) -->
-                <div class="product-card group relative aspect-[4/5] bg-gray-200 rounded-[2rem] overflow-hidden cursor-pointer transform transition-all duration-500 opacity-100 scale-100" data-category="accessory">
-                    <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Cap" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
-
-                    <div class="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end transform transition-transform duration-500 translate-y-14 group-hover:translate-y-0">
-                        <div class="flex justify-between items-end mb-4">
-                            <div>
-                                <p class="text-[10px] text-white/70 tracking-widest uppercase font-bold mb-1">Embroidered</p>
-                                <h3 class="text-2xl font-bold font-display uppercase tracking-tight text-white">Signature Cap</h3>
-                            </div>
-                            <span class="font-serif text-xl font-bold italic text-white">$40</span>
-                        </div>
-                        <button class="open-modal-btn w-full bg-white text-primary font-bold py-4 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100" data-product-id="signature-cap">
-                            <span class="btn-text">Select Options</span>
-                        </button>
-                    </div>
-                </div>
             </div>
+
         </div>
-    </section>
+    </div>
+</section>
 
 <!-- 🟢 INTERACTIVE LOOKBOOK (DARKROOM GALLERY) 🟢 -->
 <section class="py-24 bg-primary text-background-light relative overflow-hidden select-none" id="lookbook">
@@ -2865,6 +2912,47 @@ document.addEventListener("DOMContentLoaded", () => {
     updateVaultCountdown();
     setInterval(updateVaultCountdown, 1000);
 });
+// --- 🟢 PRIVE' CALENDAR FLIP COUNTDOWN 🟢 ---
+    const priveDays = document.getElementById("prive-days");
+    const priveHours = document.getElementById("prive-hours");
+    const priveMins = document.getElementById("prive-mins");
+    const priveSecs = document.getElementById("prive-secs");
+
+    if (priveDays) {
+        // Set drop date strictly to 30 days from right now
+        const priveDropDate = new Date();
+        priveDropDate.setDate(priveDropDate.getDate() + 30);
+        
+        function animateFlip(element, newValue) {
+            if (element.innerText !== newValue) {
+                element.classList.remove('flip-animate');
+                void element.offsetWidth; // Trigger DOM reflow to restart animation
+                element.innerText = newValue;
+                element.classList.add('flip-animate');
+            }
+        }
+
+        function updatePriveCountdown() {
+            const now = new Date().getTime();
+            const distance = priveDropDate.getTime() - now;
+
+            if (distance < 0) return;
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            const s = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+
+            // Apply values with the 3D flip animation
+            animateFlip(priveDays, d);
+            animateFlip(priveHours, h);
+            animateFlip(priveMins, m);
+            animateFlip(priveSecs, s); // Seconds flip constantly
+        }
+
+        updatePriveCountdown();
+        setInterval(updatePriveCountdown, 1000);
+    }
 </script>
 
 <script>
