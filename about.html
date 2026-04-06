@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>GDRIPX | About Us</title>
+    
+    <!-- 🟢 DNS Prefetching & Preconnects 🟢 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&amp;display=swap" rel="stylesheet" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./images/favicon.png" />
+    <link rel="apple-touch-icon" href="./images/favicon.png" />
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a0a0a",
+                        "primary-inverse": "#F5F0E8", 
+                        "background-light": "#F5F0E8", 
+                        "background-dark": "#0a0a0a", 
+                        "chrome": "#a1a1aa", 
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif":["Playfair Display", "serif"], 
+                    },
+                    keyframes: {
+                        scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(calc(-100% - 1rem))' } },
+                        fadeUp: { '0%': { transform: 'translateY(40px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        scanVertical: { '0%': { top: '-10%', opacity: '0' }, '50%': { opacity: '1' }, '100%': { top: '110%', opacity: '0' } }
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) both',
+                        'ticker': 'scroll 30s linear infinite',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    /* --- CORE SETTINGS --- */
+    body { margin: 0; padding: 0; overflow-x: hidden; background-color: #F5F0E8; color: #0a0a0a; }
+    
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* --- NAVIGATION ANIMATIONS --- */
+    .nav-link { position: relative; padding-bottom: 2px; }
+    .nav-link::after {
+        content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 1px;
+        background: linear-gradient(to right, #71717a, #000, #71717a);
+        transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    #navbar { animation: navSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    #navbar.scrolled #nav-pill {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        backdrop-filter: blur(12px);
+    }
+
+    @keyframes navSlideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- MOBILE MENU X ANIMATION --- */
+    #mobile-menu-btn.open .hamburger-line:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+    #mobile-menu-btn.open .hamburger-line:nth-child(2) { transform: translateY(-3.25px) rotate(-45deg); }
+
+    /* --- 🟢 SCROLL REVEAL CLASSES 🟢 --- */
+    .js-reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+    }
+    .js-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* --- TECH ACCENTS --- */
+    .tech-crosshair {
+        position: absolute; width: 15px; height: 15px;
+        border-color: rgba(0,0,0,0.2); border-style: solid;
+        z-index: 10; pointer-events: none;
+    }
+    .tc-tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
+    .tc-tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
+    .tc-bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
+    .tc-br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+</style>
+</head>
+
+<body class="bg-background-light font-display text-primary antialiased min-h-screen selection:bg-primary selection:text-white">
+
+    <!-- 🟢 LIGHT-MODE CINEMATIC PRELOADER 🟢 -->
+    <div id="preloader" class="fixed inset-0 z-[9999] bg-[#F5F0E8] flex flex-col items-center justify-center text-primary transition-opacity duration-700 ease-out">
+        <div class="relative flex flex-col items-center gap-6">
+            <h1 class="font-serif font-black text-4xl md:text-6xl tracking-tighter animate-pulse">
+                GDRIPX<span class="text-xs align-top opacity-50 font-display">®</span>
+            </h1>
+            <div class="w-[200px] md:w-[300px]">
+                <div class="flex justify-between items-end mb-2 font-display text-[10px] uppercase tracking-[0.2em] text-primary/50">
+                    <span id="loader-text">Compiling Dossier...</span>
+                    <span id="loader-counter" class="text-primary font-bold">0%</span>
+                </div>
+                <div class="w-full h-[2px] bg-primary/10 rounded-full overflow-hidden">
+                    <div id="loader-bar" class="h-full bg-primary w-0 transition-all duration-100 ease-linear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🟢 TOP NAVIGATION (LIGHT MODE DEFAULT) 🟢 -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 transition-all duration-500">
+        <div id="nav-pill" class="bg-white/40 backdrop-blur-md border border-primary/10 shadow-lg rounded-full px-8 py-3 flex items-center justify-between gap-12 max-w-[960px] w-full transition-all duration-500">
+
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3 group" aria-label="GDRIPX Home">
+                <img src="./images/logo.png" alt="GDRIPX Logo" class="w-8 h-8 md:w-9 md:h-9 object-contain transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:rotate-[360deg]" />
+                <div class="flex items-baseline">
+                    <span class="gdripx-wordmark font-serif font-black text-xl md:text-2xl text-primary select-none tracking-tight">GDRIPX</span>
+                    <span class="w-[6px] h-[6px] rounded-full bg-primary inline-block ml-1 opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all duration-300"></span>
+                </div>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="index.html#drops">Shop</a>
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="lookbook.html">Lookbook</a>
+                
+                <!-- 🟢 ACTIVE ABOUT LINK 🟢 -->
+                <a class="nav-link relative text-xs font-bold uppercase tracking-[0.2em] text-primary" href="#">
+                    <span class="absolute -left-3.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                    About
+                </a>
+                
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="/contact.html">Contact</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="cart.html" id="cart-btn" class="relative flex items-center justify-center w-10 h-10 md:w-auto md:px-5 md:py-2 rounded-full bg-primary text-white transition-all hover:opacity-80">
+                    <span class="material-symbols-outlined text-[20px] md:text-[14px]">shopping_bag</span>
+                    <span id="cart-count-badge" class="absolute -top-1 -right-1 md:static md:ml-2 bg-white text-black text-[9px] font-black w-4 h-4 md:w-auto md:h-auto md:px-1.5 md:rounded-full rounded-full flex items-center justify-center shadow-lg border border-primary/20">0</span>
+                    <span class="hidden md:block ml-2 text-xs font-bold tracking-widest uppercase">Cart</span>
+                </a>
+
+                <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-[5px] p-2" aria-label="Open menu">
+                    <span class="hamburger-line w-5 h-[1.5px] bg-primary block transition-all duration-300"></span>
+                    <span class="hamburger-line w-5 h-[1.5px] bg-primary block transition-all duration-300"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden absolute top-full left-4 right-4 mt-2 bg-white/95 backdrop-blur-md border border-primary/10 rounded-2xl shadow-xl p-6 flex-col gap-4">
+            <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-primary/5 block" href="index.html#drops">Shop</a>
+            <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-primary/5 block" href="lookbook.html">Lookbook</a>
+            <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-primary/5 flex items-center gap-2" href="#">
+                <span class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                About
+            </a>
+            <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 block" href="/contact.html">Contact</a>
+        </div>
+    </nav>
+
+<!-- ========================================== -->
+    <!-- 🟢 HERO SECTION (GOSPEL EDITORIAL LAYOUT) 🟢 -->
+    <!-- ========================================== -->
+    <header class="relative pt-32 pb-20 md:pt-48 md:pb-32 w-full overflow-hidden select-none bg-[#F5F0E8] z-10 border-b border-primary/10">
+        
+        <!-- 1. Ambient Background Noise & Architectural Grid -->
+        <div class="absolute inset-0 pointer-events-none z-0">
+            <div class="absolute inset-0 opacity-[0.4]" style="background-image: linear-gradient(rgba(10,10,10,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(10,10,10,0.03) 1px, transparent 1px); background-size: 40px 40px;"></div>
+            <div class="absolute inset-0 opacity-[0.4] mix-blend-overlay" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+        </div>
+        
+        <!-- Massive Hollow Text Parallax -->
+        <div class="absolute top-1/4 left-0 w-full opacity-[0.04] pointer-events-none select-none overflow-hidden z-0 flex whitespace-nowrap animate-[scroll_50s_linear_infinite]">
+            <span class="text-[35vh] md:text-[40vh] font-black font-display uppercase leading-none text-transparent" style="-webkit-text-stroke: 2px #0a0a0a;">WEAR YOUR PURPOSE • </span>
+            <span class="text-[35vh] md:text-[40vh] font-black font-display uppercase leading-none text-transparent" style="-webkit-text-stroke: 2px #0a0a0a;">WEAR YOUR PURPOSE • </span>
+        </div>
+
+        <div class="layout-container max-w-[1400px] mx-auto px-4 sm:px-8 relative z-10">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+                
+                <!-- ========================================== -->
+                <!-- LEFT: THE MANIFESTO TEXT                   -->
+                <!-- ========================================== -->
+                <div class="lg:col-span-6 relative flex flex-col justify-center order-2 lg:order-1">
+
+                    <div class="flex items-center gap-2 mb-6 md:mb-8 animate-fade-up">
+                        <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                        <span class="text-[9px] font-bold tracking-[0.3em] uppercase text-primary/60">The Manifesto / 001</span>
+                    </div>
+
+                    <div class="space-y-6 md:space-y-8">
+                        
+                        <!-- Heading -->
+                        <div class="animate-fade-up" style="animation-delay: 0.1s;">
+                            <h1 class="font-serif text-[16vw] sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.9] text-primary tracking-tighter drop-shadow-sm">
+                                Wear Your <br/>
+                                <span class="italic font-light text-primary/40 relative inline-block">
+                                    Purpose.
+                                    <div class="absolute top-1/2 -right-8 w-6 h-[2px] bg-primary/20 hidden md:block"></div>
+                                </span>
+                            </h1>
+                        </div>
+
+                        <!-- Paragraph -->
+                        <p class="font-display text-sm md:text-base leading-relaxed text-primary/70 max-w-lg animate-fade-up" style="animation-delay: 0.2s;">
+                            The world is loud, but purpose is quiet. We don't just drop clothing; we release testaments for the concrete jungle. 
+                            <span class="relative inline-block text-primary font-bold px-1 group-hover:bg-primary/5 transition-colors cursor-default">
+                                GDRIPX
+                                <span class="absolute bottom-1 left-0 w-full h-[3px] bg-primary/20 -z-10"></span>
+                            </span> 
+                            merges technical precision with the unfiltered spirit of Gospel clothing that speaks faith in a language of love and grace.
+                        </p>
+
+                        <!-- The Data Stats Grid -->
+                        <div class="border-y border-primary/10 py-6 my-8 w-full animate-fade-up" style="animation-delay: 0.3s;">
+                            <div class="flex overflow-x-auto md:grid md:grid-cols-3 gap-8 md:gap-4 no-scrollbar pr-4 md:pr-0">
+                                
+                                <div class="min-w-[120px] md:min-w-0 flex flex-col border-l-2 border-primary/20 pl-4 transition-all hover:border-primary">
+                                    <h4 class="font-serif text-3xl md:text-4xl font-bold text-primary italic">01.</h4>
+                                    <p class="text-[9px] uppercase tracking-[0.2em] mt-1 text-primary/50 font-bold">Concept</p>
+                                </div>
+                                
+                                <div class="min-w-[120px] md:min-w-0 flex flex-col border-l-2 border-primary/20 pl-4 transition-all hover:border-primary">
+                                    <h4 class="font-serif text-3xl md:text-4xl font-bold text-primary italic">NGA.</h4>
+                                    <p class="text-[9px] uppercase tracking-[0.2em] mt-1 text-primary/50 font-bold">Nigeria</p>
+                                </div>
+                                
+                                <div class="min-w-[120px] md:min-w-0 flex flex-col border-l-2 border-primary/20 pl-4 transition-all hover:border-primary">
+                                    <h4 class="font-serif text-3xl md:text-4xl font-bold text-primary italic">∞</h4>
+                                    <p class="text-[9px] uppercase tracking-[0.2em] mt-1 text-primary/50 font-bold">Vision</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- RIGHT: THE VISUAL COLLAGE (Images)         -->
+                <!-- ========================================== -->
+                <div class="lg:col-span-6 relative group order-1 lg:order-2 mb-8 lg:mb-0 animate-fade-up" style="animation-delay: 0.4s;">
+                    
+                    <!-- Desktop Tech Corner Brackets -->
+                    <div class="hidden md:block absolute -top-8 -left-8 w-24 h-24 border-t border-l border-primary/20 transition-all duration-700 group-hover:w-32 group-hover:h-32 group-hover:border-primary/50"></div>
+                    <div class="hidden md:block absolute -bottom-8 -right-16 w-24 h-24 border-b border-r border-primary/20 transition-all duration-700 group-hover:w-32 group-hover:h-32 group-hover:border-primary/50"></div>
+
+                    <!-- Main Large Image -->
+                    <div class="relative z-10 w-full md:w-[85%] aspect-[4/5] overflow-hidden rounded-[2rem] md:rounded-xl bg-[#e5e5e5] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.3)] mx-auto lg:ml-auto">
+                        <img src="https://images.unsplash.com/photo-1772501387421-ed71b07b51ef?q=80&w=729&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                             class="w-full h-full object-cover grayscale contrast-125 transition-all duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:grayscale-0 group-hover:scale-105" 
+                             alt="GDRIPX Model" loading="lazy">
+                        
+                        <div class="absolute inset-4 border border-white/20 rounded-[1rem] md:rounded-lg pointer-events-none mix-blend-overlay"></div>
+                    </div>
+
+                    <!-- Secondary Floating Image (Polaroid style) -->
+                    <div class="absolute -bottom-6 -left-2 md:-bottom-12 md:-left-12 w-[45%] md:w-[50%] aspect-[3/4] md:aspect-square bg-[#F5F0E8] p-2 md:p-3 rounded-2xl md:rounded-xl shadow-2xl z-20 transform -rotate-[6deg] group-hover:rotate-0 transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]">
+                        
+                        <div class="relative w-full h-full overflow-hidden rounded-xl md:rounded-lg">
+                            <img src="https://images.unsplash.com/photo-1772501387403-47b67c3caf63?q=80&w=718&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                 class="w-full h-full object-cover grayscale brightness-110 group-hover:grayscale-0 transition-all duration-1000" 
+                                 alt="Detail Shot" loading="lazy">
+                            
+                            <!-- Spinning Text Badge (Updated to NIGERIA) -->
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/10 pointer-events-none">
+                                <div class="animate-[spin_10s_linear_infinite] w-20 h-20 md:w-24 md:h-24">
+                                    <svg class="w-full h-full text-white drop-shadow-md" viewBox="0 0 100 100">
+                                        <path id="textPathHero" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
+                                        <text class="text-[12px] font-bold uppercase tracking-widest fill-current">
+                                            <textPath href="#textPathHero">Est. 2026 • NIGERIA • Worldwide •</textPath>
+                                        </text>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+<!-- ========================================== -->
+    <!-- 🟢 THE STORY / EDITORIAL SPREAD 🟢 -->
+    <!-- ========================================== -->
+    <section class="py-24 md:py-40 bg-white relative overflow-hidden z-10 border-t border-primary/10">
+        
+        <!-- Subtle Ambient Background Word -->
+        <div class="absolute top-[15%] right-[-5%] w-full opacity-[0.03] pointer-events-none select-none overflow-hidden z-0 text-right">
+            <span class="text-[25vh] md:text-[35vh] font-black font-display uppercase leading-none tracking-tighter">ORIGIN</span>
+        </div>
+
+        <div class="layout-container max-w-[1400px] mx-auto px-4 sm:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
+                
+                <!-- LEFT: The Narrative -->
+                <div class="lg:col-span-5 flex flex-col justify-center js-reveal">
+                    
+                    <div class="flex items-center gap-3 mb-8">
+                        <span class="w-8 h-[1px] bg-primary/30"></span>
+                        <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/50">Our Foundation</span>
+                    </div>
+                    
+                    <h2 class="font-serif text-5xl md:text-6xl lg:text-7xl font-black text-primary leading-[0.9] tracking-tighter mb-8">
+                        Not Just Fabric.<br>
+                        <span class="italic font-light text-primary/40">A Testament.</span>
+                    </h2>
+                    
+                    <div class="space-y-6 text-sm md:text-base text-primary/70 font-medium leading-relaxed">
+                        <p>
+                            <strong class="text-primary">GDRIPX</strong> was established in Nigeria with a singular, unyielding vision: to weave the profound message of the Gospel into the very foundation of modern luxury streetwear.
+                        </p>
+                        <p>
+                            We reject the noise of fast fashion. Instead, we engineer heavyweight, precision-milled garments designed to be worn as a quiet but undeniable statement of faith, grace, and uncompromised quality.
+                        </p>
+                        <p>
+                            Every silhouette is a canvas. Every collection is curated with absolute intention. From custom-tooled hardware to surgical stitching, we craft the uniform for those who move with purpose.
+                        </p>
+                    </div>
+
+                    <!-- Signature / Sign off -->
+                    <div class="mt-12 pt-8 border-t border-primary/10 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[#F5F0E8] flex items-center justify-center border border-primary/10">
+                            <span class="font-serif font-black text-xl italic text-primary">G</span>
+                        </div>
+                        <div>
+                            <p class="font-display text-[10px] font-bold tracking-[0.2em] text-primary uppercase">The GDRIPX Studio</p>
+                            <p class="font-serif text-xs italic text-primary/50 mt-0.5">Built on Faith. Cut for the Streets.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: The Editorial Imagery -->
+                <div class="lg:col-span-7 relative js-reveal">
+                    
+                    <!-- Main Image -->
+                    <div class="relative w-full aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-[2rem] bg-[#F5F0E8] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.15)] group">
+                        <img src="https://images.unsplash.com/photo-1772501387434-36b4ee48e1fb?q=80&w=696&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                             class="absolute inset-0 w-full h-full object-cover grayscale-[80%] contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[1500ms] ease-[cubic-bezier(0.19,1,0.22,1)]" 
+                             alt="GDRIPX Craftsmanship">
+                        
+                        <!-- Dark overlay gradient at the bottom -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+                        
+                        <div class="absolute bottom-8 left-8 md:bottom-12 md:left-12">
+                            <p class="font-display text-[9px] font-bold tracking-[0.3em] text-white/70 uppercase mb-2">Garment No. 01</p>
+                            <h3 class="font-serif text-3xl md:text-4xl font-bold text-white italic">The Standard.</h3>
+                        </div>
+                    </div>
+
+                    <!-- Floating Detail Image (Desktop Only) -->
+                    <div class="hidden lg:block absolute -left-16 top-1/4 w-[45%] aspect-square bg-white p-3 rounded-2xl shadow-2xl transform -rotate-3 hover:rotate-0 hover:scale-105 transition-all duration-700 ease-out z-20">
+                        <div class="w-full h-full overflow-hidden rounded-xl bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1775303545494-5eee318e31de?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                 class="w-full h-full object-cover grayscale hover:grayscale-0 transition-colors duration-700" 
+                                 alt="Fabric Detail">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- ========================================== -->
+    <!-- 🟢 SYNDICATE / NEWSLETTER CALLOUT 🟢 -->
+    <!-- ========================================== -->
+    <section class="relative py-24 md:py-32 bg-[#F5F0E8] overflow-hidden z-10 flex flex-col items-center justify-center text-center px-4 border-y border-primary/10">
+        
+        <!-- Massive Hairline / Stroke Background Text (Parallax & Animated) -->
+        <div class="absolute inset-0 flex flex-col justify-center pointer-events-none select-none opacity-60 z-0 overflow-hidden">
+            <!-- Track 1: Moving Left -->
+            <div class="whitespace-nowrap flex w-max animate-ticker">
+                <div class="flex gap-8 px-4">
+                    <span class="text-[20vw] md:text-[15vw] font-serif font-black uppercase leading-none text-transparent" style="-webkit-text-stroke: 1px rgba(10, 10, 10, 0.15);">GDRIPX ARCHIVE /// </span>
+                    <span class="text-[20vw] md:text-[15vw] font-serif font-black uppercase leading-none text-transparent" style="-webkit-text-stroke: 1px rgba(10, 10, 10, 0.15);">GDRIPX ARCHIVE /// </span>
+                    <span class="text-[20vw] md:text-[15vw] font-serif font-black uppercase leading-none text-transparent" style="-webkit-text-stroke: 1px rgba(10, 10, 10, 0.15);">GDRIPX ARCHIVE /// </span>
+                </div>
+            </div>
+            <!-- Track 2: Moving Right (Reverse) -->
+            <div class="whitespace-nowrap flex w-max animate-ticker mt-[-4vw]" style="animation-direction: reverse;">
+                <div class="flex gap-8 px-4">
+                    <span class="text-[20vw] md:text-[15vw] font-serif font-black uppercase leading-none text-transparent" style="-webkit-text-stroke: 1px rgba(10, 10, 10, 0.15);">EST 2026 /// THE SYNDICATE ///</span>
+                    <span class="text-[20vw] md:text-[15vw] font-serif font-black uppercase leading-none text-transparent" style="-webkit-text-stroke: 1px rgba(10, 10, 10, 0.15);">EST 2026 /// THE SYNDICATE ///</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Content -->
+        <div class="relative z-10 flex flex-col items-center">
+            
+            <div class="js-reveal mb-6 w-16 h-16 rounded-full border border-primary/20 bg-white/50 backdrop-blur-sm flex items-center justify-center shadow-lg group cursor-pointer hover:bg-primary transition-colors duration-500">
+                <span class="material-symbols-outlined text-primary text-3xl group-hover:text-white transition-colors duration-500 group-hover:rotate-180">fingerprint</span>
+            </div>
+            
+            <h2 class="js-reveal font-serif text-5xl md:text-6xl font-black text-primary leading-[0.9] tracking-tighter mb-4 drop-shadow-sm">
+                Join The <span class="italic font-light text-primary/40 relative inline-block">Syndicate.</span>
+            </h2>
+            
+            <p class="js-reveal text-primary/60 font-medium text-xs md:text-sm max-w-sm mx-auto mb-8 leading-relaxed">
+                Priority notifications for limited drops, vault unlocks, and archive sales. We operate in silence.
+            </p>
+            
+            <a href="index.html#newsletter" class="js-reveal inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase hover:scale-105 active:scale-95 transition-transform shadow-xl hover:shadow-black/20 group">
+                Unlock Access
+                <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">east</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- 🟢 FOOTER (EXACTLY FROM HOMEPAGE - DARK MODE) 🟢 -->
+    <footer class="bg-[#050505] text-[#F5F0E8] mt-0 relative overflow-hidden font-display z-10 md:rounded-t-[4rem] rounded-t-[2rem]" id="contact">
+        
+        <!-- Ambient Background Noise & Grid -->
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M54.627 0l.83.83v58.34h-58.34l-.83-.83V0h58.34zM29.17 29.17v29.17h29.17V29.17H29.17zM0 29.17v29.17h29.17V29.17H0zM29.17 0v29.17h29.17V0H29.17zM0 0v29.17h29.17V0H0z\' fill=\'%23ffffff\' fill-opacity=\'1\' fill-rule=\'evenodd\'/%3E%3C/svg%3E');"></div>
+            <div class="absolute bottom-[-20%] left-[10%] w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px]"></div>
+        </div>
+
+        <!-- 1. MASSIVE BRAND MARQUEE -->
+        <div class="w-full border-b border-white/10 overflow-hidden relative z-10 py-8 md:py-12 bg-black/50 backdrop-blur-sm">
+            <div class="whitespace-nowrap flex w-max animate-ticker items-center">
+                <div class="flex items-center">
+                    <h2 class="font-serif text-[15vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 select-none px-8">GDRIPX ARCHIVE</h2>
+                    <span class="material-symbols-outlined text-[8vw] text-white/20 px-8">emergency</span>
+                    <h2 class="font-serif text-[15vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 select-none px-8">GDRIPX ARCHIVE</h2>
+                    <span class="material-symbols-outlined text-[8vw] text-white/20 px-8">emergency</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="layout-container max-w-[1400px] mx-auto relative z-10">
+            
+            <!-- 2. MAIN ARCHITECTURAL GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 border-b border-white/10">
+                
+                <!-- Column 1: Brand Identity -->
+                <div class="lg:col-span-4 p-8 md:p-12 lg:border-r border-white/10 border-b lg:border-b-0 relative group js-reveal">
+                    <div class="w-12 h-12 bg-white flex items-center justify-center rounded-full mb-8 overflow-hidden group-hover:scale-110 transition-transform duration-500">
+                        <span class="font-serif font-black text-black text-xl">G</span>
+                    </div>
+                    <p class="text-white/60 text-sm font-medium leading-relaxed max-w-[280px] mb-8">
+                        Precision engineered streetwear for the modern shadow. Silence is loud.
+                    </p>
+                    <a href="mailto:support@gdripx.com" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-green-400 transition-colors">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        support@gdripx.com
+                    </a>
+                </div>
+
+                <!-- Column 2: Navigation -->
+                <div class="lg:col-span-2 p-8 md:p-12 md:border-r border-white/10 border-b md:border-b-0 js-reveal">
+                    <h4 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-8">Directory</h4>
+                    <ul class="space-y-5">
+                        <li><a href="index.html#drops" class="text-sm font-medium text-white/80 hover:text-white hover:translate-x-2 transition-all flex items-center justify-between group">Shop Drops <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">east</span></a></li>
+                        <li><a href="lookbook.html" class="text-sm font-medium text-white/80 hover:text-white hover:translate-x-2 transition-all flex items-center justify-between group">Lookbook <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">east</span></a></li>
+                        <li><a href="#" class="text-sm font-medium text-white/80 hover:text-white hover:translate-x-2 transition-all flex items-center justify-between group">Manifesto <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">east</span></a></li>
+                        <li><a href="cart.html" class="text-sm font-medium text-white/80 hover:text-white hover:translate-x-2 transition-all flex items-center justify-between group">Your Stash <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">east</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Legal/Support -->
+                <div class="lg:col-span-2 p-8 md:p-12 lg:border-r border-white/10 border-b lg:border-b-0 js-reveal">
+                    <h4 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-8">Support</h4>
+                    <ul class="space-y-5">
+                        <li><a href="#" class="text-sm font-medium text-white/60 hover:text-white transition-colors">Shipping Info</a></li>
+                        <li><a href="#" class="text-sm font-medium text-white/60 hover:text-white transition-colors">Returns</a></li>
+                        <li><a href="#" class="text-sm font-medium text-white/60 hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-sm font-medium text-white/60 hover:text-white transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Newsletter -->
+                <div class="lg:col-span-4 p-8 md:p-12 flex flex-col justify-between relative overflow-hidden group js-reveal">
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <h4 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-4">The Underground</h4>
+                        <p class="text-2xl font-serif font-black mb-6 leading-tight">Unlock early access <br>to limited drops.</p>
+                        <form class="relative group/form mt-4">
+                            <input type="email" required placeholder="Enter Email Address" class="w-full bg-white/5 border border-white/20 rounded-full py-4 pl-6 pr-16 text-sm text-white focus:outline-none focus:border-white focus:bg-white/10 transition-all placeholder:text-white/30 outline-none" />
+                            <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 3. FOOTER BOTTOM: Credits & Socials -->
+            <div class="p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+                <p class="text-[10px] uppercase tracking-widest text-white/30 font-bold order-3 md:order-1">
+                    © 2026 GDRIPX Inc. All Rights Reserved.
+                </p>
+
+                <!-- 🟢 ALPHA SK3TCH BADGE 🟢 -->
+                <div class="order-1 md:order-2">
+                    <div class="group relative cursor-default">
+                        <div class="absolute -inset-[1px] bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-full blur opacity-20 group-hover:opacity-75 group-hover:blur-md transition-all duration-500 animate-pulse"></div>
+                        <div class="relative bg-[#050505] border border-white/10 rounded-full px-5 py-2.5 flex items-center gap-3 shadow-xl backdrop-blur-md">
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-gray-500">
+                                Made with <span class="material-symbols-outlined text-[10px] text-red-500 animate-[ping_1.5s_infinite] align-middle px-0.5">favorite</span> by
+                            </span>
+                            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-cyan-400 transition-all duration-300">
+                                ALPHA SK3TCH
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="flex gap-3 order-2 md:order-3">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black hover:scale-110 transition-all"><span class="font-bold text-[10px] tracking-widest">IG</span></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black hover:scale-110 transition-all"><span class="font-bold text-[10px] tracking-widest">X</span></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black hover:scale-110 transition-all"><span class="font-bold text-[10px] tracking-widest">TT</span></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 🟢 SCRIPTS 🟢 -->
+    <script>
+        // --- SCROLL REVEAL ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
+            document.querySelectorAll('.js-reveal').forEach(el => observer.observe(el));
+        });
+
+        // --- NAVBAR SCROLL INVERT (Light page specific) ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if(navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
+        }, { passive: true });
+
+        // --- MOBILE MENU ---
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                const isOpen = mobileBtn.classList.toggle('open');
+                mobileMenu.classList.toggle('hidden', !isOpen);
+                mobileMenu.classList.toggle('flex', isOpen);
+            });
+        }
+
+        // --- CART SYNC ---
+        function updateCartDisplay() {
+            let cart = JSON.parse(localStorage.getItem('gdripx_cart')) || [];
+            document.getElementById('cart-count-badge').innerText = cart.length;
+        }
+        updateCartDisplay();
+        window.addEventListener('storage', (e) => { if(e.key === 'gdripx_cart') updateCartDisplay(); });
+
+        // --- LIGHT-MODE PRELOADER ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            const counter = document.getElementById('loader-counter');
+            const bar = document.getElementById('loader-bar');
+            let progress = 0;
+            
+            // Forces page to top on reload
+            window.scrollTo(0,0);
+
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10) + 2; 
+                if (progress > 100) progress = 100;
+                counter.innerText = `${progress}%`;
+                bar.style.width = `${progress}%`;
+                
+                if (progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        preloader.style.opacity = '0';
+                        preloader.style.pointerEvents = 'none'; 
+                    }, 500);
+                }
+            }, 30);
+        });
+    </script>
+</body>
+</html>
