@@ -315,6 +315,16 @@
         transform-origin: bottom center;
         display: inline-block;
     }
+    /* --- SPLIT-FLAP FLIP ANIMATION --- */
+    @keyframes flipTop {
+        0% { transform: rotateX(-90deg); opacity: 0; }
+        100% { transform: rotateX(0deg); opacity: 1; }
+    }
+    .flip-animate {
+        animation: flipTop 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        transform-origin: bottom center;
+        display: inline-block;
+    }
 </style>
 </head>
 
@@ -1398,29 +1408,26 @@
 </section>
 
 <!-- 🟢 PREMIUM GLASS VAULT SECTION 🟢 -->
-<!-- 🟢 PREMIUM GLASS VAULT SECTION (RIGHT-ALIGNED) 🟢 -->
+<!-- 🟢 PREMIUM GLASS VAULT SECTION 🟢 -->
 <section class="py-16 md:py-32 bg-[#050505] relative overflow-hidden flex items-center justify-center min-h-[90vh]" id="vault">
     
-    <!-- Subtle Background Grain (Keeps consistency) -->
+    <!-- Subtle Background Grain -->
     <div class="absolute inset-0 opacity-[0.05] mix-blend-overlay pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
 
     <div class="layout-container w-full max-w-[1400px] mx-auto px-4 sm:px-8 relative z-10">
 
-        <!-- 1. The Main Cinematic Card Container -->
-        <div class="relative w-full rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] border border-white/5 bg-[#0a0a0a]">
+        <!-- Cinematic Card Container -->
+        <div class="relative w-full rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-[0_40px_80px_-15px_rgba(0,0,0,0.9)] border border-white/5 bg-[#0a0a0a]">
 
-            <!-- The Teaser Image (Full Background of the card) -->
-            <!-- Adjusted to 'md:object-left' so the image subject is visible on the left -->
-            <img src="https://images.unsplash.com/photo-1775447462191-2a4c8c4e9ef1?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+            <!-- The Teaser Image -->
+            <img src="https://images.unsplash.com/photo-1775447462191-2a4c8c4e9ef1?q=80&w=880&auto=format&fit=crop" 
                  alt="Upcoming Collection Teaser" 
                  class="absolute inset-0 w-full h-full object-cover object-top md:object-left grayscale-[50%] brightness-[0.6] group-hover:scale-105 group-hover:brightness-[0.8] transition-all duration-[3000ms] ease-out" loading="lazy">
             
-            <!-- Dynamic Gradients to ensure text readability -->
-            <!-- Adjusted to 'md:bg-gradient-to-l' so the shadow anchors to the right side -->
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/90 md:bg-gradient-to-l md:from-black/90 md:via-black/50 md:to-transparent"></div>
+            <!-- Dynamic Gradients -->
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/95 md:bg-gradient-to-l md:from-black/95 md:via-black/50 md:to-transparent"></div>
 
-            <!-- 2. The Floating Glass Plate -->
-            <!-- Added 'ml-auto' to push the entire block to the right -->
+            <!-- The Floating Glass Plate -->
             <div class="relative z-10 w-full md:w-[65%] lg:w-[50%] ml-auto p-4 pt-48 md:p-12 lg:p-16 flex flex-col justify-end md:justify-center min-h-[65vh] md:min-h-[600px]">
 
                 <!-- Actual Glass Box -->
@@ -1436,7 +1443,7 @@
                     </div>
 
                     <!-- Title -->
-                    <h2 class="font-serif text-5xl md:text-7xl font-black leading-[0.9] text-white tracking-tighter mb-4">
+                    <h2 class="font-serif text-5xl sm:text-6xl md:text-7xl font-black leading-[0.9] text-white tracking-tighter mb-4 drop-shadow-lg">
                         LOTW <span class="italic font-light text-white/60"> </span>
                     </h2>
                     
@@ -1444,32 +1451,52 @@
                         High-end streetwear, redefined. The latest drop from GDRIPX explores the intersection of brutalist design and luxury comfort. 100% heavyweight cotton. Available now.
                     </p>
 
-                    <!-- The Mini Glass Countdown Grid -->
-                    <div class="grid grid-cols-4 gap-2 md:gap-4 mb-8">
+                    <!-- 🟢 THE UPGRADED MECHANICAL COUNTDOWN 🟢 -->
+                    <div class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-8">
                         
                         <!-- Days -->
-                        <div class="bg-black/40 border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center backdrop-blur-md shadow-inner">
-                            <span class="font-serif italic text-2xl md:text-4xl font-bold text-white" id="vault-days">00</span>
-                            <span class="text-[8px] md:text-[9px] font-bold tracking-widest uppercase text-white/40 mt-1">Days</span>
+                        <div class="relative bg-gradient-to-b from-white/10 to-white/5 border border-white/10 border-t-white/30 rounded-xl md:rounded-2xl flex flex-col items-center justify-center p-3 sm:p-4 backdrop-blur-xl shadow-inner overflow-hidden group/box hover:border-white/30 transition-colors">
+                            <span class="font-serif italic text-2xl sm:text-3xl md:text-4xl font-bold text-white relative z-10" id="vault-days">00</span>
+                            <!-- Mechanical Split Line -->
+                            <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/60 z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                            <!-- Side Notches -->
+                            <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-r border-white/20 z-30 rounded-r-sm"></div>
+                            <div class="absolute top-1/2 right-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-l border-white/20 z-30 rounded-l-sm"></div>
+                            
+                            <span class="text-[7px] sm:text-[9px] font-bold tracking-widest uppercase text-white/40 mt-1 md:mt-2 group-hover/box:text-white transition-colors relative z-10">Days</span>
                         </div>
                         
                         <!-- Hours -->
-                        <div class="bg-black/40 border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center backdrop-blur-md shadow-inner">
-                            <span class="font-serif italic text-2xl md:text-4xl font-bold text-white" id="vault-hours">00</span>
-                            <span class="text-[8px] md:text-[9px] font-bold tracking-widest uppercase text-white/40 mt-1">Hrs</span>
+                        <div class="relative bg-gradient-to-b from-white/10 to-white/5 border border-white/10 border-t-white/30 rounded-xl md:rounded-2xl flex flex-col items-center justify-center p-3 sm:p-4 backdrop-blur-xl shadow-inner overflow-hidden group/box hover:border-white/30 transition-colors">
+                            <span class="font-serif italic text-2xl sm:text-3xl md:text-4xl font-bold text-white relative z-10" id="vault-hours">00</span>
+                            <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/60 z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                            <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-r border-white/20 z-30 rounded-r-sm"></div>
+                            <div class="absolute top-1/2 right-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-l border-white/20 z-30 rounded-l-sm"></div>
+                            
+                            <span class="text-[7px] sm:text-[9px] font-bold tracking-widest uppercase text-white/40 mt-1 md:mt-2 group-hover/box:text-white transition-colors relative z-10">Hrs</span>
                         </div>
                         
                         <!-- Minutes -->
-                        <div class="bg-black/40 border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center backdrop-blur-md shadow-inner">
-                            <span class="font-serif italic text-2xl md:text-4xl font-bold text-white" id="vault-mins">00</span>
-                            <span class="text-[8px] md:text-[9px] font-bold tracking-widest uppercase text-white/40 mt-1">Min</span>
+                        <div class="relative bg-gradient-to-b from-white/10 to-white/5 border border-white/10 border-t-white/30 rounded-xl md:rounded-2xl flex flex-col items-center justify-center p-3 sm:p-4 backdrop-blur-xl shadow-inner overflow-hidden group/box hover:border-white/30 transition-colors">
+                            <span class="font-serif italic text-2xl sm:text-3xl md:text-4xl font-bold text-white relative z-10" id="vault-mins">00</span>
+                            <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/60 z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                            <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-r border-white/20 z-30 rounded-r-sm"></div>
+                            <div class="absolute top-1/2 right-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-l border-white/20 z-30 rounded-l-sm"></div>
+                            
+                            <span class="text-[7px] sm:text-[9px] font-bold tracking-widest uppercase text-white/40 mt-1 md:mt-2 group-hover/box:text-white transition-colors relative z-10">Min</span>
                         </div>
                         
-                        <!-- Seconds -->
-                        <div class="bg-white/10 border border-white/20 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.05)] relative overflow-hidden group/sec">
-                            <div class="absolute inset-0 bg-white/5 translate-y-full group-hover/sec:translate-y-0 transition-transform"></div>
-                            <span class="font-serif italic text-2xl md:text-4xl font-bold text-white relative z-10" id="vault-secs">00</span>
-                            <span class="text-[8px] md:text-[9px] font-bold tracking-widest uppercase text-white relative z-10">Sec</span>
+                        <!-- Seconds (Highlighted State) -->
+                        <div class="relative bg-gradient-to-b from-white/20 to-white/5 border border-white/30 border-t-white/50 rounded-xl md:rounded-2xl flex flex-col items-center justify-center p-3 sm:p-4 backdrop-blur-xl shadow-[0_0_20px_rgba(255,255,255,0.1)] overflow-hidden group/sec transition-all">
+                            <!-- Animated Background Fill on Hover -->
+                            <div class="absolute inset-0 bg-white/10 translate-y-full group-hover/sec:translate-y-0 transition-transform duration-300"></div>
+                            
+                            <span class="font-serif italic text-2xl sm:text-3xl md:text-4xl font-bold text-white relative z-10 drop-shadow-md" id="vault-secs">00</span>
+                            <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/60 z-20 shadow-[0_1px_0_rgba(255,255,255,0.2)]"></div>
+                            <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-r border-white/40 z-30 rounded-r-sm"></div>
+                            <div class="absolute top-1/2 right-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-l border-white/40 z-30 rounded-l-sm"></div>
+                            
+                            <span class="text-[7px] sm:text-[9px] font-bold tracking-widest uppercase text-white mt-1 md:mt-2 relative z-10">Sec</span>
                         </div>
                     </div>
 
@@ -1927,12 +1954,14 @@
 </div>
 
 <!-- ========================================== -->
-    <!-- 🟢 PRIVE' WELCOME POPUP (CENTERED FIX) 🟢   -->
+    <!-- 🟢 PRIVE' WELCOME POPUP (TRANSPARENT FIX) 🟢 -->
     <!-- ========================================== -->
-    <div id="prive-popup-overlay" class="fixed top-0 left-0 w-full h-[100dvh] z-[9999] bg-black/80 backdrop-blur-xl hidden opacity-0 transition-opacity duration-700 flex items-center justify-center p-4">
+    <!-- FIX: Changed bg-black/80 to bg-black/50 and backdrop-blur-xl to backdrop-blur-md -->
+    <div id="prive-popup-overlay" class="fixed top-0 left-0 w-full h-[100dvh] z-[9999] bg-black/50 backdrop-blur-md hidden opacity-0 transition-opacity duration-700 flex items-center justify-center p-4">
         
         <!-- The Responsive Popup Card -->
-        <div id="prive-popup-card" class="relative w-full max-w-[420px] aspect-[4/5] sm:aspect-square max-h-[85vh] bg-[#050505] rounded-[2rem] overflow-hidden border border-[#D4AF37]/30 shadow-[0_40px_100px_rgba(0,0,0,0.9)] transform scale-95 transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] flex flex-col group m-auto">
+        <!-- FIX: Changed bg-[#050505] to bg-[#050505]/80 and added backdrop-blur-2xl for frosted glass effect -->
+        <div id="prive-popup-card" class="relative w-full max-w-[420px] aspect-[4/5] sm:aspect-square max-h-[85vh] bg-[#050505]/80 backdrop-blur-2xl rounded-[2rem] overflow-hidden border border-[#D4AF37]/30 shadow-[0_40px_100px_rgba(0,0,0,0.9)] transform scale-95 transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] flex flex-col group m-auto">
             
             <!-- Close Button -->
             <button id="close-prive-popup" class="absolute top-4 right-4 z-50 w-10 h-10 bg-black/40 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 hover:rotate-90 transition-all duration-300">
@@ -1941,10 +1970,11 @@
 
             <!-- Background Image -->
             <img src="./images/prive.jpg" 
-                 class="absolute inset-0 w-full h-full object-cover object-right opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-[2000ms] ease-out pointer-events-none" alt="GDRIPX Prive">
+                 class="absolute inset-0 w-full h-full object-cover object-right opacity-50 group-hover:opacity-70 group-hover:scale-105 transition-all duration-[2000ms] ease-out pointer-events-none" alt="GDRIPX Prive">
             
             <!-- Dark Gradients -->
-            <div class="absolute inset-0 bg-gradient-to-b from-black/90 via-black/60 to-black/95 pointer-events-none"></div>
+            <!-- FIX: Softened the inner black gradient from 90/60/95 to 80/40/85 so the transparency breathes -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/85 pointer-events-none"></div>
             
             <!-- Inner Glowing Border -->
             <div class="absolute inset-2 border border-[#D4AF37]/10 rounded-[1.5rem] pointer-events-none"></div>
@@ -1981,7 +2011,7 @@
                     <div class="flex gap-1.5 sm:gap-3 items-center justify-center w-full">
                         <!-- Days -->
                         <div class="flex flex-col items-center group/box cursor-default">
-                            <div class="relative bg-gradient-to-b from-[#1a1a1a] to-[#050505] border border-white/10 border-t-white/30 rounded-lg w-[45px] h-14 sm:w-16 sm:h-20 flex items-center justify-center overflow-hidden shadow-lg transition-colors group-hover/box:border-[#D4AF37]/50">
+                            <div class="relative bg-gradient-to-b from-[#1a1a1a]/80 to-[#050505]/80 backdrop-blur-md border border-white/10 border-t-white/30 rounded-lg w-[45px] h-14 sm:w-16 sm:h-20 flex items-center justify-center overflow-hidden shadow-lg transition-colors group-hover/box:border-[#D4AF37]/50">
                                 <span class="font-serif italic text-2xl sm:text-4xl font-bold text-white relative z-10" id="popup-days">00</span>
                                 <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
                                 <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#222] border-r border-white/20 z-30 rounded-r-sm"></div>
@@ -1998,7 +2028,7 @@
                         
                         <!-- Hours -->
                         <div class="flex flex-col items-center group/box cursor-default">
-                            <div class="relative bg-gradient-to-b from-[#1a1a1a] to-[#050505] border border-white/10 border-t-white/30 rounded-lg w-[45px] h-14 sm:w-16 sm:h-20 flex items-center justify-center overflow-hidden shadow-lg transition-colors group-hover/box:border-[#D4AF37]/50">
+                            <div class="relative bg-gradient-to-b from-[#1a1a1a]/80 to-[#050505]/80 backdrop-blur-md border border-white/10 border-t-white/30 rounded-lg w-[45px] h-14 sm:w-16 sm:h-20 flex items-center justify-center overflow-hidden shadow-lg transition-colors group-hover/box:border-[#D4AF37]/50">
                                 <span class="font-serif italic text-2xl sm:text-4xl font-bold text-white relative z-10" id="popup-hours">00</span>
                                 <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
                                 <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#222] border-r border-white/20 z-30 rounded-r-sm"></div>
@@ -2015,7 +2045,7 @@
                         
                         <!-- Minutes -->
                         <div class="flex flex-col items-center group/box cursor-default">
-                            <div class="relative bg-gradient-to-b from-[#1a1a1a] to-[#050505] border border-white/10 border-t-white/30 rounded-lg w-[45px] h-14 sm:w-16 sm:h-20 flex items-center justify-center overflow-hidden shadow-lg transition-colors group-hover/box:border-[#D4AF37]/50">
+                            <div class="relative bg-gradient-to-b from-[#1a1a1a]/80 to-[#050505]/80 backdrop-blur-md border border-white/10 border-t-white/30 rounded-lg w-[45px] h-14 sm:w-16 sm:h-20 flex items-center justify-center overflow-hidden shadow-lg transition-colors group-hover/box:border-[#D4AF37]/50">
                                 <span class="font-serif italic text-2xl sm:text-4xl font-bold text-white relative z-10" id="popup-mins">00</span>
                                 <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
                                 <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#222] border-r border-white/20 z-30 rounded-r-sm"></div>
@@ -2032,7 +2062,7 @@
                         
                         <!-- Seconds -->
                         <div class="flex flex-col items-center group/box cursor-default">
-                            <div class="relative bg-gradient-to-b from-[#1a1a1a] to-[#050505] border border-[#D4AF37]/40 border-t-[#D4AF37]/60 rounded-lg w-[45px] h-14 sm:w-16 sm:h-20 flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(212,175,55,0.15)] group-hover/box:shadow-[0_0_25px_rgba(212,175,55,0.3)] transition-shadow">
+                            <div class="relative bg-gradient-to-b from-[#1a1a1a]/80 to-[#050505]/80 backdrop-blur-md border border-[#D4AF37]/40 border-t-[#D4AF37]/60 rounded-lg w-[45px] h-14 sm:w-16 sm:h-20 flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(212,175,55,0.15)] group-hover/box:shadow-[0_0_25px_rgba(212,175,55,0.3)] transition-shadow">
                                 <div class="absolute inset-0 bg-[#D4AF37]/10 z-0"></div>
                                 <span class="font-serif italic text-2xl sm:text-4xl font-bold text-[#D4AF37] relative z-10" id="popup-secs">00</span>
                                 <div class="absolute top-1/2 left-0 w-full h-[1.5px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
@@ -2046,7 +2076,7 @@
 
                 <!-- Bottom Button -->
                 <div class="w-full mt-auto animate-fade-up" style="animation-delay: 0.2s;">
-                    <a href="prive.html" class="w-full bg-[#D4AF37] text-black py-3.5 sm:py-4 rounded-xl text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase flex items-center justify-center gap-2 hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-300">
+                    <a href="prive.html" class="w-full bg-[#D4AF37]/90 backdrop-blur-md text-black py-3.5 sm:py-4 rounded-xl text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase flex items-center justify-center gap-2 hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-300">
                         Preview The Atelier <span class="material-symbols-outlined text-[14px]">trending_flat</span>
                     </a>
                 </div>
@@ -3126,6 +3156,59 @@ whatsappForm.addEventListener('submit', (e) => {
     // Start Engine
     updateAllCountdowns();
     setInterval(updateAllCountdowns, 1000);
+
+    // --- 🟢 VAULT COUNTDOWN LOGIC 🟢 ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const vDays = document.getElementById("vault-days");
+            const vHours = document.getElementById("vault-hours");
+            const vMins = document.getElementById("vault-mins");
+            const vSecs = document.getElementById("vault-secs");
+
+            // Set the target drop date here (e.g., Dec 31, 2026)
+            const vaultDropDate = new Date("April 15, 2026 00:00:00").getTime();
+            
+            // Helper function to animate the number changes
+            function animateVaultFlip(element, newValue) {
+                if (element && element.innerText !== newValue) {
+                    element.classList.remove('flip-animate');
+                    void element.offsetWidth; // Trigger DOM reflow
+                    element.innerText = newValue;
+                    element.classList.add('flip-animate');
+                }
+            }
+
+            function updateVaultCountdown() {
+                const now = new Date().getTime(); 
+                const distance = vaultDropDate - now;
+
+                if (distance < 0) {
+                    // Lock at zero if date has passed
+                    animateVaultFlip(vDays, "00"); 
+                    animateVaultFlip(vHours, "00"); 
+                    animateVaultFlip(vMins, "00"); 
+                    animateVaultFlip(vSecs, "00");
+                    return;
+                }
+
+                // Calculate time
+                const d = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                const s = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+
+                // Apply to DOM
+                animateVaultFlip(vDays, d);
+                animateVaultFlip(vHours, h);
+                animateVaultFlip(vMins, m);
+                animateVaultFlip(vSecs, s);
+            }
+
+            // Start Engine if the elements exist on this page
+            if (vDays && vHours && vMins && vSecs) {
+                updateVaultCountdown();
+                setInterval(updateVaultCountdown, 1000);
+            }
+        });
 </script>
 
 <script>

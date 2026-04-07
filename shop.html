@@ -172,15 +172,87 @@
                 </button>
             </div>
 
+<!-- ========================================== -->
+            <!-- 🟢 PREMIUM STREETWEAR COMMAND BAR 🟢       -->
             <!-- ========================================== -->
-            <!-- 🟢 SHOP GRID PLACEHOLDER 🟢                -->
-            <!-- ========================================== -->
-            <div id="shop-grid-container" class="w-full min-h-[40vh] flex flex-col items-center justify-center border border-dashed border-primary/20 rounded-[2rem] bg-white/30 backdrop-blur-sm p-12 text-center animate-fade-up" style="animation-delay: 0.2s;">
-                <span class="material-symbols-outlined text-primary/20 text-5xl mb-4 animate-pulse">checkroom</span>
-                <h3 class="font-serif text-2xl font-bold text-primary italic mb-2">The Core Archive</h3>
-                <p class="text-xs text-primary/50 uppercase tracking-widest font-bold">Awaiting Silhouettes...</p>
+            <div class="w-full flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6 mb-12 animate-fade-up" style="animation-delay: 0.2s;">
+                
+                <!-- 1. CATEGORY FILTERS (Clean Pill Design) -->
+                <!-- overflow-x-auto allows smooth horizontal scrolling on mobile -->
+                <div class="w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0 mask-fade-edges">
+                    <div class="flex gap-2 items-center w-max px-1">
+                        
+                        <!-- FILTER: ALL -->
+                        <button class="filter-btn active-filter px-5 py-2.5 md:py-3 rounded-full border text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 ease-out border-primary bg-primary text-white shadow-md [&:not(.active-filter)]:bg-transparent [&:not(.active-filter)]:text-primary/60 [&:not(.active-filter)]:border-primary/20 hover:[&:not(.active-filter)]:border-primary/50 hover:[&:not(.active-filter)]:text-primary" data-filter="all">
+                            All Drops
+                        </button>
+
+                        <!-- FILTER: HOODIES -->
+                        <button class="filter-btn px-5 py-2.5 md:py-3 rounded-full border text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 ease-out bg-transparent text-primary/60 border-primary/20 hover:border-primary/50 hover:text-primary [&.active-filter]:bg-primary [&.active-filter]:text-white [&.active-filter]:border-primary [&.active-filter]:shadow-md" data-filter="hoodies">
+                            Hoodies
+                        </button>
+
+                        <!-- FILTER: TEES -->
+                        <button class="filter-btn px-5 py-2.5 md:py-3 rounded-full border text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 ease-out bg-transparent text-primary/60 border-primary/20 hover:border-primary/50 hover:text-primary [&.active-filter]:bg-primary [&.active-filter]:text-white [&.active-filter]:border-primary [&.active-filter]:shadow-md" data-filter="tees">
+                            Tees
+                        </button>
+
+                        <!-- FILTER: OUTERWEAR -->
+                        <button class="filter-btn px-5 py-2.5 md:py-3 rounded-full border text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 ease-out bg-transparent text-primary/60 border-primary/20 hover:border-primary/50 hover:text-primary [&.active-filter]:bg-primary [&.active-filter]:text-white [&.active-filter]:border-primary [&.active-filter]:shadow-md" data-filter="outerwear">
+                            Outerwear
+                        </button>
+
+                        <!-- FILTER: ACCESSORIES -->
+                        <button class="filter-btn px-5 py-2.5 md:py-3 rounded-full border text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 ease-out bg-transparent text-primary/60 border-primary/20 hover:border-primary/50 hover:text-primary [&.active-filter]:bg-primary [&.active-filter]:text-white [&.active-filter]:border-primary [&.active-filter]:shadow-md" data-filter="accessories">
+                            Accessories
+                        </button>
+
+                    </div>
+                </div>
+
+<!-- 2. ANIMATED STREETWEAR SEARCH BAR -->
+                <div class="w-full md:w-auto flex shrink-0 group/searchbox">
+                    <!-- Wrapper: Expands from 280px to 340px on focus (Desktop) -->
+                    <div class="relative w-full md:w-[280px] focus-within:md:w-[340px] transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]">
+                        
+                        <!-- Outer Pill Container -->
+                        <div class="relative flex items-center w-full bg-white/40 backdrop-blur-md border border-primary/20 rounded-full p-1.5 transition-all duration-500 group-focus-within/searchbox:bg-white group-focus-within/searchbox:border-primary group-focus-within/searchbox:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.15)] hover:border-primary/50">
+                            
+                            <!-- Input Field -->
+                            <input type="text" id="search-input" placeholder="Search collection..." 
+                                   class="w-full bg-transparent border-none py-2 pl-4 pr-2 text-xs md:text-sm font-medium text-primary outline-none focus:ring-0 placeholder:text-primary/40 transition-all peer">
+                            
+                            <!-- Result Counter (Handled by JS) -->
+                            <span id="search-count" class="text-[10px] font-bold text-primary/40 opacity-0 transition-opacity duration-300 pointer-events-none whitespace-nowrap mr-3"></span>
+
+                            <!-- 🟢 ANIMATED SEARCH BUTTON 🟢 -->
+                            <button type="button" id="search-action-btn" class="relative w-10 h-10 md:w-11 md:h-11 shrink-0 rounded-full bg-primary/5 text-primary flex items-center justify-center overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-focus-within/searchbox:bg-primary group-focus-within/searchbox:text-white hover:!bg-black active:scale-90">
+                                
+                                <!-- Search Icon (Default State) -->
+                                <span class="material-symbols-outlined text-[20px] absolute transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-focus-within/searchbox:-translate-y-10 group-focus-within/searchbox:opacity-0">
+                                    search
+                                </span>
+                                
+                                <!-- Action Arrow Icon (Active/Focus State) -->
+                                <!-- Slides in from the bottom when you click the search bar -->
+                                <span class="material-symbols-outlined text-[20px] absolute translate-y-10 opacity-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-focus-within/searchbox:translate-y-0 group-focus-within/searchbox:opacity-100 group-focus-within/searchbox:-rotate-45">
+                                    east
+                                </span>
+
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <!-- ========================================== -->
+           
+            <!-- Empty State Message (Hidden by default, shows when search fails) -->
+            <div id="no-results" class="hidden w-full py-20 flex-col items-center justify-center text-center">
+                <span class="material-symbols-outlined text-primary/20 text-5xl mb-4">search_off</span>
+                <h3 class="font-serif text-2xl font-bold text-primary italic mb-2">No Archives Found</h3>
+                <p class="text-xs text-primary/50 uppercase tracking-widest font-bold">Try adjusting your search or filters.</p>
+            </div>
 
         </div>
     </main>
@@ -515,6 +587,106 @@
                 }
             });
         }
+        // --- 🟢 SHOP DYNAMICS: FILTERS & SEARCH 🟢 ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const productCards = document.querySelectorAll('.product-card');
+            const searchInput = document.getElementById('search-input');
+            const searchCount = document.getElementById('search-count');
+            const noResults = document.getElementById('no-results');
+
+            let currentCategory = 'all';
+            let searchQuery = '';
+
+            function updateGrid() {
+                let visibleCount = 0;
+
+                productCards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    const cardName = card.getAttribute('data-name').toLowerCase();
+                    
+                    // Check Category
+                    const matchesCategory = (currentCategory === 'all' || cardCategory === currentCategory);
+                    // Check Search
+                    const matchesSearch = cardName.includes(searchQuery);
+
+                    if (matchesCategory && matchesSearch) {
+                        card.style.display = 'flex';
+                        // Small timeout to allow display:flex to apply before animating opacity
+                        setTimeout(() => {
+                            card.classList.remove('opacity-0', 'scale-95');
+                            card.classList.add('opacity-100', 'scale-100');
+                        }, 50);
+                        visibleCount++;
+                    } else {
+                        card.classList.remove('opacity-100', 'scale-100');
+                        card.classList.add('opacity-0', 'scale-95');
+                        setTimeout(() => { card.style.display = 'none'; }, 300); // Wait for fade out
+                    }
+                });
+
+                // Handle Empty State
+                setTimeout(() => {
+                    if (visibleCount === 0) {
+                        noResults.classList.remove('hidden');
+                        noResults.classList.add('flex');
+                    } else {
+                        noResults.classList.add('hidden');
+                        noResults.classList.remove('flex');
+                    }
+                }, 300);
+
+                // Update Search Counter UI
+                if (searchQuery.length > 0) {
+                    searchCount.innerText = `${visibleCount} Found`;
+                    searchCount.classList.remove('opacity-0');
+                } else {
+                    searchCount.classList.add('opacity-0');
+                }
+            }
+
+// FILTER BUTTON CLICKS (Ultra-Clean Logic)
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    
+                    // 1. Remove the active class from all buttons
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active-filter');
+                    });
+                    
+                    // 2. Add the active class to the clicked button
+                    btn.classList.add('active-filter');
+
+                    // 3. Trigger the grid update
+                    currentCategory = btn.getAttribute('data-filter');
+                    updateGrid();
+                });
+            });
+
+            // SEARCH INPUT LISTENER
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                updateGrid();
+            });
+
+            // SEARCH ACTION BUTTON BEHAVIOR
+            const searchActionBtn = document.getElementById('search-action-btn');
+            if (searchActionBtn && searchInput) {
+                searchActionBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Unfocus the input to drop the keyboard on mobile and collapse the bar
+                    searchInput.blur(); 
+                    
+                    // Optional: Add a quick flash effect to the grid to simulate "loading"
+                    const gridContainer = document.getElementById('shop-grid');
+                    gridContainer.classList.add('opacity-50', 'scale-[0.98]');
+                    setTimeout(() => {
+                        gridContainer.classList.remove('opacity-50', 'scale-[0.98]');
+                        gridContainer.classList.add('transition-all', 'duration-500');
+                    }, 150);
+                });
+            }
+        });
     </script>
 </body>
 </html>
