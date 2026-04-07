@@ -211,8 +211,7 @@
                     <span class="material-symbols-outlined text-[14px]">lock_open</span> Prive'
                 </button>
             </div>
-
-            <!-- ========================================== -->
+<!-- ========================================== -->
             <!-- 🟢 MASSIVE VAULT COUNTDOWN 🟢              -->
             <!-- ========================================== -->
             <div class="w-full flex flex-col items-center justify-center animate-fade-up" style="animation-delay: 0.2s;">
@@ -221,69 +220,72 @@
                     <span class="w-8 h-[1px] bg-white/20"></span> Collection Unlocks In <span class="w-8 h-[1px] bg-white/20"></span>
                 </p>
 
-                <!-- 🟢 Split-Flap Blocks 🟢 -->
-                <div class="flex gap-3 md:gap-6 lg:gap-8 items-center justify-center">
+                <!-- 🟢 Split-Flap Blocks (All 4 Visible on Mobile) 🟢 -->
+                <!-- Reduced the gap on mobile from 'gap-3' to 'gap-1.5' to make them all fit -->
+                <div class="flex gap-1.5 sm:gap-3 md:gap-6 lg:gap-8 items-center justify-center w-full max-w-[100vw] px-2">
                     
                     <!-- Days -->
                     <div class="flex flex-col items-center">
-                        <div class="relative bg-[#050505] border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-xl w-16 h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
-                            <!-- Background gradient for glass curve -->
+                        <div class="relative bg-[#050505] border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-xl w-[70px] h-20 sm:w-16 sm:h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
                             <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent z-0"></div>
-                            <span class="font-serif italic text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-days-main">30</span>
-                            <!-- Split Line -->
+                            <!-- Reduced mobile font size to text-3xl so it doesn't break out of the box -->
+                            <span class="font-serif italic text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-days-main">30</span>
                             <div class="absolute top-1/2 left-0 w-full h-[2px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
                         </div>
-                        <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-prive-gold mt-4 md:mt-6">Days</span>
+                        <span class="text-[7px] md:text-[10px] font-bold uppercase tracking-widest text-prive-gold mt-3 md:mt-6">Days</span>
                     </div>
 
-                    <span class="text-white/20 text-3xl md:text-5xl font-light mb-8 md:mb-12">:</span>
+                    <span class="text-white/20 text-2xl sm:text-3xl md:text-5xl font-light mb-8 md:mb-12">:</span>
 
                     <!-- Hours -->
                     <div class="flex flex-col items-center">
-                        <div class="relative bg-[#050505] border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-xl w-16 h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
+                        <div class="relative bg-[#050505] border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-xl w-[70px] h-20 sm:w-16 sm:h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
                             <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent z-0"></div>
-                            <span class="font-serif italic text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-hours-main">00</span>
+                            <span class="font-serif italic text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-hours-main">00</span>
                             <div class="absolute top-1/2 left-0 w-full h-[2px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
                         </div>
-                        <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-prive-gold mt-4 md:mt-6">Hours</span>
+                        <span class="text-[7px] md:text-[10px] font-bold uppercase tracking-widest text-prive-gold mt-3 md:mt-6">Hours</span>
                     </div>
 
-                    <span class="text-white/20 text-3xl md:text-5xl font-light mb-8 md:mb-12">:</span>
+                    <span class="text-white/20 text-2xl sm:text-3xl md:text-5xl font-light mb-8 md:mb-12">:</span>
 
                     <!-- Minutes -->
                     <div class="flex flex-col items-center">
-                        <div class="relative bg-[#050505] border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-xl w-16 h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
+                        <div class="relative bg-[#050505] border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-xl w-[70px] h-20 sm:w-16 sm:h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
                             <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent z-0"></div>
-                            <span class="font-serif italic text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-mins-main">00</span>
+                            <span class="font-serif italic text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-mins-main">00</span>
                             <div class="absolute top-1/2 left-0 w-full h-[2px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
                         </div>
-                        <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-prive-gold mt-4 md:mt-6">Minutes</span>
+                        <!-- Abbreviated 'Minutes' to 'Mins' on mobile to save space -->
+                        <span class="text-[7px] md:text-[10px] font-bold uppercase tracking-widest text-prive-gold mt-3 md:mt-6">Mins</span>
                     </div>
 
-                    <span class="text-white/20 text-3xl md:text-5xl font-light mb-8 md:mb-12 hidden md:block">:</span>
+                    <span class="text-white/20 text-2xl sm:text-3xl md:text-5xl font-light mb-8 md:mb-12">:</span>
 
-                    <!-- Seconds (With subtle highlight) -->
-                    <div class="flex flex-col items-center hidden md:flex">
-                        <div class="relative bg-[#0a0a0a] border border-[#D4AF37]/30 shadow-[0_0_30px_rgba(212,175,55,0.1)] rounded-xl w-16 h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
+                    <!-- Seconds (Now ALWAYS VISIBLE) -->
+                    <div class="flex flex-col items-center">
+                        <div class="relative bg-[#0a0a0a] border border-[#D4AF37]/30 shadow-[0_0_30px_rgba(212,175,55,0.1)] rounded-xl w-[70px] h-20 sm:w-16 sm:h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
                             <div class="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/10 to-transparent z-0"></div>
-                            <span class="font-serif italic text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-secs-main">00</span>
+                            <span class="font-serif italic text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-secs-main">00</span>
                             <div class="absolute top-1/2 left-0 w-full h-[2px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
                         </div>
-                        <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] mt-4 md:mt-6">Seconds</span>
+                        <span class="text-[7px] md:text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] mt-3 md:mt-6">Secs</span>
                     </div>
                 </div>
 
                 <!-- CTA Form under the countdown -->
-                <div class="mt-16 w-full max-w-md animate-fade-up" style="animation-delay: 0.4s;">
+                <!-- Added extra padding horizontally on mobile so input doesn't hit screen edge -->
+                <div class="mt-12 md:mt-16 w-full max-w-md animate-fade-up px-4 md:px-0" style="animation-delay: 0.4s;">
                     <p class="text-[10px] text-white/50 uppercase tracking-widest font-bold mb-4 text-center">Secure Your Allocation</p>
                     <form class="relative group/form" onsubmit="event.preventDefault(); alert('Priority Access Confirmed.');">
-                        <input type="email" required placeholder="ENTER EMAIL ADDRESS" class="w-full bg-[#050505] border border-white/20 rounded-full py-4 pl-6 pr-32 text-xs md:text-sm text-white font-bold tracking-widest transition-all placeholder:text-white/30 uppercase focus:border-prive-gold focus:shadow-[0_0_20px_rgba(212,175,55,0.15)]">
-                        <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 bg-white text-black px-6 rounded-full flex items-center justify-center text-[10px] font-bold tracking-widest uppercase hover:bg-prive-gold hover:text-black transition-all duration-300">
+                        <input type="email" required placeholder="ENTER EMAIL ADDRESS" class="w-full bg-[#050505] border border-white/20 rounded-full py-4 pl-6 pr-32 text-[10px] md:text-sm text-white font-bold tracking-widest transition-all placeholder:text-white/30 uppercase focus:border-prive-gold focus:shadow-[0_0_20px_rgba(212,175,55,0.15)] outline-none">
+                        <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 bg-white text-black px-4 md:px-6 rounded-full flex items-center justify-center text-[9px] md:text-[10px] font-bold tracking-widest uppercase hover:bg-prive-gold hover:text-black transition-all duration-300">
                             Notify Me
                         </button>
                     </form>
                 </div>
             </div>
+            <!-- ========================================== -->
             <!-- ========================================== -->
 
         </div>
