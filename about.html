@@ -551,6 +551,97 @@
         </div>
     </footer>
 
+    <!-- ========================================== -->
+    <!-- 🟢 FLOAT CONCIERGE WIDGET (CLIENT SERVICES) 🟢 -->
+    <!-- ========================================== -->
+    <div class="fixed bottom-6 right-6 z-[9000] flex flex-col items-end gap-4 font-display pointer-events-none">
+        
+        <!-- Chat Window -->
+        <div id="concierge-window" class="w-[300px] md:w-[360px] bg-[#050505]/90 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom-right scale-0 opacity-0 translate-y-10 pointer-events-auto">
+            
+            <!-- Header -->
+            <div class="bg-white/5 p-5 border-b border-white/5 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                            <!-- Ensure the path to logo.png is correct for sub-pages -->
+                            <img src="./images/logo.png" alt="G" class="w-5 h-5 object-contain">
+                        </div>
+                        <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-black rounded-full animate-pulse"></div>
+                    </div>
+                    <div>
+                        <h4 class="text-white text-sm font-bold tracking-widest uppercase">Client Services</h4>
+                        <p class="text-[10px] text-white/50">The Studio is Online</p>
+                    </div>
+                </div>
+                <!-- Close Button -->
+                <button id="close-chat" class="text-white/40 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+            </div>
+
+            <!-- Chat Body -->
+            <div class="p-5 h-[250px] overflow-y-auto space-y-4" id="chat-body">
+                <!-- Timestamp -->
+                <div class="text-center">
+                    <span class="text-[9px] text-white/30 uppercase tracking-widest">Today</span>
+                </div>
+
+                <!-- Brand Message -->
+                <div class="flex gap-3 animate-fade-up">
+                    <div class="w-6 h-6 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white">G</div>
+                    <div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs text-white/90 leading-relaxed border border-white/5">
+                        <p>Welcome to the archive. <br>Need sizing help or checking on an order? Type below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 bg-black/50 border-t border-white/10">
+                <form id="whatsapp-form" class="relative">
+                    <input type="text" id="whatsapp-input" placeholder="Type your message..." 
+                           class="w-full bg-white/5 border border-white/10 rounded-full pl-5 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all placeholder:text-white/20">
+                    
+                    <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-[16px] -ml-0.5 mt-0.5">send</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 3D Toggle Button -->
+        <button id="concierge-btn" class="group relative flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300 z-50 hover:translate-y-[-4px] active:scale-95 pointer-events-auto">
+
+            <!-- The Spinning Radar Ring -->
+            <div class="absolute inset-[-3px] rounded-full bg-[conic-gradient(from_0deg,transparent_60%,#22c55e_100%)] animate-[spin_2s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-[2px]"></div>
+
+            <!-- The Main 3D Button Body -->
+            <div class="absolute inset-0 bg-[#0a0a0a] rounded-full shadow-[inset_0_4px_10px_rgba(255,255,255,0.15),0_15px_30px_-5px_rgba(0,0,0,0.8)] border border-white/10 overflow-hidden flex items-center justify-center backdrop-blur-md">
+                
+                <!-- Glossy Reflection (Glass Effect) -->
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-gradient-to-b from-white/20 to-transparent rounded-full blur-[1px]"></div>
+
+                <!-- Icons (Swap Logic) -->
+                <span class="material-symbols-outlined text-2xl text-white transition-all duration-300 rotate-0 scale-100 absolute drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" id="chat-icon-open">chat_bubble</span>
+                <span class="material-symbols-outlined text-2xl text-white transition-all duration-300 rotate-90 scale-0 absolute opacity-0" id="chat-icon-close">close</span>
+            </div>
+
+            <!-- The 3D Notification Badge -->
+            <div class="absolute -top-1 -right-1 w-6 h-6 bg-red-600 rounded-full flex items-center justify-center border-[3px] border-[#0a0a0a] shadow-lg animate-[bounce_2s_infinite]" id="notification-badge">
+                <span class="text-[10px] font-bold text-white font-display relative z-10">1</span>
+                <!-- Ping Wave -->
+                <span class="absolute inset-0 rounded-full bg-red-600 animate-ping opacity-75"></span>
+            </div>
+
+            <!-- Tooltip Label (Desktop Only) -->
+            <div class="absolute right-full mr-6 bg-black/90 text-white border border-white/20 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none shadow-xl hidden md:block">
+                Priority Support
+                <div class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-black/90 border-r border-t border-white/20 transform rotate-45"></div>
+            </div>
+
+        </button>
+    </div>
+
     <!-- 🟢 SCRIPTS 🟢 -->
     <script>
         // --- SCROLL REVEAL ---
@@ -616,6 +707,61 @@
                 }
             }, 30);
         });
+
+        // --- 🟢 CONCIERGE / CLIENT SERVICES LOGIC 🟢 ---
+        const conciergeBtn = document.getElementById('concierge-btn');
+        const conciergeWindow = document.getElementById('concierge-window');
+        const closeChatBtn = document.getElementById('close-chat');
+        const iconOpen = document.getElementById('chat-icon-open');
+        const iconClose = document.getElementById('chat-icon-close');
+        const whatsappForm = document.getElementById('whatsapp-form');
+        const whatsappInput = document.getElementById('whatsapp-input');
+
+        if (conciergeBtn && conciergeWindow) {
+            function toggleChat() {
+                const isClosed = conciergeWindow.classList.contains('scale-0');
+                if (isClosed) {
+                    // Open Chat
+                    conciergeWindow.classList.remove('scale-0', 'opacity-0', 'translate-y-10');
+                    conciergeWindow.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+                    iconOpen.classList.add('rotate-90', 'scale-0', 'opacity-0');
+                    iconClose.classList.remove('rotate-90', 'scale-0', 'opacity-0');
+                    iconClose.classList.add('rotate-0', 'scale-100', 'opacity-100');
+                    // Automatically focus the input for the user
+                    setTimeout(() => whatsappInput.focus(), 300);
+                    
+                    // Hide the red notification badge once they open it
+                    const badge = document.getElementById('notification-badge');
+                    if (badge) badge.style.display = 'none';
+                } else {
+                    // Close Chat
+                    conciergeWindow.classList.add('scale-0', 'opacity-0', 'translate-y-10');
+                    conciergeWindow.classList.remove('scale-100', 'opacity-100', 'translate-y-0');
+                    iconOpen.classList.remove('rotate-90', 'scale-0', 'opacity-0');
+                    iconClose.classList.add('rotate-90', 'scale-0', 'opacity-0');
+                    iconClose.classList.remove('rotate-0', 'scale-100', 'opacity-100');
+                }
+            }
+
+            conciergeBtn.addEventListener('click', toggleChat);
+            closeChatBtn.addEventListener('click', toggleChat);
+
+            whatsappForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const message = whatsappInput.value.trim();
+                if (message) {
+                    // ⚠️ GDRIPX WHATSAPP NUMBER
+                    const phoneNumber = "2347071090642"; 
+                    
+                    const encodedMessage = encodeURIComponent(message);
+                    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                    
+                    window.open(whatsappURL, '_blank');
+                    whatsappInput.value = '';
+                    toggleChat(); 
+                }
+            });
+        }
     </script>
 </body>
 </html>

@@ -14,33 +14,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&amp;display=swap" rel="stylesheet" />
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="./images/favicon.png" />
     <link rel="apple-touch-icon" href="./images/favicon.png" />
     
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
-            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
                         "primary": "#0a0a0a",
-                        "primary-inverse": "#F5F0E8", 
                         "background-light": "#F5F0E8", 
-                        "background-dark": "#0a0a0a", 
+                        "prive-gold": "#D4AF37",
                     },
                     fontFamily: {
                         "display": ["Inter", "sans-serif"],
                         "serif":["Playfair Display", "serif"], 
                     },
-                    keyframes: {
-                        scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(calc(-100% - 1rem))' } },
-                        fadeUp: { '0%': { transform: 'translateY(40px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } }
-                    },
                     animation: {
-                        'fade-up': 'fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) both',
+                        'fade-up': 'fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'ticker': 'scroll 30s linear infinite',
+                    },
+                    keyframes: {
+                        fadeUp: { '0%': { transform: 'translateY(40px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(calc(-100% - 1rem))' } }
                     }
                 },
             },
@@ -49,6 +46,8 @@
 <style>
     body { margin: 0; padding: 0; overflow-x: hidden; background-color: #F5F0E8; color: #0a0a0a; }
     ::-webkit-scrollbar { width: 0px; background: transparent; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
     .nav-link { position: relative; padding-bottom: 2px; }
     .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 1px; background: linear-gradient(to right, #71717a, #000, #71717a); transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
@@ -58,7 +57,7 @@
     #navbar.scrolled #nav-pill { background: rgba(255, 255, 255, 0.95); border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); backdrop-filter: blur(12px); }
 
     @keyframes navSlideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-
+    
     #mobile-menu-btn.open .hamburger-line:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
     #mobile-menu-btn.open .hamburger-line:nth-child(2) { transform: translateY(-3.25px) rotate(-45deg); }
 
@@ -67,7 +66,7 @@
 </style>
 </head>
 
-<body class="bg-background-light font-display text-primary antialiased min-h-screen flex flex-col selection:bg-primary selection:text-white">
+<body class="font-display antialiased min-h-screen flex flex-col selection:bg-primary selection:text-white">
 
     <!-- 🟢 LIGHT-MODE PRELOADER 🟢 -->
     <div id="preloader" class="fixed inset-0 z-[9999] bg-[#F5F0E8] flex flex-col items-center justify-center text-primary transition-opacity duration-700 ease-out">
@@ -91,14 +90,15 @@
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 transition-all duration-500">
         <div id="nav-pill" class="bg-white/40 backdrop-blur-md border border-primary/10 shadow-lg rounded-full px-8 py-3 flex items-center justify-between gap-12 max-w-[960px] w-full transition-all duration-500">
             
+            <!-- Logo -->
             <a href="index.html" class="flex items-center gap-3 group">
                 <img src="./images/logo.png" alt="GDRIPX Logo" class="w-8 h-8 md:w-9 md:h-9 object-contain transition-transform duration-700 group-hover:rotate-[360deg]" />
                 <div class="flex items-baseline">
                     <span class="gdripx-wordmark font-serif font-black text-xl md:text-2xl text-primary select-none tracking-tight">GDRIPX</span>
-                    <span class="w-[6px] h-[6px] rounded-full bg-primary inline-block ml-1 opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all"></span>
                 </div>
             </a>
 
+            <!-- Desktop Links -->
             <div class="hidden md:flex items-center gap-8">
                 <!-- 🟢 ACTIVE SHOP LINK 🟢 -->
                 <a class="nav-link relative text-xs font-bold uppercase tracking-[0.2em] text-primary" href="#">
@@ -110,12 +110,14 @@
                 <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-primary" href="contact.html">Contact</a>
             </div>
 
+            <!-- Icons -->
             <div class="flex items-center gap-4">
-                <a href="cart.html" id="cart-btn" class="relative flex items-center justify-center w-10 h-10 md:w-auto md:px-5 md:py-2 rounded-full bg-primary text-white transition-all hover:opacity-80">
+                <a href="cart.html" id="cart-btn" class="relative flex items-center justify-center w-10 h-10 md:w-auto md:px-5 md:py-2 rounded-full bg-primary text-white transition-all hover:scale-105">
                     <span class="material-symbols-outlined text-[20px] md:text-[14px]">shopping_bag</span>
                     <span id="cart-count-badge" class="absolute -top-1 -right-1 md:static md:ml-2 bg-white text-black text-[9px] font-black w-4 h-4 md:w-auto md:h-auto md:px-1.5 md:rounded-full rounded-full flex items-center justify-center shadow-lg border border-primary/20">0</span>
                     <span class="hidden md:block ml-2 text-xs font-bold tracking-widest uppercase">Cart</span>
                 </a>
+
                 <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-[5px] p-2">
                     <span class="hamburger-line w-5 h-[1.5px] bg-primary block transition-all"></span>
                     <span class="hamburger-line w-5 h-[1.5px] bg-primary block transition-all"></span>
@@ -123,10 +125,10 @@
             </div>
         </div>
 
+        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden absolute top-full left-4 right-4 mt-2 bg-white/95 backdrop-blur-md border border-primary/10 rounded-2xl shadow-xl p-6 flex-col gap-4">
             <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-primary/5 flex items-center gap-2" href="#">
-                <span class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
-                Shop
+                <span class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span> Shop
             </a>
             <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-primary/5 block" href="lookbook.html">Lookbook</a>
             <a class="text-sm font-bold uppercase tracking-widest text-primary py-2 border-b border-primary/5 block" href="about.html">About</a>
@@ -135,45 +137,48 @@
     </nav>
 
     <!-- ========================================== -->
-    <!-- 🟢 SHOP PLACEHOLDER (MAIN CONTENT) 🟢 -->
+    <!-- 🟢 SHOP HEADER & TOGGLE 🟢                 -->
     <!-- ========================================== -->
-    <!-- flex-grow pushes the footer to the bottom of the screen naturally -->
-    <main class="relative pt-40 pb-24 md:pt-56 md:pb-32 w-full px-4 sm:px-8 overflow-hidden flex-grow flex flex-col z-10">
+    <main class="relative pt-40 pb-24 md:pt-48 md:pb-32 w-full px-4 sm:px-8 flex-grow flex flex-col z-10">
         
-        <!-- Ambient Grain -->
-        <div class="absolute inset-0 opacity-[0.4] mix-blend-overlay pointer-events-none z-0" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
-        
-        <!-- Massive Background Watermark -->
-        <div class="absolute top-[20%] left-0 w-full opacity-[0.03] pointer-events-none select-none overflow-hidden z-0 flex whitespace-nowrap animate-ticker">
-            <span class="text-[30vh] font-black font-display uppercase leading-none text-transparent" style="-webkit-text-stroke: 2px #0a0a0a;">THE ARCHIVE • </span>
-            <span class="text-[30vh] font-black font-display uppercase leading-none text-transparent" style="-webkit-text-stroke: 2px #0a0a0a;">THE ARCHIVE • </span>
-        </div>
-
-        <div class="layout-container max-w-[1400px] mx-auto w-full relative z-10">
+        <div class="layout-container max-w-[1400px] mx-auto w-full relative z-10 flex flex-col items-center">
             
-            <!-- Page Header -->
-            <div class="flex flex-col items-center md:items-start text-center md:text-left mb-16 md:mb-24 animate-fade-up">
-                <div class="inline-flex items-center gap-2 mb-4">
+            <!-- Header Text -->
+            <div class="text-center mb-12 animate-fade-up">
+                <div class="inline-flex items-center gap-2 mb-4 justify-center w-full">
                     <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
                     <p class="font-display text-[9px] font-bold tracking-[0.3em] text-primary/60 uppercase">Curated Collection</p>
                 </div>
-
-                <h1 class="font-serif text-6xl md:text-7xl lg:text-8xl font-black leading-[0.9] text-primary tracking-tighter mb-6">
-                    All <span class="italic font-light text-primary/40 relative inline-block">Garments.</span>
+                <h1 class="font-serif text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-4 text-primary">
+                    The <span class="italic font-light opacity-50">Archive.</span>
                 </h1>
+                <p class="font-display text-sm opacity-60 font-medium max-w-md mx-auto text-primary">Heavyweight streetwear and signature silhouettes.</p>
+            </div>
+
+            <!-- 🟢 THE SHOWROOM TOGGLE SWITCH 🟢 -->
+            <div class="relative bg-black/5 backdrop-blur-md border border-black/10 rounded-full p-1.5 flex items-center mb-16 shadow-inner animate-fade-up transition-colors duration-700 max-w-[400px] w-full mx-auto">
                 
-                <p class="font-display text-sm text-primary/60 font-medium max-w-md leading-relaxed">
-                    Explore the complete GDRIPX archive. Heavyweight silhouettes engineered for the modern shadow.
-                </p>
+                <!-- The sliding white background pill -->
+                <div id="toggle-slider" class="absolute left-1.5 top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-white rounded-full shadow-md transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-0"></div>
+
+                <!-- Core Button (Active state) -->
+                <button class="relative z-10 px-4 md:px-8 py-3 text-[9px] md:text-[10px] font-bold tracking-widest uppercase text-black transition-colors duration-500 w-1/2 text-center cursor-default">
+                    GDRIPX Core
+                </button>
+
+                <!-- Prive Button (Click triggers redirect) -->
+                <button id="btn-go-prive" class="relative z-10 px-4 md:px-8 py-3 text-[9px] md:text-[10px] font-bold tracking-widest uppercase text-black/50 hover:text-black transition-colors duration-500 w-1/2 text-center flex items-center justify-center gap-1 md:gap-2">
+                    <span class="material-symbols-outlined text-[14px]">lock</span> Prive'
+                </button>
             </div>
 
             <!-- ========================================== -->
-            <!-- ⚠️ FUTURE PRODUCT GRID GOES HERE ⚠️        -->
+            <!-- 🟢 SHOP GRID PLACEHOLDER 🟢                -->
             <!-- ========================================== -->
-            <div class="w-full min-h-[40vh] flex flex-col items-center justify-center border border-dashed border-primary/20 rounded-[2rem] bg-white/30 backdrop-blur-sm p-12 text-center animate-fade-up" style="animation-delay: 0.2s;">
+            <div id="shop-grid-container" class="w-full min-h-[40vh] flex flex-col items-center justify-center border border-dashed border-primary/20 rounded-[2rem] bg-white/30 backdrop-blur-sm p-12 text-center animate-fade-up" style="animation-delay: 0.2s;">
                 <span class="material-symbols-outlined text-primary/20 text-5xl mb-4 animate-pulse">checkroom</span>
-                <h3 class="font-serif text-2xl font-bold text-primary italic mb-2">Curating The Archive</h3>
-                <p class="text-xs text-primary/50 uppercase tracking-widest font-bold">New Silhouettes Loading Soon</p>
+                <h3 class="font-serif text-2xl font-bold text-primary italic mb-2">The Core Archive</h3>
+                <p class="text-xs text-primary/50 uppercase tracking-widest font-bold">Awaiting Silhouettes...</p>
             </div>
             <!-- ========================================== -->
 
@@ -201,7 +206,6 @@
 
         <div class="layout-container max-w-[1400px] mx-auto relative z-10">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 border-b border-white/10">
-                
                 <div class="lg:col-span-4 p-8 md:p-12 lg:border-r border-white/10 border-b lg:border-b-0 relative group js-reveal">
                     <div class="w-12 h-12 bg-white flex items-center justify-center rounded-full mb-8 overflow-hidden group-hover:scale-110 transition-transform duration-500">
                         <span class="font-serif font-black text-black text-xl">G</span>
@@ -240,7 +244,7 @@
                     <div class="relative z-10">
                         <h4 class="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-4">The Underground</h4>
                         <p class="text-2xl font-serif font-black mb-6 leading-tight">Unlock early access <br>to limited drops.</p>
-                        <form class="relative group/form mt-4">
+                        <form class="relative group/form mt-4" onsubmit="event.preventDefault(); alert('Subscribed successfully.');">
                             <input type="email" required placeholder="Enter Email Address" class="w-full bg-white/5 border border-white/20 rounded-full py-4 pl-6 pr-16 text-sm text-white focus:outline-none focus:border-white focus:bg-white/10 transition-all placeholder:text-white/30 outline-none" />
                             <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white text-black rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
                                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
@@ -248,15 +252,12 @@
                         </form>
                     </div>
                 </div>
-
             </div>
 
             <div class="p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
                 <p class="text-[10px] uppercase tracking-widest text-white/30 font-bold order-3 md:order-1">
                     © 2026 GDRIPX Inc. All Rights Reserved.
                 </p>
-
-                <!-- 🟢 ALPHA SK3TCH BADGE 🟢 -->
                 <div class="order-1 md:order-2">
                     <div class="group relative cursor-default">
                         <div class="absolute -inset-[1px] bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-full blur opacity-20 group-hover:opacity-75 group-hover:blur-md transition-all duration-500 animate-pulse"></div>
@@ -270,15 +271,104 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="flex gap-3 order-2 md:order-3">
                     <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black hover:scale-110 transition-all"><span class="font-bold text-[10px] tracking-widest">IG</span></a>
                     <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black hover:scale-110 transition-all"><span class="font-bold text-[10px] tracking-widest">X</span></a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black hover:scale-110 transition-all"><span class="font-bold text-[10px] tracking-widest">TT</span></a>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- ========================================== -->
+    <!-- 🟢 FLOAT CONCIERGE WIDGET (CLIENT SERVICES) 🟢 -->
+    <!-- ========================================== -->
+    <div class="fixed bottom-6 right-6 z-[9000] flex flex-col items-end gap-4 font-display pointer-events-none">
+        
+        <!-- Chat Window -->
+        <div id="concierge-window" class="w-[300px] md:w-[360px] bg-[#050505]/90 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom-right scale-0 opacity-0 translate-y-10 pointer-events-auto">
+            
+            <!-- Header -->
+            <div class="bg-white/5 p-5 border-b border-white/5 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                            <!-- Ensure the path to logo.png is correct for sub-pages -->
+                            <img src="./images/logo.png" alt="G" class="w-5 h-5 object-contain">
+                        </div>
+                        <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-black rounded-full animate-pulse"></div>
+                    </div>
+                    <div>
+                        <h4 class="text-white text-sm font-bold tracking-widest uppercase">Client Services</h4>
+                        <p class="text-[10px] text-white/50">The Studio is Online</p>
+                    </div>
+                </div>
+                <!-- Close Button -->
+                <button id="close-chat" class="text-white/40 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+            </div>
+
+            <!-- Chat Body -->
+            <div class="p-5 h-[250px] overflow-y-auto space-y-4" id="chat-body">
+                <!-- Timestamp -->
+                <div class="text-center">
+                    <span class="text-[9px] text-white/30 uppercase tracking-widest">Today</span>
+                </div>
+
+                <!-- Brand Message -->
+                <div class="flex gap-3 animate-fade-up">
+                    <div class="w-6 h-6 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white">G</div>
+                    <div class="bg-white/10 p-3 rounded-2xl rounded-tl-none text-xs text-white/90 leading-relaxed border border-white/5">
+                        <p>Welcome to the archive. <br>Need sizing help or checking on an order? Type below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 bg-black/50 border-t border-white/10">
+                <form id="whatsapp-form" class="relative">
+                    <input type="text" id="whatsapp-input" placeholder="Type your message..." 
+                           class="w-full bg-white/5 border border-white/10 rounded-full pl-5 pr-12 py-3 text-sm text-white focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all placeholder:text-white/20">
+                    
+                    <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-[16px] -ml-0.5 mt-0.5">send</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 3D Toggle Button -->
+        <button id="concierge-btn" class="group relative flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300 z-50 hover:translate-y-[-4px] active:scale-95 pointer-events-auto">
+
+            <!-- The Spinning Radar Ring -->
+            <div class="absolute inset-[-3px] rounded-full bg-[conic-gradient(from_0deg,transparent_60%,#22c55e_100%)] animate-[spin_2s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-[2px]"></div>
+
+            <!-- The Main 3D Button Body -->
+            <div class="absolute inset-0 bg-[#0a0a0a] rounded-full shadow-[inset_0_4px_10px_rgba(255,255,255,0.15),0_15px_30px_-5px_rgba(0,0,0,0.8)] border border-white/10 overflow-hidden flex items-center justify-center backdrop-blur-md">
+                
+                <!-- Glossy Reflection (Glass Effect) -->
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-gradient-to-b from-white/20 to-transparent rounded-full blur-[1px]"></div>
+
+                <!-- Icons (Swap Logic) -->
+                <span class="material-symbols-outlined text-2xl text-white transition-all duration-300 rotate-0 scale-100 absolute drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" id="chat-icon-open">chat_bubble</span>
+                <span class="material-symbols-outlined text-2xl text-white transition-all duration-300 rotate-90 scale-0 absolute opacity-0" id="chat-icon-close">close</span>
+            </div>
+
+            <!-- The 3D Notification Badge -->
+            <div class="absolute -top-1 -right-1 w-6 h-6 bg-red-600 rounded-full flex items-center justify-center border-[3px] border-[#0a0a0a] shadow-lg animate-[bounce_2s_infinite]" id="notification-badge">
+                <span class="text-[10px] font-bold text-white font-display relative z-10">1</span>
+                <!-- Ping Wave -->
+                <span class="absolute inset-0 rounded-full bg-red-600 animate-ping opacity-75"></span>
+            </div>
+
+            <!-- Tooltip Label (Desktop Only) -->
+            <div class="absolute right-full mr-6 bg-black/90 text-white border border-white/20 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none shadow-xl hidden md:block">
+                Priority Support
+                <div class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-black/90 border-r border-t border-white/20 transform rotate-45"></div>
+            </div>
+
+        </button>
+    </div>
 
     <!-- 🟢 SCRIPTS 🟢 -->
     <script>
@@ -341,6 +431,90 @@
                 }
             }, 30);
         });
+
+        // --- 🟢 TOGGLE REDIRECT ANIMATION (LIGHTS OUT) 🟢 ---
+        const btnGoPrive = document.getElementById('btn-go-prive');
+        const slider = document.getElementById('toggle-slider');
+
+        btnGoPrive.addEventListener('click', (e) => {
+            e.preventDefault(); // Stop instant redirect
+
+            // 1. Move the slider pill visually
+            slider.style.transform = 'translateX(100%)';
+            slider.style.backgroundColor = '#050505'; // Turns black
+            btnGoPrive.classList.replace('text-black/50', 'text-black');
+
+            // 2. Create "Lights Out" black overlay
+            const fadeOverlay = document.createElement('div');
+            fadeOverlay.className = 'fixed inset-0 bg-[#050505] z-[9999] opacity-0 transition-opacity duration-700 pointer-events-none';
+            document.body.appendChild(fadeOverlay);
+            
+            // Trigger the fade
+            requestAnimationFrame(() => {
+                fadeOverlay.classList.remove('opacity-0');
+                fadeOverlay.classList.add('opacity-100');
+            });
+
+            // 3. Physically redirect to prive.html after animation completes
+            setTimeout(() => {
+                window.location.href = 'prive.html';
+            }, 750); // Matches the 700ms transition time perfectly
+        });
+
+        // --- 🟢 CONCIERGE / CLIENT SERVICES LOGIC 🟢 ---
+        const conciergeBtn = document.getElementById('concierge-btn');
+        const conciergeWindow = document.getElementById('concierge-window');
+        const closeChatBtn = document.getElementById('close-chat');
+        const iconOpen = document.getElementById('chat-icon-open');
+        const iconClose = document.getElementById('chat-icon-close');
+        const whatsappForm = document.getElementById('whatsapp-form');
+        const whatsappInput = document.getElementById('whatsapp-input');
+
+        if (conciergeBtn && conciergeWindow) {
+            function toggleChat() {
+                const isClosed = conciergeWindow.classList.contains('scale-0');
+                if (isClosed) {
+                    // Open Chat
+                    conciergeWindow.classList.remove('scale-0', 'opacity-0', 'translate-y-10');
+                    conciergeWindow.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+                    iconOpen.classList.add('rotate-90', 'scale-0', 'opacity-0');
+                    iconClose.classList.remove('rotate-90', 'scale-0', 'opacity-0');
+                    iconClose.classList.add('rotate-0', 'scale-100', 'opacity-100');
+                    // Automatically focus the input for the user
+                    setTimeout(() => whatsappInput.focus(), 300);
+                    
+                    // Hide the red notification badge once they open it
+                    const badge = document.getElementById('notification-badge');
+                    if (badge) badge.style.display = 'none';
+                } else {
+                    // Close Chat
+                    conciergeWindow.classList.add('scale-0', 'opacity-0', 'translate-y-10');
+                    conciergeWindow.classList.remove('scale-100', 'opacity-100', 'translate-y-0');
+                    iconOpen.classList.remove('rotate-90', 'scale-0', 'opacity-0');
+                    iconClose.classList.add('rotate-90', 'scale-0', 'opacity-0');
+                    iconClose.classList.remove('rotate-0', 'scale-100', 'opacity-100');
+                }
+            }
+
+            conciergeBtn.addEventListener('click', toggleChat);
+            closeChatBtn.addEventListener('click', toggleChat);
+
+            whatsappForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const message = whatsappInput.value.trim();
+                if (message) {
+                    // ⚠️ GDRIPX WHATSAPP NUMBER
+                    const phoneNumber = "2347071090642"; 
+                    
+                    const encodedMessage = encodeURIComponent(message);
+                    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                    
+                    window.open(whatsappURL, '_blank');
+                    whatsappInput.value = '';
+                    toggleChat(); 
+                }
+            });
+        }
     </script>
 </body>
 </html>

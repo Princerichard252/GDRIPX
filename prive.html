@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>GDRIPX | Prive' Atelier</title>
+    
+    <!-- 🟢 DNS Prefetching & Preconnects 🟢 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&amp;display=swap" rel="stylesheet" />
+    
+    <link rel="icon" type="image/png" href="./images/favicon.png" />
+    <link rel="apple-touch-icon" href="./images/favicon.png" />
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a0a0a",
+                        "prive-gold": "#D4AF37",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif":["Playfair Display", "serif"], 
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'ticker': 'scroll 30s linear infinite',
+                    },
+                    keyframes: {
+                        fadeUp: { '0%': { transform: 'translateY(40px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(calc(-100% - 1rem))' } }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    /* Dark Mode Defaults */
+    body { margin: 0; padding: 0; overflow-x: hidden; background-color: #000000; color: #F5F0E8; }
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+    
+    .nav-link { position: relative; padding-bottom: 2px; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 1px; background: linear-gradient(to right, #71717a, #fff, #71717a); transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .nav-link:hover::after { width: 100%; }
+
+    #navbar { animation: navSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    #navbar.scrolled #nav-pill { background: rgba(0, 0, 0, 0.85); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); backdrop-filter: blur(16px); }
+
+    @keyframes navSlideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    #mobile-menu-btn.open .hamburger-line:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+    #mobile-menu-btn.open .hamburger-line:nth-child(2) { transform: translateY(-3.25px) rotate(-45deg); }
+
+    .js-reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
+    .js-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    input:focus { outline: none; border-color: #D4AF37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+
+    /* --- 🟢 SPLIT-FLAP CALENDAR FLIP ANIMATION 🟢 --- */
+    @keyframes flipTop {
+        0% { transform: rotateX(-90deg); opacity: 0.5; }
+        100% { transform: rotateX(0deg); opacity: 1; }
+    }
+    .flip-animate {
+        animation: flipTop 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        transform-origin: bottom center;
+        display: inline-block;
+    }
+    @keyframes scanVertical {
+        0% { transform: translateY(-10vh); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translateY(110vh); opacity: 0; }
+    }
+</style>
+</head>
+
+<body class="font-display antialiased min-h-screen flex flex-col selection:bg-prive-gold selection:text-black">
+
+    <!-- 🟢 DARK-MODE PRELOADER 🟢 -->
+    <div id="preloader" class="fixed inset-0 z-[9999] bg-[#000000] flex flex-col items-center justify-center text-white transition-opacity duration-700 ease-out">
+        <div class="relative flex flex-col items-center gap-6">
+            <h1 class="font-serif font-black text-4xl md:text-6xl tracking-tighter animate-pulse text-prive-gold italic">
+                Gdripx Prive'
+            </h1>
+            <div class="w-[200px] md:w-[300px]">
+                <div class="flex justify-between items-end mb-2 font-display text-[10px] uppercase tracking-[0.2em] text-white/50">
+                    <span id="loader-text">Preparing Atelier...</span>
+                    <span id="loader-counter" class="text-prive-gold font-bold">0%</span>
+                </div>
+                <div class="w-full h-[2px] bg-white/10 rounded-full overflow-hidden">
+                    <div id="loader-bar" class="h-full bg-prive-gold w-0 transition-all duration-100 ease-linear shadow-[0_0_10px_#D4AF37]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🟢 TOP NAVIGATION (DARK MODE) 🟢 -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 transition-all duration-500">
+        <div id="nav-pill" class="bg-black/40 backdrop-blur-md border border-white/10 shadow-lg rounded-full px-8 py-3 flex items-center justify-between gap-12 max-w-[960px] w-full transition-all duration-500">
+            
+<!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3 group">
+                
+                <!-- 1. The Spinning Emblem -->
+                <img src="./images/gprive.png" alt="GDRIPX Emblem" class="w-8 h-8 md:w-9 md:h-9 object-contain transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:rotate-[360deg] filter invert" />
+                
+                <!-- 2. Stacked Typography (Center Aligned) -->
+                <!-- Added 'items-center' here -->
+                <div class="flex flex-col items-center justify-center mt-0.5">
+                    <!-- Main Brand -->
+                    <span class="font-display font-black text-sm md:text-[15px] tracking-[0.25em] text-white uppercase leading-none mb-[3px]">
+                        GDRIPX
+                    </span>
+                    <!-- Sub Brand (Prive') -->
+                    <span class="font-serif italic text-[8.5px] md:text-[9px] font-bold tracking-[0.4em] text-[#D4AF37] uppercase leading-none group-hover:text-white transition-colors duration-300 drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] text-center w-full">
+                        Prive'
+                    </span>
+                </div>
+                
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a class="nav-link relative text-xs font-bold uppercase tracking-[0.2em] text-prive-gold" href="#">
+                    <span class="absolute -left-3.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-prive-gold rounded-full animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.8)]"></span>
+                    Shop
+                </a>
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors" href="lookbook.html">Lookbook</a>
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors" href="about.html">About</a>
+                <a class="nav-link text-xs font-medium uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors" href="contact.html">Contact</a>
+            </div>
+
+            <!-- Icons -->
+            <div class="flex items-center gap-4">
+                <a href="cart.html" id="cart-btn" class="relative flex items-center justify-center w-10 h-10 md:w-auto md:px-5 md:py-2 rounded-full bg-white text-black transition-all hover:scale-105">
+                    <span class="material-symbols-outlined text-[20px] md:text-[14px]">shopping_bag</span>
+                    <span id="cart-count-badge" class="absolute -top-1 -right-1 md:static md:ml-2 bg-black text-white text-[9px] font-black w-4 h-4 md:w-auto md:h-auto md:px-1.5 md:rounded-full rounded-full flex items-center justify-center shadow-lg border border-white/20">0</span>
+                    <span class="hidden md:block ml-2 text-xs font-bold tracking-widest uppercase">Cart</span>
+                </a>
+<!-- Hamburger Icon -->
+            <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-[5px] p-2 relative z-50">
+                <span class="hamburger-line w-5 h-[1.5px] bg-white block transition-all duration-300"></span>
+                <span class="hamburger-line w-5 h-[1.5px] bg-white block transition-all duration-300"></span>
+            </button>
+        </div>
+
+        <!-- 🟢 MOBILE MENU DROPDOWN (DARK MODE) 🟢 -->
+        <div id="mobile-menu" class="hidden absolute top-full left-4 right-4 mt-2 bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.8)] p-6 flex-col gap-4 transform transition-all duration-300 origin-top">
+            <a class="text-sm font-bold uppercase tracking-widest text-prive-gold py-2 border-b border-white/10 flex items-center gap-2" href="#">
+                <span class="w-1.5 h-1.5 bg-prive-gold rounded-full animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.8)]"></span> Shop
+            </a>
+            <a class="text-sm font-bold uppercase tracking-widest text-white/80 hover:text-white py-2 border-b border-white/10 block transition-colors" href="lookbook.html">Lookbook</a>
+            <a class="text-sm font-bold uppercase tracking-widest text-white/80 hover:text-white py-2 border-b border-white/10 block transition-colors" href="about.html">About</a>
+            <a class="text-sm font-bold uppercase tracking-widest text-white/80 hover:text-white py-2 block transition-colors" href="contact.html">Contact</a>
+        </div>
+    </nav>
+    
+    <!-- ========================================== -->
+    <!-- 🟢 PRIVE HEADER & TOGGLE 🟢                -->
+    <!-- ========================================== -->
+    <main class="relative pt-40 pb-24 md:pt-48 md:pb-32 w-full px-4 sm:px-8 flex-grow flex flex-col z-10 overflow-hidden">
+        
+        <!-- 🟢 PURE DARK & ARCHITECTURAL GRID BACKGROUND 🟢 -->
+        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#020202]">
+            
+            <!-- Crisp Hairline Grid -->
+            <div class="absolute inset-0 opacity-100" 
+                 style="background-image: linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 80px 80px;">
+            </div>
+
+            <!-- Glowing Gold Center Orb (Backlights the countdown) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] md:w-[45vw] aspect-square bg-[#D4AF37]/10 rounded-full blur-[140px] mix-blend-screen animate-[pulse_8s_ease-in-out_infinite]"></div>
+
+            <!-- Edge Vignette (Fades the grid into pure black at the edges) -->
+            <div class="absolute inset-0 bg-gradient-to-b from-[#020202] via-transparent to-[#020202] opacity-90"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#020202] via-transparent to-[#020202] opacity-90"></div>
+            
+            <!-- Slow Moving Laser Line (Scans down the grid) -->
+            <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent shadow-[0_0_20px_#D4AF37] animate-[scanVertical_10s_linear_infinite]"></div>
+            
+        </div>
+        <div class="layout-container max-w-[1400px] mx-auto w-full relative z-10 flex flex-col items-center">
+            
+            <!-- Dynamic Prive Header -->
+            <div class="text-center mb-12 animate-fade-up">
+                <span class="text-prive-gold text-[9px] font-bold tracking-widest uppercase mb-4 flex items-center justify-center gap-2">
+                    <span class="w-1 h-1 bg-prive-gold rounded-full animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.8)]"></span> High-End Division
+                </span>
+                <h1 class="font-serif text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-4 text-white drop-shadow-2xl">
+                    Prive' <span class="italic font-light text-white/50">Atelier.</span>
+                </h1>
+                <p class="font-display text-sm text-white/50 font-medium max-w-md mx-auto">Exclusive luxury tailoring and cut-and-sew garments. Limited allocation globally.</p>
+            </div>
+
+            <!-- 🟢 THE DUAL SHOWROOM TOGGLE SWITCH (PRIVE ACTIVE) 🟢 -->
+            <div class="relative bg-white/10 backdrop-blur-md border border-white/10 rounded-full p-1.5 flex items-center mb-12 md:mb-20 shadow-[0_10px_30px_rgba(0,0,0,0.5)] animate-fade-up max-w-[400px] w-full mx-auto overflow-hidden">
+                <div id="toggle-slider" class="absolute left-1.5 top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-[#D4AF37] rounded-full shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-0 translate-x-[100%]"></div>
+                <button id="btn-go-core" class="relative z-10 px-4 md:px-8 py-3 text-[9px] md:text-[10px] font-bold tracking-widest uppercase text-white/50 hover:text-white transition-colors duration-500 w-1/2 text-center cursor-pointer">
+                    GDRIPX Core
+                </button>
+                <button class="relative z-10 px-4 md:px-8 py-3 text-[9px] md:text-[10px] font-bold tracking-widest uppercase text-black transition-colors duration-500 w-1/2 text-center flex items-center justify-center gap-1 md:gap-2 cursor-default">
+                    <span class="material-symbols-outlined text-[14px]">lock_open</span> Prive'
+                </button>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- 🟢 MASSIVE VAULT COUNTDOWN 🟢              -->
+            <!-- ========================================== -->
+            <div class="w-full flex flex-col items-center justify-center animate-fade-up" style="animation-delay: 0.2s;">
+                
+                <p class="text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 mb-6 md:mb-8 flex items-center gap-3">
+                    <span class="w-8 h-[1px] bg-white/20"></span> Collection Unlocks In <span class="w-8 h-[1px] bg-white/20"></span>
+                </p>
+
+                <!-- 🟢 Split-Flap Blocks 🟢 -->
+                <div class="flex gap-3 md:gap-6 lg:gap-8 items-center justify-center">
+                    
+                    <!-- Days -->
+                    <div class="flex flex-col items-center">
+                        <div class="relative bg-[#050505] border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-xl w-16 h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
+                            <!-- Background gradient for glass curve -->
+                            <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent z-0"></div>
+                            <span class="font-serif italic text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-days-main">30</span>
+                            <!-- Split Line -->
+                            <div class="absolute top-1/2 left-0 w-full h-[2px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                        </div>
+                        <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-prive-gold mt-4 md:mt-6">Days</span>
+                    </div>
+
+                    <span class="text-white/20 text-3xl md:text-5xl font-light mb-8 md:mb-12">:</span>
+
+                    <!-- Hours -->
+                    <div class="flex flex-col items-center">
+                        <div class="relative bg-[#050505] border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-xl w-16 h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent z-0"></div>
+                            <span class="font-serif italic text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-hours-main">00</span>
+                            <div class="absolute top-1/2 left-0 w-full h-[2px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                        </div>
+                        <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-prive-gold mt-4 md:mt-6">Hours</span>
+                    </div>
+
+                    <span class="text-white/20 text-3xl md:text-5xl font-light mb-8 md:mb-12">:</span>
+
+                    <!-- Minutes -->
+                    <div class="flex flex-col items-center">
+                        <div class="relative bg-[#050505] border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-xl w-16 h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent z-0"></div>
+                            <span class="font-serif italic text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-mins-main">00</span>
+                            <div class="absolute top-1/2 left-0 w-full h-[2px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                        </div>
+                        <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-prive-gold mt-4 md:mt-6">Minutes</span>
+                    </div>
+
+                    <span class="text-white/20 text-3xl md:text-5xl font-light mb-8 md:mb-12 hidden md:block">:</span>
+
+                    <!-- Seconds (With subtle highlight) -->
+                    <div class="flex flex-col items-center hidden md:flex">
+                        <div class="relative bg-[#0a0a0a] border border-[#D4AF37]/30 shadow-[0_0_30px_rgba(212,175,55,0.1)] rounded-xl w-16 h-20 md:w-24 md:h-32 lg:w-32 lg:h-40 flex items-center justify-center overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/10 to-transparent z-0"></div>
+                            <span class="font-serif italic text-4xl md:text-6xl lg:text-7xl font-bold text-white relative z-10 drop-shadow-md" id="prive-secs-main">00</span>
+                            <div class="absolute top-1/2 left-0 w-full h-[2px] bg-black z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
+                        </div>
+                        <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] mt-4 md:mt-6">Seconds</span>
+                    </div>
+                </div>
+
+                <!-- CTA Form under the countdown -->
+                <div class="mt-16 w-full max-w-md animate-fade-up" style="animation-delay: 0.4s;">
+                    <p class="text-[10px] text-white/50 uppercase tracking-widest font-bold mb-4 text-center">Secure Your Allocation</p>
+                    <form class="relative group/form" onsubmit="event.preventDefault(); alert('Priority Access Confirmed.');">
+                        <input type="email" required placeholder="ENTER EMAIL ADDRESS" class="w-full bg-[#050505] border border-white/20 rounded-full py-4 pl-6 pr-32 text-xs md:text-sm text-white font-bold tracking-widest transition-all placeholder:text-white/30 uppercase focus:border-prive-gold focus:shadow-[0_0_20px_rgba(212,175,55,0.15)]">
+                        <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 bg-white text-black px-6 rounded-full flex items-center justify-center text-[10px] font-bold tracking-widest uppercase hover:bg-prive-gold hover:text-black transition-all duration-300">
+                            Notify Me
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <!-- ========================================== -->
+
+        </div>
+    </main>
+
+    <!-- 🟢 FOOTER 🟢 -->
+    <footer class="bg-[#050505] text-[#F5F0E8] mt-0 relative overflow-hidden font-display z-10 md:rounded-t-[4rem] rounded-t-[2rem] border-t border-white/5">
+        <div class="w-full border-b border-white/10 overflow-hidden relative z-10 py-8 md:py-12 bg-black/50 backdrop-blur-sm">
+            <div class="whitespace-nowrap flex w-max animate-ticker items-center">
+                <div class="flex items-center">
+                    <h2 class="font-serif text-[15vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#D4AF37] to-[#D4AF37]/20 select-none px-8">GDRIPX PRIVE'</h2>
+                    <span class="material-symbols-outlined text-[8vw] text-[#D4AF37]/20 px-8">emergency</span>
+                    <h2 class="font-serif text-[15vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#D4AF37] to-[#D4AF37]/20 select-none px-8">GDRIPX PRIVE'</h2>
+                    <span class="material-symbols-outlined text-[8vw] text-[#D4AF37]/20 px-8">emergency</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compressed Footer Bottom for cleanliness -->
+        <div class="layout-container max-w-[1400px] mx-auto relative z-10 p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-8">
+            <p class="text-[10px] uppercase tracking-widest text-white/30 font-bold order-3 md:order-1">© 2026 GDRIPX Inc.</p>
+            <div class="flex gap-3 order-2 md:order-3">
+                <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-prive-gold hover:text-black hover:scale-110 transition-all"><span class="font-bold text-[10px] tracking-widest">IG</span></a>
+                <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-prive-gold hover:text-black hover:scale-110 transition-all"><span class="font-bold text-[10px] tracking-widest">X</span></a>
+            </div>
+        </div>
+    </footer>
+
+<!-- ========================================== -->
+    <!-- 🟢 PRIVE' ATELIER CONCIERGE WIDGET 🟢      -->
+    <!-- ========================================== -->
+    <div class="fixed bottom-6 right-6 z-[9000] flex flex-col items-end gap-4 font-display pointer-events-none">
+        
+        <!-- Exclusive Chat Window -->
+        <div id="prive-concierge-window" class="w-[300px] md:w-[360px] bg-[#050505]/95 backdrop-blur-2xl border border-[#D4AF37]/30 rounded-[2rem] shadow-[0_20px_50px_-10px_rgba(212,175,55,0.15)] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-bottom-right scale-0 opacity-0 translate-y-10 pointer-events-auto">
+            
+            <!-- Header -->
+            <div class="bg-white/5 p-5 border-b border-[#D4AF37]/20 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <!-- Prive Logo Avatar -->
+                        <div class="w-8 h-8 rounded-full bg-[#0a0a0a] border border-[#D4AF37]/50 flex items-center justify-center overflow-hidden">
+                            <img src="./images/gprive.png" alt="G" class="w-5 h-5 object-contain filter invert">
+                        </div>
+                        <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-[#D4AF37] border-2 border-black rounded-full animate-pulse shadow-[0_0_5px_#D4AF37]"></div>
+                    </div>
+                    <div>
+                        <h4 class="text-[#D4AF37] text-sm font-bold tracking-widest uppercase">Atelier Concierge</h4>
+                        <p class="text-[10px] text-white/50">Private Client Services</p>
+                    </div>
+                </div>
+                <!-- Close Button -->
+                <button id="close-prive-chat" class="text-white/40 hover:text-[#D4AF37] transition-colors">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+            </div>
+
+            <!-- Chat Body -->
+            <div class="p-5 h-[250px] overflow-y-auto space-y-4" id="prive-chat-body">
+                <!-- Timestamp -->
+                <div class="text-center">
+                    <span class="text-[9px] text-[#D4AF37]/50 uppercase tracking-widest border border-[#D4AF37]/20 px-3 py-1 rounded-full">Concierge Line</span>
+                </div>
+
+                <!-- Brand Message -->
+                <div class="flex gap-3 animate-fade-up">
+                    <div class="w-6 h-6 rounded-full bg-[#D4AF37] flex-shrink-0 flex items-center justify-center text-[10px] font-black text-black italic font-serif">P</div>
+                    <div class="bg-white/5 p-3 rounded-2xl rounded-tl-none text-xs text-white/80 leading-relaxed border border-[#D4AF37]/20 shadow-inner">
+                        <p>Welcome to the Prive' Atelier. <br><br>Do you require personal styling assistance or details regarding a specific garment?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 bg-black/80 border-t border-[#D4AF37]/20">
+                <form id="prive-whatsapp-form" class="relative group/input">
+                    <input type="text" id="prive-whatsapp-input" placeholder="Message the Atelier..." 
+                           class="w-full bg-[#0a0a0a] border border-white/10 rounded-full pl-5 pr-12 py-3 text-sm text-white focus:outline-none focus:border-[#D4AF37] focus:bg-white/5 transition-all placeholder:text-white/20 focus:shadow-[0_0_15px_rgba(212,175,55,0.1)]">
+                    
+                    <button type="submit" class="absolute right-1.5 top-1/2 -translate-y-1/2 w-9 h-9 bg-[#D4AF37] text-black rounded-full flex items-center justify-center hover:scale-110 hover:bg-white active:scale-95 transition-all shadow-[0_0_10px_rgba(212,175,55,0.3)]">
+                        <span class="material-symbols-outlined text-[16px] -ml-0.5 mt-0.5">send</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 3D Toggle Button -->
+        <button id="prive-concierge-btn" class="group relative flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300 z-50 hover:translate-y-[-4px] active:scale-95 pointer-events-auto">
+
+            <!-- The Spinning Gold Radar Ring -->
+            <div class="absolute inset-[-3px] rounded-full bg-[conic-gradient(from_0deg,transparent_60%,#D4AF37_100%)] animate-[spin_3s_linear_infinite] opacity-60 group-hover:opacity-100 transition-opacity duration-500 blur-[3px]"></div>
+
+            <!-- The Main 3D Button Body -->
+            <div class="absolute inset-0 bg-[#050505] rounded-full shadow-[inset_0_4px_10px_rgba(255,255,255,0.1),0_15px_30px_-5px_rgba(0,0,0,0.9)] border border-[#D4AF37]/40 overflow-hidden flex items-center justify-center backdrop-blur-md">
+                
+                <!-- Glossy Reflection -->
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-gradient-to-b from-white/10 to-transparent rounded-full blur-[1px]"></div>
+
+                <!-- Icons (Gold Hanger for Clothing Brand) -->
+                <span class="material-symbols-outlined text-2xl text-[#D4AF37] transition-all duration-300 rotate-0 scale-100 absolute drop-shadow-[0_0_8px_rgba(212,175,55,0.8)]" id="prive-icon-open">checkroom</span>
+                <span class="material-symbols-outlined text-2xl text-[#D4AF37] transition-all duration-300 rotate-90 scale-0 absolute opacity-0" id="prive-icon-close">close</span>
+            </div>
+
+            <!-- VIP Notification Badge -->
+            <div class="absolute -top-1 -right-1 w-6 h-6 bg-[#D4AF37] rounded-full flex items-center justify-center border-[3px] border-[#050505] shadow-lg animate-[bounce_2s_infinite]" id="prive-badge">
+                <span class="text-[10px] font-black text-black font-display relative z-10">1</span>
+                <!-- Gold Ping Wave -->
+                <span class="absolute inset-0 rounded-full bg-[#D4AF37] animate-ping opacity-75"></span>
+            </div>
+
+            <!-- Tooltip Label -->
+            <div class="absolute right-full mr-6 bg-[#D4AF37] text-black border border-[#D4AF37] px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none shadow-xl hidden md:block">
+                Prive' Concierge
+                <div class="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-[#D4AF37] transform rotate-45"></div>
+            </div>
+
+        </button>
+    </div>
+
+    <!-- 🟢 SCRIPTS 🟢 -->
+    <script>
+        // --- 🟢 PRIVE' CALENDAR FLIP COUNTDOWN 🟢 ---
+        const priveDays = document.getElementById("prive-days-main");
+        const priveHours = document.getElementById("prive-hours-main");
+        const priveMins = document.getElementById("prive-mins-main");
+        const priveSecs = document.getElementById("prive-secs-main");
+
+        if (priveDays) {
+            // Set drop date strictly to 30 days from right now
+            const priveDropDate = new Date();
+            priveDropDate.setDate(priveDropDate.getDate() + 30);
+            
+            function animateFlip(element, newValue) {
+                if (element.innerText !== newValue) {
+                    element.classList.remove('flip-animate');
+                    void element.offsetWidth; // Trigger DOM reflow to restart animation
+                    element.innerText = newValue;
+                    element.classList.add('flip-animate');
+                }
+            }
+
+            function updatePriveCountdown() {
+                const now = new Date().getTime();
+                const distance = priveDropDate.getTime() - now;
+
+                if (distance < 0) return;
+
+                const d = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                const s = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+
+                // Apply values with the 3D flip animation
+                animateFlip(priveDays, d);
+                animateFlip(priveHours, h);
+                animateFlip(priveMins, m);
+                if(priveSecs) animateFlip(priveSecs, s); 
+            }
+
+            updatePriveCountdown();
+            setInterval(updatePriveCountdown, 1000);
+        }
+
+        // --- TOGGLE REDIRECT ANIMATION (LIGHTS ON) ---
+        const btnGoCore = document.getElementById('btn-go-core');
+        const slider = document.getElementById('toggle-slider');
+
+        btnGoCore.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            slider.style.transform = 'translateX(0%)';
+            slider.style.backgroundColor = '#ffffff'; 
+            btnGoCore.classList.replace('text-white/50', 'text-black');
+
+            const fadeOverlay = document.createElement('div');
+            fadeOverlay.className = 'fixed inset-0 bg-[#F5F0E8] z-[9999] opacity-0 transition-opacity duration-700 pointer-events-none';
+            document.body.appendChild(fadeOverlay);
+            
+            requestAnimationFrame(() => {
+                fadeOverlay.classList.remove('opacity-0');
+                fadeOverlay.classList.add('opacity-100');
+            });
+
+            setTimeout(() => {
+                window.location.href = 'shop.html';
+            }, 750); 
+        });
+
+        // --- PRELOADER ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            const counter = document.getElementById('loader-counter');
+            const bar = document.getElementById('loader-bar');
+            let progress = 0;
+            window.scrollTo(0,0);
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10) + 2; 
+                if (progress > 100) progress = 100;
+                counter.innerText = `${progress}%`;
+                bar.style.width = `${progress}%`;
+                if (progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => { preloader.style.opacity = '0'; preloader.style.pointerEvents = 'none'; }, 500);
+                }
+            }, 30);
+        });
+
+        // --- NAVBAR SCROLL ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if(navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
+        }, { passive: true });
+
+        // --- 🟢 MOBILE MENU LOGIC 🟢 ---
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileBtn && mobileMenu) {
+            // 1. Toggle Open/Close on click
+            mobileBtn.addEventListener('click', () => {
+                const isOpen = mobileBtn.classList.toggle('open');
+                
+                if (isOpen) {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenu.classList.add('flex', 'animate-fade-up'); // Adds a smooth entrance
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex', 'animate-fade-up');
+                }
+            });
+
+            // 2. Auto-close the menu when a user clicks any link inside it
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileBtn.classList.remove('open');
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex', 'animate-fade-up');
+                });
+            });
+            
+            // 3. Auto-close if user clicks outside the menu
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !mobileBtn.contains(e.target) && mobileBtn.classList.contains('open')) {
+                    mobileBtn.classList.remove('open');
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex', 'animate-fade-up');
+                }
+            });
+        }
+
+        // --- 🟢 PRIVE' ATELIER CONCIERGE LOGIC 🟢 ---
+        const priveConciergeBtn = document.getElementById('prive-concierge-btn');
+        const priveConciergeWindow = document.getElementById('prive-concierge-window');
+        const closePriveChatBtn = document.getElementById('close-prive-chat');
+        const priveIconOpen = document.getElementById('prive-icon-open');
+        const priveIconClose = document.getElementById('prive-icon-close');
+        const priveWhatsappForm = document.getElementById('prive-whatsapp-form');
+        const priveWhatsappInput = document.getElementById('prive-whatsapp-input');
+        const priveBadge = document.getElementById('prive-badge');
+
+        if (priveConciergeBtn && priveConciergeWindow) {
+            function togglePriveChat() {
+                const isClosed = priveConciergeWindow.classList.contains('scale-0');
+                if (isClosed) {
+                    // Open Chat
+                    priveConciergeWindow.classList.remove('scale-0', 'opacity-0', 'translate-y-10');
+                    priveConciergeWindow.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+                    priveIconOpen.classList.add('rotate-90', 'scale-0', 'opacity-0');
+                    priveIconClose.classList.remove('rotate-90', 'scale-0', 'opacity-0');
+                    priveIconClose.classList.add('rotate-0', 'scale-100', 'opacity-100');
+                    
+                    setTimeout(() => priveWhatsappInput.focus(), 300);
+                    if (priveBadge) priveBadge.style.display = 'none'; // Hide badge on open
+                } else {
+                    // Close Chat
+                    priveConciergeWindow.classList.add('scale-0', 'opacity-0', 'translate-y-10');
+                    priveConciergeWindow.classList.remove('scale-100', 'opacity-100', 'translate-y-0');
+                    priveIconOpen.classList.remove('rotate-90', 'scale-0', 'opacity-0');
+                    priveIconClose.classList.add('rotate-90', 'scale-0', 'opacity-0');
+                    priveIconClose.classList.remove('rotate-0', 'scale-100', 'opacity-100');
+                }
+            }
+
+            priveConciergeBtn.addEventListener('click', togglePriveChat);
+            closePriveChatBtn.addEventListener('click', togglePriveChat);
+
+            priveWhatsappForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const message = priveWhatsappInput.value.trim();
+                if (message) {
+                    // ⚠️ GDRIPX WHATSAPP NUMBER
+                    const phoneNumber = "2347071090642"; 
+                    
+                    // Automatically prefixes their message to identify them as Prive' clients
+                    const vipMessage = `Prive' Client Inquiry: ${message}`;
+                    const encodedMessage = encodeURIComponent(vipMessage);
+                    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                    
+                    window.open(whatsappURL, '_blank');
+                    priveWhatsappInput.value = '';
+                    togglePriveChat(); 
+                }
+            });
+        }
+    </script>
+</body>
+</html>

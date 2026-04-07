@@ -828,7 +828,7 @@
             <div class="col-span-1 flex flex-col gap-6 md:gap-8 h-full lg:h-[600px]">
                 
 <!-- PANEL 3: Horizontal (Top Right) - GDRIPX PRIVE' -->
-                <a href="#prive" class="group relative flex-1 min-h-[280px] lg:min-h-0 rounded-[2rem] overflow-hidden bg-[#050505] shadow-xl hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 flex flex-col block border border-white/5 hover:border-[#D4AF37]/50" style="transition-delay: 200ms;">
+                <a href="prive.html" class="group relative flex-1 min-h-[280px] lg:min-h-0 rounded-[2rem] overflow-hidden bg-[#050505] shadow-xl hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 flex flex-col block border border-white/5 hover:border-[#D4AF37]/50" style="transition-delay: 200ms;">
                     
                     <!-- Background Image (YOUR LOGO IMAGE GOES HERE) -->
                     <!-- 'object-right' ensures the logo stays visible on the right side -->
@@ -902,7 +902,7 @@
                         <!-- CTA Button -->
                         <div class="mt-auto">
                             <div class="inline-flex border border-white/30 text-white px-5 py-2.5 rounded-full text-[9px] font-bold tracking-widest uppercase items-center gap-2 group-hover:bg-white group-hover:text-black transition-all duration-300">
-                                Request Access <span class="material-symbols-outlined text-[14px]">lock</span>
+                                Preview The Atelier <span class="material-symbols-outlined text-[14px]">lock</span>
                             </div>
                         </div>
 
@@ -1901,6 +1901,102 @@
         </div>
     </div>
 </div>
+
+<!-- ========================================== -->
+    <!-- 🟢 PRIVE' "COMING SOON" WELCOME POPUP 🟢   -->
+    <!-- ========================================== -->
+    <div id="prive-popup-overlay" class="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-xl hidden opacity-0 transition-opacity duration-700 flex items-center justify-center p-4">
+        
+        <!-- The Square Popup Card -->
+        <div id="prive-popup-card" class="relative w-full max-w-[450px] min-h-[450px] sm:aspect-square bg-[#050505] rounded-[2rem] overflow-hidden border border-[#D4AF37]/30 shadow-[0_40px_80px_rgba(0,0,0,0.8)] transform scale-95 transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] flex flex-col group">
+            
+            <!-- Close Button -->
+            <button id="close-prive-popup" class="absolute top-4 right-4 z-50 w-10 h-10 bg-black/40 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 hover:rotate-90 transition-all duration-300">
+                <span class="material-symbols-outlined text-[18px]">close</span>
+            </button>
+
+            <!-- Background Image (Your Leather/Prive Logo) -->
+            <img src="./images/prive.jpg" 
+                 class="absolute inset-0 w-full h-full object-cover object-right opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-[2000ms] ease-out pointer-events-none" alt="GDRIPX Prive">
+            
+            <!-- Dark Gradients to ensure text pops -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 pointer-events-none"></div>
+            
+            <!-- Inner Glowing Border -->
+            <div class="absolute inset-2 border border-[#D4AF37]/10 rounded-[1.5rem] pointer-events-none"></div>
+
+            <!-- Content -->
+            <div class="relative z-10 p-8 flex flex-col items-center justify-between h-full text-center">
+                
+                <!-- Header -->
+                <div class="flex flex-col items-center mt-2">
+                    <span class="text-[#D4AF37] text-[9px] font-bold tracking-[0.3em] uppercase mb-3 flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-pulse shadow-[0_0_10px_rgba(212,175,55,0.6)]"></span> Exclusive Line
+                    </span>
+                    <h3 class="font-serif text-4xl sm:text-5xl font-black text-white italic leading-none drop-shadow-lg">
+                        Gdripx Prive'
+                    </h3>
+                </div>
+
+                <!-- Middle: Coming Soon & Countdown -->
+                <div class="flex flex-col items-center w-full my-6">
+                    <h4 class="text-white text-xl sm:text-2xl font-black font-display tracking-[0.2em] uppercase mb-6 drop-shadow-md">
+                        Coming Soon
+                    </h4>
+                    
+                    <!-- 🟢 CALENDAR FLIP COUNTDOWN 🟢 -->
+                    <div class="flex gap-2 sm:gap-3 items-center justify-center w-full">
+                        <!-- Days -->
+                        <div class="flex flex-col items-center">
+                            <div class="relative bg-black/80 border border-white/10 backdrop-blur-md rounded-lg w-12 h-14 sm:w-14 sm:h-16 flex items-center justify-center overflow-hidden shadow-inner">
+                                <span class="font-serif text-2xl sm:text-3xl font-bold text-[#D4AF37] relative z-10" id="popup-days">30</span>
+                                <div class="absolute top-1/2 left-0 w-full h-[1px] bg-white/20 z-20 shadow-[0_1px_0_rgba(0,0,0,0.8)]"></div>
+                            </div>
+                            <span class="text-[7px] sm:text-[8px] font-bold uppercase tracking-widest text-white/40 mt-2">Days</span>
+                        </div>
+                        <span class="text-white/20 text-lg sm:text-xl font-light mb-4">:</span>
+                        
+                        <!-- Hours -->
+                        <div class="flex flex-col items-center">
+                            <div class="relative bg-black/80 border border-white/10 backdrop-blur-md rounded-lg w-12 h-14 sm:w-14 sm:h-16 flex items-center justify-center overflow-hidden shadow-inner">
+                                <span class="font-serif text-2xl sm:text-3xl font-bold text-white relative z-10" id="popup-hours">00</span>
+                                <div class="absolute top-1/2 left-0 w-full h-[1px] bg-white/20 z-20 shadow-[0_1px_0_rgba(0,0,0,0.8)]"></div>
+                            </div>
+                            <span class="text-[7px] sm:text-[8px] font-bold uppercase tracking-widest text-white/40 mt-2">Hrs</span>
+                        </div>
+                        <span class="text-white/20 text-lg sm:text-xl font-light mb-4">:</span>
+                        
+                        <!-- Minutes -->
+                        <div class="flex flex-col items-center">
+                            <div class="relative bg-black/80 border border-white/10 backdrop-blur-md rounded-lg w-12 h-14 sm:w-14 sm:h-16 flex items-center justify-center overflow-hidden shadow-inner">
+                                <span class="font-serif text-2xl sm:text-3xl font-bold text-white relative z-10" id="popup-mins">00</span>
+                                <div class="absolute top-1/2 left-0 w-full h-[1px] bg-white/20 z-20 shadow-[0_1px_0_rgba(0,0,0,0.8)]"></div>
+                            </div>
+                            <span class="text-[7px] sm:text-[8px] font-bold uppercase tracking-widest text-white/40 mt-2">Min</span>
+                        </div>
+                        <span class="text-white/20 text-lg sm:text-xl font-light mb-4">:</span>
+                        
+                        <!-- Seconds -->
+                        <div class="flex flex-col items-center">
+                            <div class="relative bg-white/10 border border-[#D4AF37]/40 backdrop-blur-md rounded-lg w-12 h-14 sm:w-14 sm:h-16 flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(212,175,55,0.15)] group/sec">
+                                <span class="font-serif text-2xl sm:text-3xl font-bold text-white relative z-10" id="popup-secs">00</span>
+                                <div class="absolute top-1/2 left-0 w-full h-[1px] bg-white/20 z-20 shadow-[0_1px_0_rgba(0,0,0,0.8)]"></div>
+                                <div class="absolute inset-0 bg-[#D4AF37]/10 translate-y-full group-hover/sec:translate-y-0 transition-transform duration-300 z-0"></div>
+                            </div>
+                            <span class="text-[7px] sm:text-[8px] font-bold uppercase tracking-widest text-[#D4AF37] mt-2">Sec</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Button -->
+                <a href="prive.html" class="w-full bg-[#D4AF37] text-black py-4 rounded-xl text-[10px] font-bold tracking-[0.2em] uppercase flex items-center justify-center gap-2 hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-300">
+                    Preview The Atelier <span class="material-symbols-outlined text-[14px]">trending_flat</span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+    
 <script>
     // --- 🟢 SCROLL REVEAL OBSERVER 🟢 ---
     document.addEventListener('DOMContentLoaded', () => {
@@ -2952,6 +3048,90 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updatePriveCountdown();
         setInterval(updatePriveCountdown, 1000);
+    }
+
+    // --- 🟢 PRIVE' WELCOME POPUP LOGIC 🟢 ---
+    const privePopupOverlay = document.getElementById('prive-popup-overlay');
+    const privePopupCard = document.getElementById('prive-popup-card');
+    const closePrivePopupBtn = document.getElementById('close-prive-popup');
+
+    // 1. Show the popup 3 seconds after the page loads (gives the preloader time to finish)
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            privePopupOverlay.classList.remove('hidden');
+            // Trigger animation frame for smooth fade in
+            requestAnimationFrame(() => {
+                privePopupOverlay.classList.remove('opacity-0');
+                privePopupCard.classList.remove('scale-95');
+                privePopupCard.classList.add('scale-100');
+                document.body.style.overflow = 'hidden'; // Lock background scrolling
+            });
+        }, 3000); // Appears 3 seconds after load
+    });
+
+    // 2. Close Popup Function
+    function closePrivePopup() {
+        privePopupOverlay.classList.add('opacity-0');
+        privePopupCard.classList.remove('scale-100');
+        privePopupCard.classList.add('scale-95');
+        
+        setTimeout(() => {
+            privePopupOverlay.classList.add('hidden');
+            document.body.style.overflow = ''; // Unlock scrolling
+        }, 700); // Matches the duration-700 class
+    }
+
+    // Close when clicking the 'X'
+    if (closePrivePopupBtn) {
+        closePrivePopupBtn.addEventListener('click', closePrivePopup);
+    }
+
+    // Close when clicking the blurry background overlay
+    if (privePopupOverlay) {
+        privePopupOverlay.addEventListener('click', (e) => {
+            if (e.target === privePopupOverlay) closePrivePopup();
+        });
+    }
+
+    // 3. Popup Countdown Engine
+    const popDays = document.getElementById("popup-days");
+    const popHours = document.getElementById("popup-hours");
+    const popMins = document.getElementById("popup-mins");
+    const popSecs = document.getElementById("popup-secs");
+
+    if (popDays) {
+        // Set drop date strictly to 30 days from right now
+        const popupDropDate = new Date();
+        popupDropDate.setDate(popupDropDate.getDate() + 30);
+        
+        function animatePopupFlip(element, newValue) {
+            if (element.innerText !== newValue) {
+                element.classList.remove('flip-animate');
+                void element.offsetWidth; // Trigger reflow
+                element.innerText = newValue;
+                element.classList.add('flip-animate');
+            }
+        }
+
+        function updatePopupCountdown() {
+            const now = new Date().getTime();
+            const distance = popupDropDate.getTime() - now;
+
+            if (distance < 0) return;
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            const s = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+
+            animatePopupFlip(popDays, d);
+            animatePopupFlip(popHours, h);
+            animatePopupFlip(popMins, m);
+            animatePopupFlip(popSecs, s); // Seconds flip constantly
+        }
+
+        updatePopupCountdown();
+        setInterval(updatePopupCountdown, 1000);
     }
 </script>
 
