@@ -394,6 +394,127 @@
         </div>
     </section>
 
+    <!-- ========================================== -->
+    <!-- 🟢 BRAND ARCHITECTURE (DARK SYMMETRY) 🟢   -->
+    <!-- ========================================== -->
+    <section class="py-24 md:py-32 bg-[#050505] relative overflow-hidden z-10 border-t border-white/5" id="architecture">
+        
+        <!-- Subtle Ambient Background Word -->
+        <div class="absolute top-[5%] left-0 w-full text-center opacity-[0.02] pointer-events-none select-none overflow-hidden z-0">
+            <span class="text-[25vh] md:text-[35vh] font-black font-display uppercase leading-none tracking-tighter text-white">DUALITY</span>
+        </div>
+
+        <div class="layout-container max-w-[1400px] mx-auto px-4 sm:px-8 relative z-10">
+            
+            <!-- Section Header (Centered) -->
+            <div class="text-center mb-16 md:mb-20 js-reveal">
+                <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-white/40 mb-4 flex items-center justify-center gap-3">
+                    <span class="w-8 h-[1px] bg-white/20"></span> Brand Architecture <span class="w-8 h-[1px] bg-white/20"></span>
+                </span>
+                <h2 class="font-serif text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter mb-6 drop-shadow-lg">
+                    Two Divisions.<br>
+                    <span class="italic font-light text-white/40">One Vision.</span>
+                </h2>
+                <p class="font-display text-sm text-white/50 font-medium max-w-lg mx-auto leading-relaxed">
+                    GDRIPX operates across two distinct disciplines. One engineered for the daily pulse of the streets; the other tailored for the absolute apex of luxury.
+                </p>
+            </div>
+
+<!-- 🟢 3D PARALLAX EXHIBITION GRID 🟢 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 w-full js-reveal perspective-stage">
+                
+                <!-- ========================================== -->
+                <!-- LEFT: GDRIPX CORE (STREETWEAR)             -->
+                <!-- ========================================== -->
+                <!-- Added 'duality-card' class for the 3D Javascript effect -->
+                <a href="shop.html" class="duality-card group relative w-full h-[500px] lg:h-[700px] rounded-[2rem] overflow-hidden bg-[#0a0a0a] shadow-[0_20px_50px_rgba(0,0,0,0.5)] block cursor-pointer" style="transform-style: preserve-3d;">
+                    
+                    <!-- 1. Centered Streetwear Image -->
+                    <!-- FIX: Changed object-right to object-center -->
+                    <img src="./images/hoodies/best.webp" 
+                         class="absolute inset-0 w-full h-full object-cover object-center opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-[1500ms] ease-[cubic-bezier(0.19,1,0.22,1)] z-0" 
+                         alt="GDRIPX Core Streetwear">
+                    
+                    <!-- 2. Smooth Dark Gradient -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-700 z-10"></div>
+
+                    <!-- 3. Dynamic Inner Border (Scales down on hover to create depth) -->
+                    <div class="absolute inset-5 border border-white/10 rounded-[1.2rem] z-20 pointer-events-none transition-transform duration-[1000ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[0.96] group-hover:border-white/30"></div>
+
+                    <!-- 4. Top Tag (Glassmorphism) -->
+                    <div class="absolute top-10 left-10 z-30 transform-gpu transition-transform duration-700 group-hover:translate-x-2 group-hover:translate-y-2" style="transform: translateZ(30px);">
+                        <span class="bg-white/10 border border-white/20 text-white px-4 py-2 rounded-full text-[8px] font-bold tracking-widest uppercase backdrop-blur-md shadow-lg">
+                            Division 01
+                        </span>
+                    </div>
+
+                    <!-- 5. Content (Bottom Left) -->
+                    <div class="absolute inset-x-0 bottom-0 p-10 md:p-12 flex flex-col items-start z-30 transform-gpu transition-transform duration-[1000ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-6" style="transform: translateZ(50px);">
+                        <p class="font-display text-[10px] font-bold tracking-[0.3em] text-white/50 uppercase mb-2">Streetwear Uniforms</p>
+                        <h3 class="font-serif text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-4 drop-shadow-2xl">
+                            GDRIPX<br><span class="italic font-light text-white/60">Core.</span>
+                        </h3>
+                        <p class="font-display text-xs text-white/60 font-medium leading-relaxed max-w-[280px] mb-8">
+                            The foundation. Heavyweight loopback fleece, essential silhouettes, and brutalist streetwear designed for daily rotation. Raw and unapologetic.
+                        </p>
+                        
+                        <!-- Magnetic Button -->
+                        <div class="inline-flex bg-white text-black px-7 py-4 rounded-full text-[9px] font-bold tracking-widest uppercase items-center gap-3 group-hover:bg-primary group-hover:text-white border border-transparent group-hover:border-white/30 transition-all duration-500 shadow-[0_10px_30px_rgba(255,255,255,0.15)]">
+                            Explore Core <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">east</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- ========================================== -->
+                <!-- RIGHT: GDRIPX PRIVE' (LUXURY)              -->
+                <!-- ========================================== -->
+                <!-- Added 'duality-card' class for the 3D Javascript effect -->
+                <a href="prive.html" class="duality-card group relative w-full h-[500px] lg:h-[700px] rounded-[2rem] overflow-hidden bg-[#050505] shadow-[0_20px_50px_rgba(0,0,0,0.8)] block cursor-pointer" style="transform-style: preserve-3d; transition-delay: 100ms;">
+                    
+                    <!-- 1. Prive Background Texture -->
+                    <img src="./images/prive.jpg" 
+                         class="absolute inset-0 w-full h-full object-cover object-right opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-[1500ms] ease-[cubic-bezier(0.19,1,0.22,1)] z-0" 
+                         alt="GDRIPX Prive Luxury">
+                    
+                    <!-- 2. Smooth Dark Gradients -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent w-[90%] z-10 pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-700 z-10 pointer-events-none"></div>
+
+                    <!-- 3. Dynamic Inner Border (Gold) -->
+                    <div class="absolute inset-5 border border-[#D4AF37]/20 rounded-[1.2rem] z-20 pointer-events-none transition-transform duration-[1000ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[0.96] group-hover:border-[#D4AF37]/50 group-hover:shadow-[inset_0_0_30px_rgba(212,175,55,0.1)]"></div>
+
+                    <!-- 4. Top Tag (Gold) -->
+                    <div class="absolute top-10 left-10 z-30 flex items-center gap-2 transform-gpu transition-transform duration-700 group-hover:translate-x-2 group-hover:translate-y-2" style="transform: translateZ(30px);">
+                        <span class="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.8)]"></span>
+                        <span class="bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] px-4 py-2 rounded-full text-[8px] font-bold tracking-widest uppercase backdrop-blur-md shadow-lg">
+                            Division 02
+                        </span>
+                    </div>
+
+                    <!-- 5. Content (Bottom Left) -->
+                    <div class="absolute inset-x-0 bottom-0 p-10 md:p-12 flex flex-col items-start z-30 transform-gpu transition-transform duration-[1000ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-6" style="transform: translateZ(50px);">
+                        <p class="font-display text-[10px] font-bold tracking-[0.3em] text-[#D4AF37]/70 uppercase mb-2">Exclusive Atelier</p>
+                        <h3 class="font-serif text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-4 drop-shadow-2xl">
+                            Gdripx<br><span class="italic font-light text-[#D4AF37]">Prive'</span>
+                        </h3>
+                        <p class="font-display text-xs text-white/60 font-medium leading-relaxed max-w-[280px] mb-8">
+                            The apex. Limited-allocation cut-and-sew garments, premium textiles, and bespoke tailoring. An exclusive atelier for the initiated.
+                        </p>
+                        
+                        <!-- Magnetic Gold Button -->
+                        <div class="inline-flex bg-[#050505] border border-[#D4AF37]/40 text-[#D4AF37] px-7 py-4 rounded-full text-[9px] font-bold tracking-widest uppercase items-center gap-3 group-hover:bg-[#D4AF37] group-hover:text-black transition-all duration-500 shadow-[0_10px_30px_rgba(212,175,55,0.15)]">
+                            Enter Atelier <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">lock</span>
+                        </div>
+                    </div>
+
+                    <!-- Ambient Gold Hover Glow -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-[#D4AF37]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-10 pointer-events-none"></div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
 <!-- ========================================== -->
     <!-- 🟢 SYNDICATE / NEWSLETTER CALLOUT 🟢 -->
     <!-- ========================================== -->
@@ -762,6 +883,38 @@
                 }
             });
         }
+
+        // --- 🟢 DUALITY CARDS 3D TILT EFFECT (DESKTOP) 🟢 ---
+    const dualityCards = document.querySelectorAll('.duality-card');
+    
+    // Only run the 3D effect on screens larger than mobile
+    if (window.innerWidth >= 768) {
+        dualityCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // x position within the element
+                const y = e.clientY - rect.top;  // y position within the element
+                
+                // Calculate rotation based on cursor position (Center is 0,0)
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Multipliers determine how intense the tilt is
+                const rotateX = ((y - centerY) / centerY) * -8;
+                const rotateY = ((x - centerX) / centerX) * 8;
+                
+                // Apply Transform
+                card.style.transform = `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.transition = 'transform 0.1s ease-out';
+            });
+
+            // Reset to flat when mouse leaves
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1500px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+            });
+        });
+    }
     </script>
 </body>
 </html>
