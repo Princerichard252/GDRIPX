@@ -76,7 +76,7 @@
     <!-- Minimal Navbar -->
     <nav class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4">
         <div class="bg-white/80 backdrop-blur-md border border-white/20 shadow-sm rounded-full px-6 py-3 flex items-center justify-between w-full max-w-[1200px]">
-            <a href="index.html" class="flex items-center gap-2 group">
+            <a href="/shop.html" class="flex items-center gap-2 group">
                 <span class="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-1">arrow_back</span>
                 <span class="text-xs font-bold tracking-widest uppercase">Keep Shopping</span>
             </a>
@@ -226,7 +226,7 @@
     </main>
 
     <script>
-        // --- ADVANCED CART LOGIC (WITH AGGREGATION) ---
+// --- ADVANCED CART LOGIC (WITH AGGREGATION) ---
         const cartContent = document.getElementById('cart-content');
         const emptyState = document.getElementById('empty-state');
         const itemsWrapper = document.getElementById('cart-items-wrapper');
@@ -237,9 +237,7 @@
 
         // 1. Retrieve Raw Cart Data
         let rawCart = JSON.parse(localStorage.getItem('gdripx_cart')) || [];
-        
-        // This will hold our "Grouped" items for display and checkout
-        let groupedCart = [];
+        let groupedCart =[];
 
         function renderCart() {
             itemsWrapper.innerHTML = '';
@@ -255,38 +253,35 @@
             }
 
             // --- SMART AGGREGATION LOGIC ---
-            // Consolidate identical items (Same Name + Same Size)
             const groups = {};
             
             rawCart.forEach(item => {
-                // Key determines what makes items "identical"
-                // Using Name + Size. Price is usually tied to size, but we verify later.
                 const key = `${item.name}-${item.size}`;
                 
                 if (!groups[key]) {
                     groups[key] = { 
                         ...item, 
                         qty: 0,
-                        rawPrice: parseFloat(item.price.replace('$', '')) // Prepare price for math
+                        // FIXED: Safely strips '₦' and commas to convert "₦35,000" into 35000 math value
+                        rawPrice: parseFloat(String(item.price).replace(/[^0-9.-]+/g, "")) || 0
                     };
                 }
-                groups[key].qty += 1;
+                // FIXED: Adds the ACTUAL quantity the user selected from the shop!
+                groups[key].qty += parseInt(item.qty || 1, 10);
             });
 
-            // Convert Object back to Array for display
             groupedCart = Object.values(groups);
+
+            // OPTIMIZATION: Normalize the rawCart array to prevent duplicate data blocks
+            rawCart = [...groupedCart];
+            localStorage.setItem('gdripx_cart', JSON.stringify(rawCart));
 
             let subtotal = 0;
 
             // --- RENDER GROUPED ITEMS ---
             groupedCart.forEach((item, index) => {
-                // Calculate item total cost
                 const lineTotal = item.rawPrice * item.qty;
                 subtotal += lineTotal;
-
-                // Handle Image Display
-                // If it's a hoodie from the new modal, 'item.image' is the front view png.
-                // If it's a basic item, it might be a url. Both work fine.
                 
                 const itemRow = document.createElement('div');
                 itemRow.className = 'flex gap-6 items-center p-4 bg-white border border-primary/5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group animate-enter';
@@ -306,8 +301,8 @@
                                 </p>
                             </div>
                             <div class="text-right">
-                                <span class="font-serif font-bold text-xl italic block">${item.price}</span>
-                                ${item.qty > 1 ? `<span class="text-[10px] text-primary/40 font-bold block">Total: $${lineTotal.toFixed(2)}</span>` : ''}
+                                <span class="font-serif font-bold text-xl italic block">₦${item.rawPrice.toLocaleString()}</span>
+                                ${item.qty > 1 ? `<span class="text-[10px] text-primary/40 font-bold block">Total: ₦${lineTotal.toLocaleString()}</span>` : ''}
                             </div>
                         </div>
                         
@@ -317,17 +312,11 @@
                                 <span class="text-[10px] font-bold uppercase tracking-widest text-primary/50">In Stock</span>
                             </div>
                             
-                            <!-- NEW: Quantity Control Pill -->
                             <div class="flex items-center gap-1 bg-primary/5 rounded-full p-1 border border-primary/10">
-                                <!-- Decrease Button -->
                                 <button onclick="removeItem('${item.name}', '${item.size}')" class="w-7 h-7 flex items-center justify-center rounded-full bg-white text-primary hover:text-red-500 hover:bg-red-50 shadow-sm transition-all">
                                     <span class="material-symbols-outlined text-[16px]">remove</span>
                                 </button>
-                                
-                                <!-- Current Quantity -->
                                 <span class="text-xs font-bold w-6 text-center select-none">${item.qty}</span>
-                                
-                                <!-- Increase Button -->
                                 <button onclick="addItem('${item.name}', '${item.size}')" class="w-7 h-7 flex items-center justify-center rounded-full bg-white text-primary hover:text-green-500 hover:bg-green-50 shadow-sm transition-all">
                                     <span class="material-symbols-outlined text-[16px]">add</span>
                                 </button>
@@ -338,49 +327,46 @@
                 itemsWrapper.appendChild(itemRow);
             });
 
-            // Update Totals
-            const shipping = 25.00;
-            const tax = subtotal * 0.08; // 8% Tax
+            // Update Totals (Adjusted for Naira Context)
+            const shipping = 2500; // Flat ₦2,500 shipping rate
+            const tax = subtotal * 0.08; 
             const total = subtotal + shipping + tax;
 
-            subtotalDisplay.innerText = `$${subtotal.toFixed(2)}`;
-            taxDisplay.innerText = `$${tax.toFixed(2)}`;
-            totalDisplay.innerText = `$${total.toFixed(2)}`;
+            // Visually Update DOM with proper Naira formatting
+            subtotalDisplay.innerText = `₦${subtotal.toLocaleString()}`;
+            taxDisplay.innerText = `₦${tax.toLocaleString()}`;
+            totalDisplay.innerText = `₦${total.toLocaleString()}`;
+            
+            // Fix the shipping string visually in the HTML
+            const shippingNode = document.querySelector('.lg\\:col-span-5 .space-y-4 div:nth-child(2) span:last-child');
+            if(shippingNode) shippingNode.innerText = `₦${shipping.toLocaleString()}`;
         }
 
-        // 2. Smart Remove Function
-        // Removes ONE instance of the item from the Raw Cart
+        // 2. Smart Remove Function (Decreases quantity instead of deleting immediately)
         window.removeItem = (name, size) => {
-            // Find index of first item in raw array matching this specific variation
             const index = rawCart.findIndex(item => item.name === name && item.size === size);
-            
             if (index > -1) {
-                // Remove just one instance
-                rawCart.splice(index, 1);
-                // Save and Re-render
+                let currentQty = parseInt(rawCart[index].qty || 1, 10);
+                if (currentQty > 1) {
+                    rawCart[index].qty = currentQty - 1; 
+                } else {
+                    rawCart.splice(index, 1); 
+                }
                 localStorage.setItem('gdripx_cart', JSON.stringify(rawCart));
                 renderCart();
             }
         }
 
-
-// 2.5 Smart Add Function (Increases Quantity)
+        // 2.5 Smart Add Function (Increases quantity instead of duplicating data)
         window.addItem = (name, size) => {
-            // Find an existing item in the raw cart to copy its properties (price, image, etc.)
-            const existingItem = rawCart.find(item => item.name === name && item.size === size);
-            
-            if (existingItem) {
-                // Create an exact clone of the item, but give it a new unique timestamp ID
-                const newItem = { ...existingItem, id: Date.now() };
-                
-                // Push to the raw cart array
-                rawCart.push(newItem);
-                
-                // Save and Re-render
+            const index = rawCart.findIndex(item => item.name === name && item.size === size);
+            if (index > -1) {
+                rawCart[index].qty = parseInt(rawCart[index].qty || 1, 10) + 1;
                 localStorage.setItem('gdripx_cart', JSON.stringify(rawCart));
                 renderCart();
             }
         }
+
         // 3. Checkout Logic (WhatsApp Integration)
         checkoutBtn.addEventListener('click', () => {
             if (rawCart.length === 0) return;
@@ -399,7 +385,6 @@
                 btnText.innerHTML = `<span class="material-symbols-outlined align-middle mr-2">chat</span> Redirecting...`;
                 
                 // --- GENERATE SMART RECEIPT ---
-                // We use 'groupedCart' here so the merchant sees "3x Hoodie" instead of "1x Hoodie, 1x Hoodie..."
                 let message = `*NEW ORDER - GDRIPX* 🛍️\n\n`;
                 message += `*Order Items:*\n`;
                 
@@ -412,20 +397,20 @@
                     message += `📦 *${item.name}*\n`;
                     message += `   Size: ${item.size}\n`;
                     message += `   Qty: ${item.qty}\n`;
-                    message += `   Price: ${item.price} (Sub: $${lineTotal})\n`;
+                    message += `   Price: ₦${item.rawPrice.toLocaleString()} (Sub: ₦${lineTotal.toLocaleString()})\n`;
                 });
                 
                 // Calculate Totals
-                const shipping = 25.00;
+                const shipping = 2500;
                 const tax = subtotal * 0.08;
                 const total = subtotal + shipping + tax;
                 
                 message += `=========================\n`;
                 message += `*TOTAL SUMMARY:*\n`;
-                message += `Subtotal: $${subtotal.toFixed(2)}\n`;
-                message += `Shipping: $${shipping.toFixed(2)}\n`;
-                message += `Tax (8%): $${tax.toFixed(2)}\n`;
-                message += `*FINAL DUE: $${total.toFixed(2)}*\n\n`;
+                message += `Subtotal: ₦${subtotal.toLocaleString()}\n`;
+                message += `Shipping: ₦${shipping.toLocaleString()}\n`;
+                message += `Tax (8%): ₦${tax.toLocaleString()}\n`;
+                message += `*FINAL DUE: ₦${total.toLocaleString()}*\n\n`;
                 message += `I am ready to pay. Please confirm!`;
 
                 const encodedMessage = encodeURIComponent(message);
