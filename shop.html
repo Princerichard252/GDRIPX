@@ -2335,6 +2335,38 @@
             grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
     }
+
+    // ==========================================
+    // 🟢 DEEP LINKING (HOMEPAGE TO MODAL) 🟢
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        // Wait just a tiny bit for the grid to render before trying to click something
+        setTimeout(() => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const itemToOpen = urlParams.get('item');
+
+            if (itemToOpen) {
+                let targetCard = null;
+
+                // Match the URL parameter to the correct card
+                if (itemToOpen === 'jersey-blue') {
+                    targetCard = document.querySelector('.product-card[data-name="GDRIPX Jersey Blue"]');
+                } else if (itemToOpen === 'zip-up-black') {
+                    targetCard = document.querySelector('.product-card[data-name="GDRIPX Zip-Up Black"]');
+                } else if (itemToOpen === 'trucker-blue') {
+                    targetCard = document.querySelector('.product-card[data-name="GDRIPX Signature Trucker Blue"]');
+                }
+
+                // If we found the card, find its "Add to Stash" button and click it to trigger openDossier
+                if (targetCard) {
+                    const btn = targetCard.querySelector('button[onclick^="openDossier"]');
+                    if (btn) {
+                        btn.click();
+                    }
+                }
+            }
+        }, 800); // 800ms delay ensures preloader is mostly out of the way before modal fires
+    });
     </script>
 </body>
 </html>
