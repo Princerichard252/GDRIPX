@@ -1406,8 +1406,7 @@
     </div>
 </section>
 
-<!-- 🟢 PREMIUM GLASS VAULT SECTION 🟢 -->
-<!-- 🟢 PREMIUM GLASS VAULT SECTION 🟢 -->
+<!-- 🟢 PREMIUM GLASS VAULT SECTION (AVAILABLE NOW - FASHION EDITORIAL) 🟢 -->
 <section class="py-16 md:py-32 bg-[#050505] relative overflow-hidden flex items-center justify-center min-h-[90vh]" id="vault">
     
     <!-- Subtle Background Grain -->
@@ -1418,93 +1417,102 @@
         <!-- Cinematic Card Container -->
         <div class="relative w-full rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-[0_40px_80px_-15px_rgba(0,0,0,0.9)] border border-white/5 bg-[#0a0a0a]">
 
-            <!-- The Teaser Image -->
+            <!-- The Product Image (Change src to actual LOTW product shot) -->
             <img src="https://images.unsplash.com/photo-1775447462191-2a4c8c4e9ef1?q=80&w=880&auto=format&fit=crop" 
-                 alt="Upcoming Collection Teaser" 
-                 class="absolute inset-0 w-full h-full object-cover object-top md:object-left grayscale-[50%] brightness-[0.6] group-hover:scale-105 group-hover:brightness-[0.8] transition-all duration-[3000ms] ease-out" loading="lazy">
+                 alt="LOTW Collection Live" 
+                 class="absolute inset-0 w-full h-full object-cover object-top md:object-left grayscale-[20%] brightness-[0.7] group-hover:scale-105 group-hover:grayscale-0 transition-all duration-[3000ms] ease-out" loading="lazy">
             
-            <!-- Dynamic Gradients -->
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/95 md:bg-gradient-to-l md:from-black/95 md:via-black/50 md:to-transparent"></div>
+            <!-- Dynamic Gradients for Text Readability -->
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black/95 md:bg-gradient-to-l md:from-black/95 md:via-black/70 md:to-transparent"></div>
 
             <!-- The Floating Glass Plate -->
-            <div class="relative z-10 w-full md:w-[65%] lg:w-[50%] ml-auto p-4 pt-48 md:p-12 lg:p-16 flex flex-col justify-end md:justify-center min-h-[65vh] md:min-h-[600px]">
+            <div class="relative z-10 w-full md:w-[65%] lg:w-[50%] ml-auto p-4 pt-48 md:p-12 lg:p-16 flex flex-col justify-end md:justify-center min-h-[75vh] md:min-h-[600px]">
 
                 <!-- Actual Glass Box -->
-                <div class="js-reveal relative bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-10 overflow-hidden shadow-2xl transition-transform duration-700 hover:-translate-y-2">
+                <div class="js-reveal relative bg-[#0a0a0a]/60 backdrop-blur-3xl border border-white/10 border-t-white/20 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-2xl transition-transform duration-700 hover:-translate-y-2 flex flex-col">
                     
                     <!-- Glare sweep animation inside the glass -->
-                    <div class="absolute top-0 left-[-100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-30deg] animate-[scanline_6s_ease-in-out_infinite]"></div>
+                    <div class="absolute top-0 left-[-100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-30deg] animate-[scanline_6s_ease-in-out_infinite] pointer-events-none z-0"></div>
 
-                    <!-- Header Tag -->
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="w-2 h-2 rounded-full bg-white shadow-[0_0_10px_white] animate-pulse"></span>
-                        <span class="text-[9px] font-bold tracking-[0.3em] uppercase text-white/80">The Next Drop</span>
+                    <!-- Inner Padding Container -->
+                    <div class="p-6 sm:p-8 md:p-10 relative z-10">
+                        
+                        <!-- Header Tag (Live Drop Indicator - Now Sleek Monochrome) -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3 bg-white/5 border border-white/20 px-3 py-1.5 rounded-full backdrop-blur-md">
+                                <span class="relative flex h-1.5 w-1.5">
+                                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                                  <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
+                                </span>
+                                <span class="text-[9px] font-bold tracking-[0.3em] uppercase text-white">Available Now</span>
+                            </div>
+                            
+                            <!-- Limited Stock Badge -->
+                            <span class="text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-white/50 border-b border-white/20 pb-0.5">
+                                Limited Allocation
+                            </span>
+                        </div>
+
+                        <!-- Title -->
+                        <h2 class="font-serif text-5xl sm:text-6xl md:text-7xl font-black leading-[0.9] text-white tracking-tighter mb-2 drop-shadow-lg">
+                            LOTW <span class="italic font-light text-white/60"></span>
+                        </h2>
+                        
+                        <!-- Brand-Focused Copy -->
+                        <p class="font-display text-xs md:text-sm leading-relaxed text-white/70 mb-6 max-w-sm">
+                            The definitive GDRIPX silhouette. Milled from premium heavyweight cotton, featuring our signature boxy fit. The archive is officially open.
+                        </p>
+
+                        <!-- Price & Details Block -->
+                        <div class="bg-gradient-to-br from-white/10 to-transparent border border-white/10 rounded-xl p-4 sm:p-5 mb-8 backdrop-blur-md flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                            
+                            <!-- Price Display -->
+                            <div>
+                                <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-white/50 mb-1">Official Retail</p>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="font-display font-medium text-lg text-white/60">₦</span>
+                                    <span class="font-serif italic text-4xl sm:text-5xl font-bold text-white drop-shadow-md">35,000</span>
+                                </div>
+                            </div>
+
+                            <!-- Specs List (Fashion Standard - Removed Green Checkmarks) -->
+                            <div class="flex flex-col gap-1.5 border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-4 justify-end">
+                                <p class="text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-white/80 flex items-center gap-2">
+                                    <span class="w-1 h-1 bg-white/50 rounded-full"></span> 100% Heavyweight Cotton
+                                </p>
+                                <p class="text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-white/80 flex items-center gap-2">
+                                    <span class="w-1 h-1 bg-white/50 rounded-full"></span> Signature Boxy Fit
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Add to Cart CTA (Black Sweep instead of Green) -->
+                        <button class="relative overflow-hidden w-full bg-white text-black rounded-xl h-[56px] flex items-center justify-center gap-3 group transition-transform active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] border border-transparent hover:border-white/20" onclick="window.location.href='shop.html?item=lotw'">
+                            
+                            <!-- Premium Black Fill Animation -->
+                            <div class="absolute inset-0 w-full h-full bg-[#050505] transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-0"></div>
+                            
+                            <span class="relative z-10 text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase group-hover:text-white transition-colors duration-300">Purchase</span>
+                            <span class="relative z-10 material-symbols-outlined text-[20px] group-hover:translate-x-2 group-hover:text-white transition-all duration-300">east</span>
+                        </button>
                     </div>
 
-                    <!-- Title -->
-                    <h2 class="font-serif text-5xl sm:text-6xl md:text-7xl font-black leading-[0.9] text-white tracking-tighter mb-4 drop-shadow-lg">
-                        LOTW <span class="italic font-light text-white/60"> </span>
-                    </h2>
-                    
-                    <p class="font-display text-xs md:text-sm leading-relaxed text-white/60 mb-8 max-w-sm">
-                        High-end streetwear, redefined. The latest drop from GDRIPX explores the intersection of brutalist design and luxury comfort. 100% heavyweight cotton. Available now.
-                    </p>
-
-                    <!-- 🟢 THE UPGRADED MECHANICAL COUNTDOWN 🟢 -->
-                    <div class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-8">
-                        
-                        <!-- Days -->
-                        <div class="relative bg-gradient-to-b from-white/10 to-white/5 border border-white/10 border-t-white/30 rounded-xl md:rounded-2xl flex flex-col items-center justify-center p-3 sm:p-4 backdrop-blur-xl shadow-inner overflow-hidden group/box hover:border-white/30 transition-colors">
-                            <span class="font-serif italic text-2xl sm:text-3xl md:text-4xl font-bold text-white relative z-10" id="vault-days">00</span>
-                            <!-- Mechanical Split Line -->
-                            <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/60 z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
-                            <!-- Side Notches -->
-                            <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-r border-white/20 z-30 rounded-r-sm"></div>
-                            <div class="absolute top-1/2 right-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-l border-white/20 z-30 rounded-l-sm"></div>
-                            
-                            <span class="text-[7px] sm:text-[9px] font-bold tracking-widest uppercase text-white/40 mt-1 md:mt-2 group-hover/box:text-white transition-colors relative z-10">Days</span>
+                    <!-- Animated Ticker (Monochrome, sleek fashion tape) -->
+                    <div class="bg-white/5 border-t border-white/10 py-3 overflow-hidden flex items-center relative z-10 backdrop-blur-md">
+                        <div class="flex whitespace-nowrap animate-[ticker_15s_linear_infinite]">
+                            <span class="text-[8px] font-black uppercase tracking-[0.4em] text-white/50 px-6 flex items-center gap-4">
+                                <span>///</span> NO RESTOCKS
+                            </span>
+                            <span class="text-[8px] font-black uppercase tracking-[0.4em] text-white/50 px-6 flex items-center gap-4">
+                                <span>///</span> EXCLUSIVE DROP
+                            </span>
+                            <span class="text-[8px] font-black uppercase tracking-[0.4em] text-white/50 px-6 flex items-center gap-4">
+                                <span>///</span> NO RESTOCKS
+                            </span>
+                            <span class="text-[8px] font-black uppercase tracking-[0.4em] text-white/50 px-6 flex items-center gap-4">
+                                <span>///</span> EXCLUSIVE DROP
+                            </span>
                         </div>
-                        
-                        <!-- Hours -->
-                        <div class="relative bg-gradient-to-b from-white/10 to-white/5 border border-white/10 border-t-white/30 rounded-xl md:rounded-2xl flex flex-col items-center justify-center p-3 sm:p-4 backdrop-blur-xl shadow-inner overflow-hidden group/box hover:border-white/30 transition-colors">
-                            <span class="font-serif italic text-2xl sm:text-3xl md:text-4xl font-bold text-white relative z-10" id="vault-hours">00</span>
-                            <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/60 z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
-                            <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-r border-white/20 z-30 rounded-r-sm"></div>
-                            <div class="absolute top-1/2 right-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-l border-white/20 z-30 rounded-l-sm"></div>
-                            
-                            <span class="text-[7px] sm:text-[9px] font-bold tracking-widest uppercase text-white/40 mt-1 md:mt-2 group-hover/box:text-white transition-colors relative z-10">Hrs</span>
-                        </div>
-                        
-                        <!-- Minutes -->
-                        <div class="relative bg-gradient-to-b from-white/10 to-white/5 border border-white/10 border-t-white/30 rounded-xl md:rounded-2xl flex flex-col items-center justify-center p-3 sm:p-4 backdrop-blur-xl shadow-inner overflow-hidden group/box hover:border-white/30 transition-colors">
-                            <span class="font-serif italic text-2xl sm:text-3xl md:text-4xl font-bold text-white relative z-10" id="vault-mins">00</span>
-                            <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/60 z-20 shadow-[0_1px_0_rgba(255,255,255,0.1)]"></div>
-                            <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-r border-white/20 z-30 rounded-r-sm"></div>
-                            <div class="absolute top-1/2 right-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-l border-white/20 z-30 rounded-l-sm"></div>
-                            
-                            <span class="text-[7px] sm:text-[9px] font-bold tracking-widest uppercase text-white/40 mt-1 md:mt-2 group-hover/box:text-white transition-colors relative z-10">Min</span>
-                        </div>
-                        
-                        <!-- Seconds (Highlighted State) -->
-                        <div class="relative bg-gradient-to-b from-white/20 to-white/5 border border-white/30 border-t-white/50 rounded-xl md:rounded-2xl flex flex-col items-center justify-center p-3 sm:p-4 backdrop-blur-xl shadow-[0_0_20px_rgba(255,255,255,0.1)] overflow-hidden group/sec transition-all">
-                            <!-- Animated Background Fill on Hover -->
-                            <div class="absolute inset-0 bg-white/10 translate-y-full group-hover/sec:translate-y-0 transition-transform duration-300"></div>
-                            
-                            <span class="font-serif italic text-2xl sm:text-3xl md:text-4xl font-bold text-white relative z-10 drop-shadow-md" id="vault-secs">00</span>
-                            <div class="absolute top-1/2 left-0 w-full h-[1px] bg-black/60 z-20 shadow-[0_1px_0_rgba(255,255,255,0.2)]"></div>
-                            <div class="absolute top-1/2 left-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-r border-white/40 z-30 rounded-r-sm"></div>
-                            <div class="absolute top-1/2 right-0 w-1 h-2 -translate-y-1/2 bg-[#111] border-l border-white/40 z-30 rounded-l-sm"></div>
-                            
-                            <span class="text-[7px] sm:text-[9px] font-bold tracking-widest uppercase text-white mt-1 md:mt-2 relative z-10">Sec</span>
-                        </div>
-                    </div>
-
-                    <!-- Action Scroll Prompt -->
-                    <div class="flex items-center gap-3 border-t border-white/10 pt-6">
-                        <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/50 animate-bounce">
-                            <span class="material-symbols-outlined text-[16px]">arrow_downward</span>
-                        </div>
-                        <p class="text-[9px] font-bold tracking-[0.2em] uppercase text-white/50">Register below for early access</p>
                     </div>
 
                 </div>
