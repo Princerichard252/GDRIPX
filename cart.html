@@ -122,7 +122,7 @@
 <!-- 🟢 SILENT LUXURY CHECKOUT FORM (SHOPIFY-STYLE FLOW) 🟢 -->
                 <div class="w-full flex flex-col gap-10 md:gap-12 animate-enter" style="animation-delay: 0.1s;">
                     
-                    <!-- ==================================== -->
+<!-- ==================================== -->
                     <!-- 1. CONTACT SECTION -->
                     <!-- ==================================== -->
                     <div class="w-full">
@@ -130,7 +130,8 @@
                             <h2 class="font-serif text-2xl md:text-3xl font-black text-primary tracking-tight">Contact</h2>
                         </div>
                         <div class="flex flex-col gap-3">
-                            <input type="text" placeholder="Email or mobile phone number" 
+                            <!-- ADDED ID: checkout-email -->
+                            <input type="text" id="checkout-email" placeholder="Email or mobile phone number" 
                                    class="w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
                             
                             <label class="flex items-center gap-3 cursor-pointer group w-max mt-1">
@@ -159,15 +160,13 @@
                             </button>
                         </div>
 
-<!-- 🟢 2A. SHIPPING ADDRESS FORM 🟢 -->
-                        <!-- FIX: Removed overflow-hidden and added relative z-50 so dropdowns float on top of everything -->
+                        <!-- 🟢 2A. SHIPPING ADDRESS FORM 🟢 -->
                         <div id="shipping-details-section" class="transition-all duration-500 relative z-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 
                                 <!-- ==================================== -->
                                 <!-- SMART API COUNTRY DROPDOWN -->
                                 <!-- ==================================== -->
-                                <!-- FIX: High Z-index (60) so it drops over the form -->
                                 <div class="col-span-1 md:col-span-2 relative z-[60]" id="country-container">
                                     <label class="absolute left-4 top-1.5 text-[9px] font-bold text-primary/50 uppercase tracking-widest z-10 pointer-events-none">Country/Region</label>
                                     
@@ -192,19 +191,19 @@
                                 </div>
                                 <!-- ==================================== -->
                                 
-                                <input type="text" placeholder="First name" class="col-span-1 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
-                                <input type="text" placeholder="Last name" class="col-span-1 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
-                                <input type="text" placeholder="Address" class="col-span-1 md:col-span-2 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
-                                <input type="text" placeholder="Apartment, suite, etc. (optional)" class="col-span-1 md:col-span-2 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
+                                <!-- ADDED IDs TO INPUTS -->
+                                <input type="text" id="checkout-fname" placeholder="First name" class="col-span-1 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
+                                <input type="text" id="checkout-lname" placeholder="Last name" class="col-span-1 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
+                                <input type="text" id="checkout-address" placeholder="Address" class="col-span-1 md:col-span-2 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
+                                <input type="text" id="checkout-apt" placeholder="Apartment, suite, etc. (optional)" class="col-span-1 md:col-span-2 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
                                 
                                 <!-- Dynamic City/State/Zip Row -->
                                 <div class="col-span-1 md:col-span-2 flex flex-col sm:flex-row gap-3 w-full transition-all duration-300" id="city-state-row">
-                                    <input type="text" placeholder="City" class="flex-1 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
+                                    <input type="text" id="checkout-city" placeholder="City" class="flex-1 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
                                     
                                     <!-- ==================================== -->
                                     <!-- SMART CUSTOM STATE DROPDOWN -->
                                     <!-- ==================================== -->
-                                    <!-- FIX: Added z-[50] so it sits perfectly above the inputs below it -->
                                     <div id="state-wrapper" class="flex-1 relative transition-all duration-300 ease-in-out transform origin-top w-full z-[50]">
                                         <label class="absolute left-4 top-1.5 text-[9px] font-bold text-primary/50 uppercase tracking-widest z-10 pointer-events-none">State</label>
                                         
@@ -213,8 +212,6 @@
                                             <span class="material-symbols-outlined text-primary/40 transition-transform duration-300" id="state-arrow">expand_more</span>
                                         </div>
 
-                                        <!-- Hidden Searchable Menu -->
-                                        <!-- FIX: Added max-h-[220px] and shadow so it hovers gracefully over the other fields -->
                                         <div id="state-dropdown" class="absolute top-[calc(100%+4px)] left-0 w-full bg-white/95 backdrop-blur-xl border border-primary/10 rounded-xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)] flex-col overflow-hidden opacity-0 translate-y-2 pointer-events-none transition-all duration-300 z-[60]">
                                             <div class="p-3 border-b border-primary/5 bg-[#f9f9f9]">
                                                 <div class="relative flex items-center">
@@ -229,11 +226,11 @@
                                     </div>
                                     <!-- ==================================== -->
                                     
-                                    <input type="text" placeholder="Postal code" class="flex-1 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none relative z-0" />
+                                    <input type="text" id="checkout-postal" placeholder="Postal code" class="flex-1 w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none relative z-0" />
                                 </div>
 
                                 <div class="col-span-1 md:col-span-2 relative mt-1 z-0">
-                                    <input type="tel" placeholder="Phone (optional)" class="w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
+                                    <input type="tel" id="checkout-phone" placeholder="Phone (optional)" class="w-full bg-transparent border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none" />
                                     <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-primary/30 cursor-help" title="In case we need to contact you about your order">help</span>
                                 </div>
                                 
@@ -266,10 +263,10 @@
                         </div>
                     </div>
 
-<!-- ==================================== -->
-                    <!-- 3. SHIPPING METHOD -->
                     <!-- ==================================== -->
-                    <div id="shipping-method-section" class="w-full transition-all duration-500 overflow-hidden">
+                    <!-- 3. SHIPPING METHOD (Restored & Upgraded) -->
+                    <!-- ==================================== -->
+                    <div id="shipping-method-section" class="w-full transition-all duration-500 overflow-hidden mb-8">
                         <h2 class="font-serif text-xl font-black text-primary tracking-tight mb-4">Shipping method</h2>
                         
                         <!-- Custom Brutalist Radio Group -->
@@ -315,10 +312,10 @@
                             </label>
 
                             <!-- Method 4: Inter-State -->
-                            <label class="shipping-option-label interstate-only flex items-center justify-between p-4 cursor-pointer hover:bg-black/[0.02] transition-colors group">
+                            <label class="shipping-option-label interstate-only hidden flex items-center justify-between p-4 cursor-pointer hover:bg-black/[0.02] transition-colors group">
                                 <div class="flex items-center gap-3">
                                     <div class="relative w-4 h-4 rounded-full border-2 border-primary/30 flex items-center justify-center transition-colors group-hover:border-primary">
-                                        <input type="radio" name="shipping_rate" value="10000" class="peer absolute opacity-0 w-full h-full cursor-pointer shipping-radio" />
+                                        <input type="radio" name="shipping_rate" value="10000" class="peer absolute opacity-0 w-full h-full cursor-pointer shipping-radio interstate-default" />
                                         <div class="w-2 h-2 rounded-full bg-primary scale-0 peer-checked:scale-100 transition-transform duration-200"></div>
                                     </div>
                                     <span class="text-xs md:text-sm font-medium text-primary">Outside Rivers State (Inter-state)</span>
@@ -385,32 +382,57 @@
                         </div>
                     </div>
 
-                    <!-- ==================================== -->
+<!-- ==================================== -->
                     <!-- 5. BILLING ADDRESS SECTION -->
                     <!-- ==================================== -->
                     <div id="billing-address-section" class="w-full transition-all duration-500 overflow-hidden">
                         <h2 class="font-serif text-xl font-black text-primary tracking-tight mb-4">Billing address</h2>
                         
                         <div class="border border-primary/20 rounded-xl overflow-hidden bg-white">
-                            <label class="flex items-center justify-between p-4 cursor-pointer border-b border-primary/10 bg-[#f9f9f9] group">
-                                <div class="flex items-center gap-3">
-                                    <div class="relative w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
-                                        <input type="radio" name="billing_address" value="same" class="peer absolute opacity-0 w-full h-full cursor-pointer" checked />
-                                        <div class="w-2 h-2 rounded-full bg-primary scale-100 transition-transform duration-200"></div>
-                                    </div>
-                                    <span class="text-sm font-medium text-primary">Same as shipping address</span>
-                                </div>
-                            </label>
                             
-                            <label class="flex items-center justify-between p-4 cursor-pointer hover:bg-black/[0.02] group">
-                                <div class="flex items-center gap-3">
-                                    <div class="relative w-4 h-4 rounded-full border-2 border-primary/30 flex items-center justify-center group-hover:border-primary">
-                                        <input type="radio" name="billing_address" value="different" class="peer absolute opacity-0 w-full h-full cursor-pointer" />
-                                        <div class="w-2 h-2 rounded-full bg-primary scale-0 peer-checked:scale-100 transition-transform duration-200"></div>
+                            <!-- Same as shipping option -->
+                            <div class="billing-option border-b border-primary/10 bg-[#f9f9f9] transition-colors">
+                                <label class="flex items-center justify-between p-4 cursor-pointer group">
+                                    <div class="flex items-center gap-3">
+                                        <div class="relative w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center transition-colors">
+                                            <input type="radio" name="billing_address" value="same" class="peer absolute opacity-0 w-full h-full cursor-pointer billing-radio" checked />
+                                            <div class="w-2 h-2 rounded-full bg-primary scale-100 transition-transform duration-200"></div>
+                                        </div>
+                                        <span class="text-sm font-medium text-primary">Same as shipping address</span>
                                     </div>
-                                    <span class="text-sm font-medium text-primary">Use a different billing address</span>
+                                </label>
+                            </div>
+                            
+                            <!-- Different billing option -->
+                            <div class="billing-option transition-colors hover:bg-black/[0.02]">
+                                <label class="flex items-center justify-between p-4 cursor-pointer group">
+                                    <div class="flex items-center gap-3">
+                                        <div class="relative w-4 h-4 rounded-full border-2 border-primary/30 flex items-center justify-center group-hover:border-primary transition-colors">
+                                            <input type="radio" name="billing_address" value="different" class="peer absolute opacity-0 w-full h-full cursor-pointer billing-radio" />
+                                            <div class="w-2 h-2 rounded-full bg-primary scale-0 transition-transform duration-200"></div>
+                                        </div>
+                                        <span class="text-sm font-medium text-primary">Use a different billing address</span>
+                                    </div>
+                                </label>
+                                
+                                <!-- 🟢 THE HIDDEN BILLING FORM 🟢 -->
+                                <div id="billing-form-wrapper" class="hidden p-4 bg-black/[0.02] border-t border-primary/5 transition-all duration-300">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <input type="text" id="billing-country" placeholder="Country/Region" class="col-span-1 md:col-span-2 w-full bg-white border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none shadow-sm" />
+                                        <input type="text" id="billing-fname" placeholder="First name" class="col-span-1 w-full bg-white border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none shadow-sm" />
+                                        <input type="text" id="billing-lname" placeholder="Last name" class="col-span-1 w-full bg-white border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none shadow-sm" />
+                                        <input type="text" id="billing-address" placeholder="Address" class="col-span-1 md:col-span-2 w-full bg-white border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none shadow-sm" />
+                                        <input type="text" id="billing-apt" placeholder="Apartment, suite, etc. (optional)" class="col-span-1 md:col-span-2 w-full bg-white border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none shadow-sm" />
+                                        
+                                        <div class="col-span-1 md:col-span-2 flex flex-col sm:flex-row gap-3 w-full">
+                                            <input type="text" id="billing-city" placeholder="City" class="flex-1 w-full bg-white border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none shadow-sm" />
+                                            <input type="text" id="billing-state" placeholder="State" class="flex-1 w-full bg-white border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none shadow-sm" />
+                                            <input type="text" id="billing-postal" placeholder="Postal code" class="flex-1 w-full bg-white border border-primary/20 rounded-xl px-4 py-3.5 text-sm font-medium font-display text-primary placeholder:text-primary/40 focus:ring-0 focus:border-primary transition-colors outline-none shadow-sm" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </label>
+
+                            </div>
                         </div>
                     </div>
 
@@ -578,10 +600,10 @@
                 if(emptyState) emptyState.classList.add('hidden');
             }
 
-            // Aggregation
+            // 🟢 FIX: Aggregation now groups by Name, COLOR, and Size!
             const groups = {};
             rawCart.forEach(item => {
-                const key = `${item.name}-${item.size}`;
+                const key = `${item.name}-${item.color}-${item.size}`;
                 if (!groups[key]) {
                     groups[key] = { 
                         ...item, 
@@ -606,6 +628,7 @@
                 itemRow.className = 'flex flex-row gap-4 md:gap-6 items-start md:items-center p-3 md:p-4 bg-white border border-primary/5 rounded-xl md:rounded-2xl shadow-sm hover:shadow-md transition-shadow group animate-enter w-full';
                 itemRow.style.animationDelay = `${index * 0.1}s`;
 
+                // 🟢 FIX: Added Color display to the UI
                 itemRow.innerHTML = `
                     <div class="w-20 h-24 md:w-24 md:h-32 bg-[#f0f0f0] rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center relative">
                         <img src="${item.image}" alt="${item.name}" class="w-full h-full object-contain p-1.5 md:p-2 mix-blend-multiply">
@@ -615,8 +638,10 @@
                         <div class="flex flex-col md:flex-row md:justify-between items-start w-full gap-1 md:gap-2 mb-2 md:mb-0">
                             <div class="min-w-0 w-full md:w-auto pr-2">
                                 <h3 class="font-display font-bold text-xs md:text-lg uppercase tracking-tight leading-snug truncate w-full">${item.name}</h3>
-                                <p class="text-[9px] md:text-[10px] text-primary/50 font-bold tracking-widest uppercase mt-0.5">
-                                    Size: <span class="text-primary">${item.size}</span>
+                                <p class="text-[9px] md:text-[10px] text-primary/50 font-bold tracking-widest uppercase mt-0.5 flex items-center flex-wrap gap-1">
+                                    <span class="text-primary/70">Color:</span> <span class="text-primary mr-1">${item.color || 'Standard'}</span> 
+                                    <span class="text-primary/30 hidden sm:inline">•</span>
+                                    <span class="text-primary/70 sm:ml-1">Size:</span> <span class="text-primary">${item.size}</span>
                                 </p>
                             </div>
                             <div class="text-left md:text-right mt-1 md:mt-0 shrink-0">
@@ -632,11 +657,11 @@
                             </div>
                             
                             <div class="flex items-center gap-0.5 md:gap-1 bg-primary/5 rounded-full p-0.5 md:p-1 border border-primary/10">
-                                <button onclick="removeItem('${item.name}', '${item.size}')" class="w-6 h-6 md:w-7 md:h-7 flex items-center justify-center rounded-full bg-white text-primary hover:text-red-500 hover:bg-red-50 shadow-sm transition-all">
+                                <button onclick="removeItem('${item.name}', '${item.color}', '${item.size}')" class="w-6 h-6 md:w-7 md:h-7 flex items-center justify-center rounded-full bg-white text-primary hover:text-red-500 hover:bg-red-50 shadow-sm transition-all">
                                     <span class="material-symbols-outlined text-[14px] md:text-[16px]">remove</span>
                                 </button>
                                 <span class="text-[10px] md:text-xs font-bold w-5 md:w-6 text-center select-none">${item.qty}</span>
-                                <button onclick="addItem('${item.name}', '${item.size}')" class="w-6 h-6 md:w-7 md:h-7 flex items-center justify-center rounded-full bg-white text-primary hover:text-green-500 hover:bg-green-50 shadow-sm transition-all">
+                                <button onclick="addItem('${item.name}', '${item.color}', '${item.size}')" class="w-6 h-6 md:w-7 md:h-7 flex items-center justify-center rounded-full bg-white text-primary hover:text-green-500 hover:bg-green-50 shadow-sm transition-all">
                                     <span class="material-symbols-outlined text-[14px] md:text-[16px]">add</span>
                                 </button>
                             </div>
@@ -663,8 +688,9 @@
             }
         }
 
-        window.removeItem = (name, size) => {
-            const index = rawCart.findIndex(item => item.name === name && item.size === size);
+        // 🟢 FIX: Remove button now targets exact Color + Size
+        window.removeItem = (name, color, size) => {
+            const index = rawCart.findIndex(item => item.name === name && item.color === color && item.size === size);
             if (index > -1) {
                 let currentQty = parseInt(rawCart[index].qty || 1, 10);
                 if (currentQty > 1) {
@@ -677,8 +703,9 @@
             }
         }
 
-        window.addItem = (name, size) => {
-            const index = rawCart.findIndex(item => item.name === name && item.size === size);
+        // 🟢 FIX: Add button now targets exact Color + Size
+        window.addItem = (name, color, size) => {
+            const index = rawCart.findIndex(item => item.name === name && item.color === color && item.size === size);
             if (index > -1) {
                 rawCart[index].qty = parseInt(rawCart[index].qty || 1, 10) + 1;
                 localStorage.setItem('gdripx_cart', JSON.stringify(rawCart));
@@ -691,10 +718,55 @@
             checkoutBtn.addEventListener('click', () => {
                 if (rawCart.length === 0) return;
 
-                const btnText = checkoutBtn.querySelector('.btn-text');
-                const originalText = btnText.innerText;
-                const whatsappNumber = "2347071090642"; 
+                // 1. Grab Shipping / Contact Data
+                const email = document.getElementById('checkout-email')?.value.trim() || 'N/A';
+                const fname = document.getElementById('checkout-fname')?.value.trim() || '';
+                const lname = document.getElementById('checkout-lname')?.value.trim() || '';
+                const address = document.getElementById('checkout-address')?.value.trim() || '';
+                const apt = document.getElementById('checkout-apt')?.value.trim() || '';
+                const city = document.getElementById('checkout-city')?.value.trim() || '';
+                const postal = document.getElementById('checkout-postal')?.value.trim() || 'N/A';
+                const phone = document.getElementById('checkout-phone')?.value.trim() || 'N/A';
+                
+                const country = document.getElementById('country-selected-text')?.innerText || 'Nigeria';
+                const state = document.getElementById('state-selected-text')?.innerText || 'Rivers';
+                
+                // 2. Grab Payment & Billing Preferences
+                const paymentInput = document.querySelector('input[name="payment_method"]:checked');
+                const paymentMethod = paymentInput ? paymentInput.value.toUpperCase() : 'PAYSTACK';
 
+                const billingInput = document.querySelector('input[name="billing_address"]:checked');
+                const isBillingDifferent = billingInput && billingInput.value === 'different';
+
+                // 3. Grab Billing Form Data (if different)
+                const b_country = document.getElementById('billing-country')?.value.trim() || '';
+                const b_fname = document.getElementById('billing-fname')?.value.trim() || '';
+                const b_lname = document.getElementById('billing-lname')?.value.trim() || '';
+                const b_address = document.getElementById('billing-address')?.value.trim() || '';
+                const b_apt = document.getElementById('billing-apt')?.value.trim() || '';
+                const b_city = document.getElementById('billing-city')?.value.trim() || '';
+                const b_state = document.getElementById('billing-state')?.value.trim() || '';
+                const b_postal = document.getElementById('billing-postal')?.value.trim() || '';
+
+                // Determine if Shipping or Pickup
+                const isPickup = window.deliveryFee === 0;
+
+                // Basic Validations
+                if (!isPickup) {
+                    if(!fname || !lname || !address || !city) {
+                        alert("Please fill in your First Name, Last Name, Address, and City to continue.");
+                        return; 
+                    }
+                }
+
+                if (isBillingDifferent) {
+                    if(!b_fname || !b_lname || !b_address || !b_city || !b_state || !b_country) {
+                        alert("Please fill in all required Billing Address fields.");
+                        return;
+                    }
+                }
+
+                const btnText = checkoutBtn.querySelector('.btn-text');
                 btnText.innerHTML = `<span class="material-symbols-outlined animate-spin align-middle mr-2 text-[14px] md:text-[16px]">progress_activity</span> Processing...`;
                 
                 setTimeout(() => {
@@ -702,33 +774,63 @@
                     btnText.innerHTML = `<span class="material-symbols-outlined align-middle mr-2 text-[14px] md:text-[16px]">chat</span> Redirecting...`;
                     
                     let message = `*NEW ORDER - GDRIPX* 🛍️\n\n`;
-                    message += `*Order Items:*\n`;
+
+                    // --- CUSTOMER DETAILS ---
+                    message += `*👤 CUSTOMER DETAILS*\n`;
+                    message += `Name: ${fname} ${lname}\n`;
+                    message += `Email: ${email}\n`;
+                    message += `Phone: ${phone}\n\n`;
+
+                    // --- DELIVERY DETAILS ---
+                    if (isPickup) {
+                        message += `*🏬 DELIVERY MODE: STUDIO PICKUP*\n\n`;
+                    } else {
+                        message += `*🚚 DELIVERY MODE: SHIPPING*\n`;
+                        message += `Address: ${address} ${apt ? '('+apt+')' : ''}\n`;
+                        message += `Location: ${city}, ${state}, ${country}\n`;
+                        message += `Postal Code: ${postal}\n\n`;
+                    }
+
+                    // --- BILLING DETAILS ---
+                    if (isBillingDifferent) {
+                        message += `*💳 BILLING ADDRESS*\n`;
+                        message += `Name: ${b_fname} ${b_lname}\n`;
+                        message += `Address: ${b_address} ${b_apt ? '('+b_apt+')' : ''}\n`;
+                        message += `Location: ${b_city}, ${b_state}, ${b_country}\n`;
+                        message += `Postal Code: ${b_postal}\n\n`;
+                    } else {
+                        message += `*💳 BILLING ADDRESS*\nSame as Shipping\n\n`;
+                    }
+
+                    // --- ORDER ITEMS ---
+                    message += `*📦 ORDER ITEMS:*\n`;
                     let subtotal = 0;
                     
                     groupedCart.forEach((item) => {
                         const lineTotal = item.rawPrice * item.qty;
                         subtotal += lineTotal;
                         message += `-------------------------\n`;
-                        message += `📦 *${item.name}*\n`;
-                        message += `   Size: ${item.size}\n`;
-                        message += `   Qty: ${item.qty}\n`;
+                        // 🟢 FIX: Added the [Color] to the WhatsApp Message formatting!
+                        message += `▪️ *${item.name}* [${item.color || 'Standard'}]\n`;
+                        message += `   Size: ${item.size} | Qty: ${item.qty}\n`;
                         message += `   Price: ₦${item.rawPrice.toLocaleString()} (Sub: ₦${lineTotal.toLocaleString()})\n`;
                     });
                     
-                    // Uses the global deliveryFee
                     const currentShipping = window.deliveryFee;
                     const tax = subtotal * 0.08;
                     const finalTotal = subtotal + currentShipping + tax;
                     
                     message += `=========================\n`;
-                    message += `*TOTAL SUMMARY:*\n`;
+                    message += `*💰 TOTAL SUMMARY*\n`;
+                    message += `Payment Method: ${paymentMethod}\n`;
                     message += `Subtotal: ₦${subtotal.toLocaleString()}\n`;
-                    message += `Shipping: ₦${currentShipping.toLocaleString()}\n`;
+                    message += `Shipping: ${currentShipping === 0 ? 'FREE' : '₦' + currentShipping.toLocaleString()}\n`;
                     message += `Tax (8%): ₦${tax.toLocaleString()}\n`;
                     message += `*FINAL DUE: ₦${finalTotal.toLocaleString()}*\n\n`;
-                    message += `I am ready to pay. Please confirm!`;
+                    message += `I am ready to proceed with payment. Please confirm!`;
 
                     const encodedMessage = encodeURIComponent(message);
+                    const whatsappNumber = "2347071090642"; 
                     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
                     
                     localStorage.removeItem('gdripx_cart');
@@ -802,8 +904,6 @@
         });
 
 // --- ADVANCED CHECKOUT & DELIVERY LOGIC ---
-        let deliveryFee = 6000; // Default matches the checked radio button (Jakande ₦6,000)
-        
         document.addEventListener('DOMContentLoaded', () => {
             const btnShip = document.getElementById('toggle-ship');
             const btnPickup = document.getElementById('toggle-pickup');
@@ -813,7 +913,6 @@
             const billingAddress = document.getElementById('billing-address-section');
             const pickupLocation = document.getElementById('pickup-location-section');
             
-            const shippingDisplay = document.querySelector('.lg\\:col-span-5 .space-y-4 div:nth-child(2) span:last-child');
             const shippingRadios = document.querySelectorAll('.shipping-radio');
             const paymentRadios = document.querySelectorAll('.payment-radio');
 
@@ -822,9 +921,10 @@
                 if (mode === 'ship') {
                     // Re-calculate fee based on checked radio
                     const activeRadio = document.querySelector('.shipping-radio:checked');
-                    deliveryFee = activeRadio ? parseInt(activeRadio.value) : 6000;
-                    if(shippingDisplay) shippingDisplay.innerText = `₦${deliveryFee.toLocaleString()}`;
-                    renderCart(); 
+                    
+                    // 🟢 FIX: Update the global window variable
+                    window.deliveryFee = activeRadio ? parseInt(activeRadio.value) : 4000;
+                    window.renderCart(); // Refresh Receipt
                     
                     // UI Button states
                     btnShip.className = 'flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-white shadow-sm border border-black/5 text-xs font-bold uppercase tracking-widest text-primary transition-all duration-300 group';
@@ -838,9 +938,9 @@
 
                 } else {
                     // Free Pickup
-                    deliveryFee = 0;
-                    if(shippingDisplay) shippingDisplay.innerText = `Free`;
-                    renderCart(); 
+                    // 🟢 FIX: Update the global window variable
+                    window.deliveryFee = 0;
+                    window.renderCart(); // Refresh Receipt
                     
                     // UI Button states
                     btnPickup.className = 'flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-white shadow-sm border border-black/5 text-xs font-bold uppercase tracking-widest text-primary transition-all duration-300 group';
@@ -878,10 +978,9 @@
                         }
                     });
 
-                    // Update Price Globally
-                    deliveryFee = parseInt(e.target.value);
-                    if(shippingDisplay) shippingDisplay.innerText = `₦${deliveryFee.toLocaleString()}`;
-                    renderCart();
+                    // 🟢 FIX: Update the global window variable so the receipt math works!
+                    window.deliveryFee = parseInt(e.target.value);
+                    window.renderCart(); 
                 });
             });
 
@@ -891,7 +990,6 @@
                     document.querySelectorAll('.payment-option').forEach(option => {
                         const r = option.querySelector('.payment-radio');
                         const details = option.querySelector('.payment-details');
-                        const parentLabel = option.querySelector('label');
                         const outerCircle = r.nextElementSibling.parentElement;
 
                         if (r.checked) {
@@ -906,13 +1004,37 @@
                     });
                 });
             });
+
+            // 4. BILLING ADDRESS ACCORDION LOGIC
+            const billingRadios = document.querySelectorAll('.billing-radio');
+            billingRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    document.querySelectorAll('.billing-option').forEach(option => {
+                        const r = option.querySelector('.billing-radio');
+                        const wrapper = option.querySelector('#billing-form-wrapper');
+                        const outerCircle = r.nextElementSibling.parentElement;
+                        const innerDot = r.nextElementSibling;
+
+                        if (r.checked) {
+                            option.classList.add('bg-[#f9f9f9]');
+                            if (wrapper) wrapper.classList.remove('hidden');
+                            outerCircle.classList.replace('border-primary/30', 'border-primary');
+                            innerDot.classList.replace('scale-0', 'scale-100');
+                        } else {
+                            option.classList.remove('bg-[#f9f9f9]');
+                            if (wrapper) wrapper.classList.add('hidden');
+                            outerCircle.classList.replace('border-primary', 'border-primary/30');
+                            innerDot.classList.replace('scale-100', 'scale-0');
+                        }
+                    });
+                });
+            });
         });
 
 // =========================================================
         // 🟢 SMART API COUNTRY & STATE LOGIC 🟢
         // =========================================================
         document.addEventListener('DOMContentLoaded', () => {
-            // Country Elements
             const countryContainer = document.getElementById('country-container');
             const countryTrigger = document.getElementById('country-trigger');
             const countryDropdown = document.getElementById('country-dropdown');
@@ -921,7 +1043,6 @@
             const countrySelectedText = document.getElementById('country-selected-text');
             const countryArrow = document.getElementById('country-arrow');
             
-            // State Elements
             const stateContainer = document.getElementById('state-wrapper');
             const stateTrigger = document.getElementById('state-trigger');
             const stateDropdown = document.getElementById('state-dropdown');
@@ -939,14 +1060,47 @@
                 "Taraba", "Yobe", "Zamfara"
             ];
 
-            // --- COUNTRY LOGIC ---
+            let currentSelectedCountry = "Nigeria";
+            let currentSelectedState = "Rivers";
+
+            // 🟢 SMART SHIPPING TOGGLE LOGIC
+            function updateShippingRates(country, state) {
+                const riversOptions = document.querySelectorAll('.rivers-only');
+                const interstateOptions = document.querySelectorAll('.interstate-only');
+                const riversDefault = document.querySelector('.rivers-default');
+                const interstateDefault = document.querySelector('.interstate-default');
+
+                // If they are in Rivers, Nigeria -> Show Local Rates
+                if (country === "Nigeria" && state === "Rivers") {
+                    riversOptions.forEach(opt => opt.classList.remove('hidden'));
+                    interstateOptions.forEach(opt => opt.classList.add('hidden'));
+                    
+                    // Reset to Rivers default if an interstate option was checked
+                    const checkedRadio = document.querySelector('.shipping-radio:checked');
+                    if (!checkedRadio || checkedRadio.classList.contains('interstate-default')) {
+                        if (riversDefault) {
+                            riversDefault.checked = true;
+                            riversDefault.dispatchEvent(new Event('change')); // Trigger price update
+                        }
+                    }
+                } else {
+                    // Outside Rivers -> Show Interstate Rate
+                    riversOptions.forEach(opt => opt.classList.add('hidden'));
+                    interstateOptions.forEach(opt => opt.classList.remove('hidden'));
+                    
+                    if (interstateDefault && !interstateDefault.checked) {
+                        interstateDefault.checked = true;
+                        interstateDefault.dispatchEvent(new Event('change')); // Trigger price update
+                    }
+                }
+            }
+
             async function fetchCountries() {
                 try {
                     const response = await fetch('https://restcountries.com/v3.1/all?fields=name');
                     const data = await response.json();
                     let sortedCountries = data.map(c => c.name.common).sort((a, b) => a.localeCompare(b));
                     
-                    // Prioritize Nigeria
                     sortedCountries = sortedCountries.filter(c => c !== "Nigeria");
                     sortedCountries.unshift("Nigeria");
                     countriesData = sortedCountries;
@@ -958,26 +1112,22 @@
 
             function renderCountryList(countries) {
                 countryList.innerHTML = '';
-                if (countries.length === 0) {
-                    countryList.innerHTML = '<li class="px-4 py-3 text-xs text-primary/40 text-center">No countries found.</li>';
-                    return;
-                }
                 countries.forEach(country => {
                     const li = document.createElement('li');
                     li.className = 'px-4 py-2.5 text-xs font-medium text-primary cursor-pointer hover:bg-primary/5 rounded-lg transition-colors flex items-center justify-between group';
                     
-                    if(country === "Nigeria") {
-                        li.innerHTML = `<span>${country}</span> <span class="w-1.5 h-1.5 bg-green-500 rounded-full group-hover:animate-pulse"></span>`;
-                        li.classList.add('bg-black/[0.02]');
+                    if(country === currentSelectedCountry) {
+                        li.innerHTML = `<span>${country}</span> <span class="material-symbols-outlined text-[16px] text-green-600">check_circle</span>`;
+                        li.classList.add('bg-black/[0.04]', 'font-bold');
                     } else {
                         li.textContent = country;
                     }
 
                     li.addEventListener('click', () => {
+                        currentSelectedCountry = country; 
                         countrySelectedText.textContent = country;
                         closeDropdowns();
                         
-                        // Show/Hide State Dropdown
                         if (country === "Nigeria") {
                             stateContainer.classList.remove('hidden');
                             setTimeout(() => {
@@ -989,47 +1139,46 @@
                             stateContainer.classList.add('opacity-0', 'scale-95');
                             setTimeout(() => stateContainer.classList.add('hidden'), 300);
                         }
+
+                        // Update shipping rates based on new country
+                        updateShippingRates(currentSelectedCountry, currentSelectedState);
                     });
                     countryList.appendChild(li);
                 });
             }
 
-            // --- STATE LOGIC ---
             function renderStateList(states) {
                 stateList.innerHTML = '';
-                if (states.length === 0) {
-                    stateList.innerHTML = '<li class="px-4 py-3 text-xs text-primary/40 text-center">No states found.</li>';
-                    return;
-                }
                 states.forEach(state => {
                     const li = document.createElement('li');
                     li.className = 'px-4 py-2.5 text-xs font-medium text-primary cursor-pointer hover:bg-primary/5 rounded-lg transition-colors flex items-center justify-between group';
                     
-                    if(state === "Lagos") {
-                        li.innerHTML = `<span>${state}</span> <span class="w-1.5 h-1.5 bg-black rounded-full"></span>`;
-                        li.classList.add('bg-black/[0.02]');
+                    if(state === currentSelectedState) {
+                        li.innerHTML = `<span>${state}</span> <span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>`;
+                        li.classList.add('bg-black/[0.04]', 'font-bold');
                     } else {
                         li.textContent = state;
                     }
 
                     li.addEventListener('click', () => {
+                        currentSelectedState = state;
                         stateSelectedText.textContent = state;
                         closeDropdowns();
+
+                        // Update shipping rates based on new state
+                        updateShippingRates(currentSelectedCountry, currentSelectedState);
                     });
                     stateList.appendChild(li);
                 });
             }
 
-            // --- DROPDOWN PHYSICS ---
             function closeDropdowns() {
-                // Close Country
                 countryDropdown.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
                 countryArrow.classList.remove('rotate-180');
                 countryTrigger.classList.remove('border-primary', 'shadow-sm');
                 countrySearch.value = ''; 
                 renderCountryList(countriesData); 
 
-                // Close State
                 stateDropdown.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
                 stateArrow.classList.remove('rotate-180');
                 stateTrigger.classList.remove('border-primary', 'shadow-sm');
@@ -1039,7 +1188,7 @@
 
             function toggleCountry() {
                 const isClosed = countryDropdown.classList.contains('opacity-0');
-                closeDropdowns(); // Close everything first
+                closeDropdowns(); 
                 if (isClosed) {
                     countryDropdown.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
                     countryArrow.classList.add('rotate-180');
@@ -1050,7 +1199,7 @@
 
             function toggleState() {
                 const isClosed = stateDropdown.classList.contains('opacity-0');
-                closeDropdowns(); // Close everything first
+                closeDropdowns(); 
                 if (isClosed) {
                     stateDropdown.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
                     stateArrow.classList.add('rotate-180');
@@ -1059,7 +1208,6 @@
                 }
             }
 
-            // --- EVENT LISTENERS ---
             countryTrigger.addEventListener('click', toggleCountry);
             stateTrigger.addEventListener('click', toggleState);
 
@@ -1073,16 +1221,16 @@
                 renderStateList(nigerianStates.filter(s => s.toLowerCase().includes(term)));
             });
 
-            // Close dropdowns when clicking outside
             document.addEventListener('click', (e) => {
                 if (!countryContainer.contains(e.target) && !stateContainer.contains(e.target)) {
                     closeDropdowns();
                 }
             });
 
-            // Initialize Data
+            // Initialize Everything
             fetchCountries();
             renderStateList(nigerianStates);
+            updateShippingRates(currentSelectedCountry, currentSelectedState);
         });
         
     </script>
